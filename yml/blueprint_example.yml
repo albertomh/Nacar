@@ -1,0 +1,12 @@
+name: Project Name
+title: Global Title
+
+screens:
+  - name: screen1
+    options:
+      - name: option1
+        screen: screen2
+  - name: screen2
+    options:
+      - name: run
+        action: "command --to-run"
