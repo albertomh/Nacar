@@ -1,3 +1,7 @@
+# Nacar | YAML blueprint example
+# Copyright 2022 Alberto Morón Hernández
+# [github.com/albertomh/Nacar]
+
 title: Global Title
 
 # TODO: some of meta (or entire meta) should be optional, with sensible defaults provided by the application.

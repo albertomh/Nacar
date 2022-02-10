@@ -4,35 +4,29 @@
 # Copyright 2022 Alberto Morón Hernández
 # [github.com/albertomh/Nacar]
 
-import io
-from os.path import exists as file_exists
-
-from yaml import safe_load
 from yaml.scanner import ScannerError
-from yaml.parser import ParserError
+
+from file_io import FileIO
 
 
-def load_data_from_file(file_path: str) -> dict:
-    if not file_exists(file_path):
-        raise FileNotFoundError(f"The specified file '{file_path}' does not exist.")
+class Nacar:
+    def __init__(self, file_io):
+        self.file_io = file_io
 
-    invalid_yml_message = f"Invalid YAML in '{file_path}'. " \
-                          f"Please provide a blueprint that is valid YAML."
-    try:
-        with io.open(file_path, 'r') as stream:
-            data = safe_load(stream)
-        return data
-    except ScannerError:
-        raise ScannerError(invalid_yml_message)
-    except ParserError:
-        raise ParserError(invalid_yml_message)
+    def run(self, blueprint_path):
+        try:
+            blueprint: dict = self.file_io.parse_yml_file(blueprint_path)
+            print(blueprint)  # TODO: remove.
+        except (FileNotFoundError, ScannerError) as e:
+            print(str(e))
+            return
 
 
 def main():
-    try:
-        print(load_data_from_file('yml/blueprint_example.yml'))
-    except (FileNotFoundError, ScannerError, ParserError) as e:
-        print(str(e))
+    file_io = FileIO()
+    nacar = Nacar(file_io)
+
+    nacar.run('yml/blueprint_example.yml')
 
 
 if __name__ == '__main__':
