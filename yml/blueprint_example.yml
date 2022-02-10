@@ -1,12 +1,5 @@
-name: Project Name
 title: Global Title
 
-screens:
-  - name: screen1
-    options:
-      - name: option1
-        screen: screen2
-  - name: screen2
-    options:
-      - name: run
-        action: "command --to-run"
+# TODO: some of meta (or entire meta) should be optional, with sensible defaults provided by the application.
+meta:
+  width: 80
