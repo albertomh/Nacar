@@ -7,3 +7,13 @@ title: Global Title
 # TODO: some of meta (or entire meta) should be optional, with sensible defaults provided by the application.
 meta:
   width: 80
+
+screens:
+  - name: screen1
+    options:
+      - name: option1
+        link: screen2
+  - name: screen2
+    options:
+      - name: run
+        action: "command --to-run"
