@@ -1,8 +1,17 @@
 #!/usr/bin/env python3
 
-# Nacar
-# Copyright 2022 Alberto Morón Hernández
-# [github.com/albertomh/Nacar]
+"""
+Nacar
+Copyright 2022 Alberto Morón Hernández
+[github.com/albertomh/Nacar]
+
+Application entrypoint
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+TODO: document
+"""
+
+from sys import argv
+from os.path import abspath
 
 from yaml.scanner import ScannerError
 
@@ -23,10 +32,16 @@ class Nacar:
 
 
 def main():
+    # Two arguments must be present: `nacar.py` & a path to a blueprint.
+    if len(argv) != 2:
+        print("Please pass the filename of a YAML blueprint as Nacar's first argument.")  # noqa
+        return
+
     file_io = FileIO()
     nacar = Nacar(file_io)
 
-    nacar.run('yml/blueprint_example.yml')
+    blueprint_path = argv[1]
+    nacar.run(blueprint_path)
 
 
 if __name__ == '__main__':

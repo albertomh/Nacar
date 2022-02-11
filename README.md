@@ -10,7 +10,20 @@ Additionally, you can link between screens for fluid keyboard-based navigation.
 
 Nacar will take that blueprint and produce a self-contained bash script containing your interface.
 
+Both locally and on the server Nacar shines at creating management and 
+health-check utilities that provide easy access to common tasks.     
+
 Tested on Python 3.7+  
+
+
+## Installing & running
+
+TODO: document installing.
+
+
+## Developing
+
+Nacar is written in Python 3. It includes type annotations that are checked with `mypy` and is linted with `pycodestyle` to conform to PEP8.
 
 
 ---

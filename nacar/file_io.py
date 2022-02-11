@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 
-# Nacar | File IO utilities
-# Copyright 2022 Alberto Morón Hernández
-# [github.com/albertomh/Nacar]
+"""
+Nacar
+Copyright 2022 Alberto Morón Hernández
+[github.com/albertomh/Nacar]
+
+File IO utilities
+▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+TODO: document
+"""
 
 import io
 from os.path import exists as file_exists
