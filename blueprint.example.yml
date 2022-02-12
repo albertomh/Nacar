@@ -10,6 +10,8 @@ title: Global Title
 
 # TODO: some of meta (or entire meta) should be optional, with sensible defaults provided by the application.
 meta:
+  authors:
+    - Your Name
   width: 80
 
 screens:

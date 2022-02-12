@@ -13,7 +13,7 @@ Nacar will take that blueprint and produce a self-contained bash script containi
 Both locally and on the server Nacar shines at creating management and 
 health-check utilities that provide easy access to common tasks.     
 
-Tested on Python 3.7+  
+Tested on Python 3.7+ | Type annotations checked by mypy | PEP8 compliant  
 
 
 ## Installing & running

@@ -41,9 +41,11 @@ class Nacar:
         validator = self.schema.get_validator()
         schema_is_valid: bool = validator.validate(blueprint)
         if schema_is_valid:
+            print("\nBlueprint contains a valid schema:")  # TODO: remove
             print(blueprint)  # TODO: implement
         else:
-            print("Invalid schema")  # TODO:
+            print("\nBlueprint contains an invalid schema!")  # TODO: remove
+
 
 def main():
     # Two arguments must be present: `nacar.py` & a path to a blueprint.
