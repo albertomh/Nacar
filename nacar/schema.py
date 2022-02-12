@@ -100,3 +100,36 @@ class Schema:
 
     def get_validator(self):
         return self.validator
+
+
+class InvalidSchemaError(Exception):
+    """
+    The blueprint provided by the user did not contain a valid Nacar schema.
+    """
+
+    def __init__(self, validator_errors):
+        errors_by_key = {}
+        print(validator_errors)
+
+        def walk_errors(errors_tree: dict, dotpath=""):
+            # Traverse the validator errors object and stop at each error.
+            for k, v in sorted(errors_tree.items(), key=lambda d: d[0]):
+                dotpath = k if dotpath == "" else f"{dotpath}.{k}"
+                if isinstance(v, dict):
+                    walk_errors(v, dotpath)
+                elif isinstance(v, list) and len(v) and isinstance(v[0], dict):
+                    walk_errors(v[0], dotpath)
+                else:
+                    errors_by_key[dotpath] = v
+
+        if len(validator_errors) > 0:
+            walk_errors(validator_errors)
+
+            print("\nPlease amend these schema errors in your blueprint:")
+            pad_length = max(map(len, errors_by_key))
+            key: str
+            errors: list
+            for key, errors in errors_by_key.items():
+                key = f"{key}:".ljust(pad_length + 1)
+                errors = [e for e in errors if isinstance(e, str)]
+                print(f"{key} {', '.join(errors)}")

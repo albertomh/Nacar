@@ -16,7 +16,7 @@ from os.path import abspath
 from yaml.scanner import ScannerError
 
 from file_io import FileIO
-from schema import Schema
+from schema import Schema, InvalidSchemaError
 
 
 class Nacar:
@@ -40,11 +40,11 @@ class Nacar:
 
         validator = self.schema.get_validator()
         schema_is_valid: bool = validator.validate(blueprint)
-        if schema_is_valid:
+        if not schema_is_valid:
+            raise InvalidSchemaError(validator.errors)
+        else:
             print("\nBlueprint contains a valid schema:")  # TODO: remove
             print(blueprint)  # TODO: implement
-        else:
-            print("\nBlueprint contains an invalid schema!")  # TODO: remove
 
 
 def main():
@@ -58,7 +58,11 @@ def main():
     nacar = Nacar(file_io, schema)
 
     blueprint_path = argv[1]
-    nacar.run(blueprint_path)
+    try:
+        nacar.run(blueprint_path)
+    except InvalidSchemaError:
+        print(f"'{abspath(blueprint_path)}' is not a valid blueprint. "
+              f"Please provide a blueprint that conforms to the schema.")
 
 
 if __name__ == '__main__':

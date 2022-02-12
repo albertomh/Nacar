@@ -25,6 +25,10 @@ TODO: document installing.
 
 Nacar is written in Python 3. It includes type annotations that are checked with `mypy` and is linted with `pycodestyle` to conform to PEP8.
 
+1. Clone this repository and navigate into the project root.
+2. Create a virtual environment: `python3 -m venv venv`.
+3. Activate the virtual environment: `source venv/bin/activate`
+4. Install dependencies: `pip3 install -r requirements/common.txt -r requirements/dev.txt`
 
 ---
 Copyright 2022 Alberto Morón Hernández  
