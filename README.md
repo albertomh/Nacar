@@ -30,6 +30,21 @@ Nacar is written in Python 3. It includes type annotations that are checked with
 3. Activate the virtual environment: `source venv/bin/activate`
 4. Install dependencies: `pip3 install -r requirements/common.txt -r requirements/dev.txt`
 
+
+## Project Structure
+
+### Dependencies
+
+### Application entrypoint
+
+### Parsing blueprints
+
+### Translators
+
+Translators are packages that take a Python object (previously parsed from a YAML blueprint) 
+and turn it into a Nacar application written in a target language such as Bash.  
+
+
 ---
 Copyright 2022 Alberto Morón Hernández  
 This software is provided under the MIT License.
