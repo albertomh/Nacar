@@ -23,7 +23,7 @@ TODO: document installing.
 
 ## Developing
 
-Nacar is written in Python 3. It includes type annotations that are checked with `mypy` and is linted with `pycodestyle` to conform to PEP8.
+Nacar is written in Python 3. It includes type annotations that are checked with `mypy` and is linted with `pycodestyle` to ensure PEP8 compliance.
 
 1. Clone this repository and navigate into the project root.
 2. Create a virtual environment: `python3 -m venv venv`.

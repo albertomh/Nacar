@@ -43,6 +43,8 @@ class Nacar:
         if not schema_is_valid:
             raise InvalidSchemaError(validator.errors)
         else:
+            blueprint = self.schema.set_missing_optional_attributes(blueprint)
+
             print("\nBlueprint contains a valid schema:")  # TODO: remove
             print(blueprint)  # TODO: implement
 

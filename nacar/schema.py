@@ -30,7 +30,7 @@ class Schema:
                     'type': 'list', 'minlength': 1, 'maxlength': 10,
                     'schema': {'type': 'string', 'required': False, 'minlength': 1, 'maxlength': 64}  # noqa
                 },
-                'width': {'type': 'integer', 'required': False, 'min': 0, 'max': 180}                 # noqa
+                'width': {'type': 'integer', 'required': False, 'min': 40, 'max': 180}                # noqa
             },
 
             'screen': {
@@ -101,6 +101,17 @@ class Schema:
     def get_validator(self):
         return self.validator
 
+    def set_missing_optional_attributes(self, blueprint: dict) -> dict:
+        def exists(obj: dict, chain: list):
+            _key = chain.pop(0)
+            if _key in obj:
+                return exists(obj[_key], chain) if chain else obj[_key]
+
+        if not exists(blueprint, ['meta', 'width']):
+            blueprint['meta']['width'] = 80
+
+        return blueprint
+
 
 class InvalidSchemaError(Exception):
     """
@@ -109,7 +120,6 @@ class InvalidSchemaError(Exception):
 
     def __init__(self, validator_errors):
         errors_by_key = {}
-        print(validator_errors)
 
         def walk_errors(errors_tree: dict, dotpath=""):
             # Traverse the validator errors object and stop at each error.
