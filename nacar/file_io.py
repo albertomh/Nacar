@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 Nacar
 Copyright 2022 Alberto Morón Hernández
