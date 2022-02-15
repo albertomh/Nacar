@@ -9,6 +9,7 @@ TODO: document
 """
 
 from abc import ABC, abstractmethod
+from typing import List
 
 
 class ITranslator(ABC):
@@ -19,17 +20,21 @@ class ITranslator(ABC):
 
     @abstractmethod
     def get_max_line_length(self) -> int:
-        # Maximum line length in the target language. eg. 80 for Python.
-        pass
+        # Maximum line length in the target language. eg. 79 for Python.
+        raise NotImplementedError
 
     @abstractmethod
-    def get_comment_lines(self, content: str) -> list:
-        pass
+    def get_comment_lines(self, content: str) -> List[str]:
+        raise NotImplementedError
 
     @abstractmethod
-    def get_file_header(self) -> str:
-        pass
+    def get_nacar_info_lines(self) -> List[str]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_file_heading(self) -> str:
+        raise NotImplementedError
 
     @abstractmethod
     def translate_blueprint(self) -> str:
-        pass
+        raise NotImplementedError

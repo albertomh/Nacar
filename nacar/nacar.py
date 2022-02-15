@@ -17,6 +17,8 @@ from yaml.scanner import ScannerError
 
 from file_io import FileIO
 from schema import Schema, InvalidSchemaError
+from translate.itranslator import ITranslator
+from translate.to_bash.to_bash import BlueprintToBash
 
 
 class Nacar:
@@ -45,8 +47,8 @@ class Nacar:
         else:
             blueprint = self.schema.set_missing_optional_attributes(blueprint)
 
-            print("\nBlueprint contains a valid schema:")  # TODO: remove
-            print(blueprint)  # TODO: implement
+            translator: ITranslator = BlueprintToBash(blueprint)
+            print(translator.translate_blueprint())  # TODO: remove.
 
 
 def main():
