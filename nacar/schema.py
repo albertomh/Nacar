@@ -76,6 +76,8 @@ class Schema:
             'screens': {
                 'type': 'list',
                 'required': True,
+                'minlength': 1,
+                'maxlength': 999,
                 'schema': {
                     'type': 'dict',
                     'schema': 'screen'
@@ -99,7 +101,8 @@ class Schema:
     def get_validator(self):
         return self.validator
 
-    def set_missing_optional_attributes(self, blueprint: dict) -> dict:
+    @staticmethod
+    def set_missing_optional_attributes(blueprint: dict) -> dict:
         def exists(obj: dict, chain: list):
             _key = chain.pop(0)
             if _key in obj:
@@ -139,5 +142,5 @@ class InvalidSchemaError(Exception):
             errors: list
             for key, errors in errors_by_key.items():
                 key = f"{key}:".ljust(pad_length + 1)
-                errors = [e for e in errors if isinstance(e, str)]
-                print(f"{key} {', '.join(errors)}")
+                for e in [e for e in errors if isinstance(e, str)]:
+                    print(f"{key} {e}".replace('.,', ','))

@@ -46,5 +46,11 @@ and turn it into a Nacar application written in a target language such as Bash.
 
 
 ---
+**What's in a name?**  
+*Nacar* means 'mother of pearl' in Spanish. This name reflects the tool's 
+aim to make interacting with the shell smoother and more beautiful.
+
+
+---
 Copyright 2022 Alberto Morón Hernández  
 This software is provided under the MIT License.
