@@ -39,6 +39,8 @@ Nacar is written in Python 3. It includes type annotations that are checked with
 
 ### Parsing blueprints
 
+### Validator
+
 ### Translators
 
 Translators are packages that take a Python object (previously parsed from a YAML blueprint) 

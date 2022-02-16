@@ -8,17 +8,13 @@ Schema utilities
 TODO: document
 """
 
-from yaml.scanner import ScannerError
 from cerberus import schema_registry
-from cerberus import Validator
 
 
 class Schema:
 
     def __init__(self):
-        self.validator = None
         self.add_blueprint_subschemas_to_registry()
-        self.add_blueprint_schema_to_validator()
 
     @staticmethod
     def get_blueprint_subschemas() -> dict:
@@ -86,20 +82,6 @@ class Schema:
         }
 
         return schema
-
-    def add_blueprint_schema_to_validator(self):
-        """
-        Pass the main blueprint schema to the Cerberus validator.
-        """
-        try:
-            blueprint_schema: dict = Schema.get_blueprint_schema()
-        except (FileNotFoundError, ScannerError) as e:
-            print(str(e))
-            return
-        self.validator = Validator(blueprint_schema)
-
-    def get_validator(self):
-        return self.validator
 
     @staticmethod
     def set_missing_optional_attributes(blueprint: dict) -> dict:

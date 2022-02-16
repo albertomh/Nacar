@@ -17,14 +17,19 @@ from yaml.scanner import ScannerError
 
 from file_io import FileIO
 from schema import Schema, InvalidSchemaError
+from validator import NacarValidator
 from translate.itranslator import ITranslator
 from translate.to_bash.to_bash import BlueprintToBash
 
 
 class Nacar:
-    def __init__(self, file_io: FileIO, schema: Schema):
+    def __init__(self,
+                 file_io: FileIO,
+                 schema: Schema,
+                 validator: NacarValidator):
         self.file_io = file_io
         self.schema = schema
+        self.validator = validator
 
     def run(self, blueprint_path):
         """
@@ -47,15 +52,20 @@ class Nacar:
             print(str(e))
             return
 
-        validator = self.schema.get_validator()
-        schema_is_valid: bool = validator.validate(blueprint, blueprint_schema)
+        try:
+            schema_is_valid: bool = (self.validator
+                                     .validate(blueprint, blueprint_schema))
+        except RuntimeError as e:
+            print(e)
+            return
         if not schema_is_valid:
-            raise InvalidSchemaError(validator.errors)
-        else:
-            blueprint = self.schema.set_missing_optional_attributes(blueprint)
+            raise InvalidSchemaError(self.validator.errors)
 
-            translator: ITranslator = BlueprintToBash(blueprint)
-            print(translator.translate_blueprint())  # TODO: remove.
+        # TODO: add more defaults to the below method.
+        blueprint = self.schema.set_missing_optional_attributes(blueprint)
+
+        translator: ITranslator = BlueprintToBash(blueprint)
+        print(translator.translate_blueprint())  # TODO: remove.
 
 
 def main():
@@ -66,7 +76,8 @@ def main():
 
     file_io = FileIO()
     schema = Schema()
-    nacar = Nacar(file_io, schema)
+    validator = NacarValidator()
+    nacar = Nacar(file_io, schema, validator)
 
     blueprint_path = argv[1]
     try:
