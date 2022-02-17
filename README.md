@@ -46,8 +46,8 @@ Nacar's Validator verifies that the parsed blueprint will be correctly
 interpreted by a Translator (see below).  
 It is built on top of the Cerberus validator, extending it to run checks not 
 supported by Cerberus. These include checking that screen names are unique 
-across a blueprint, avoiding recursion by verifying that screens do not 
-link to themselves, and that 'link' directives point to existing screens.
+across a blueprint, verifying that screens do not link to themselves,
+ and that 'link' directives point to existing screens.
 
 
 ### Translators

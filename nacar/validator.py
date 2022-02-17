@@ -39,4 +39,16 @@ class NacarValidator(Validator):
             if not screen_names_are_unique:
                 super(NacarValidator, self)._error('screens', "All screen names must be unique.")  # noqa
 
-        return (is_valid and screen_names_are_unique)
+        # Check screens do not link to themselves.
+        screen_links: List[List[str]] = Schema.get_screen_links(document)
+        screen_link_lengths: List[int] = [len(set(sl)) for sl in screen_links]
+        # Each pair of screen links must contain two separate screen names.
+        # If 1 is present, at least one recursive screen link of
+        # the form [screen1, screen1] was found.
+        screen_links_are_recursive = 1 in screen_link_lengths
+        if screen_links_are_recursive:
+            super(NacarValidator, self)._error('screens', "Screens must not link to themselves.")  # noqa
+
+        return (is_valid
+                and screen_names_are_unique
+                and not screen_links_are_recursive)

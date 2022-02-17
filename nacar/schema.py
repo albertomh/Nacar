@@ -107,6 +107,19 @@ class Schema:
 
         return []
 
+    @staticmethod
+    def get_screen_links(blueprint: dict) -> List[List[str]]:
+        """
+        Return a list of [screen1, screen2] pairs showing
+        how screens link to other screens.
+        """
+        if len(blueprint) > 0 and 'screens' in blueprint:
+            return [[s['name'], o['link']]
+                    for s in blueprint['screens'] if 'options' in s
+                    for o in s['options'] if 'link' in o]
+
+        return []
+
 
 class InvalidSchemaError(Exception):
     """
