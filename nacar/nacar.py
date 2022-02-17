@@ -45,7 +45,6 @@ class Nacar:
             print(str(e))
             return
 
-        # Pass the blueprint schema to the Cerberus validator.
         try:
             blueprint_schema: dict = Schema.get_blueprint_schema()
         except (FileNotFoundError, ScannerError) as e:

@@ -8,6 +8,8 @@ Schema utilities
 TODO: document
 """
 
+from typing import List
+
 from cerberus import schema_registry
 
 
@@ -94,6 +96,16 @@ class Schema:
             blueprint['meta']['width'] = 80
 
         return blueprint
+
+    @staticmethod
+    def get_screen_names(blueprint: dict) -> List[str]:
+        """
+        Return a flat list of every screen name in the blueprint.
+        """
+        if len(blueprint) > 0 and 'screens' in blueprint:
+            return [s['name'] for s in blueprint['screens']]
+
+        return []
 
 
 class InvalidSchemaError(Exception):
