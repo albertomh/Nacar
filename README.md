@@ -23,7 +23,8 @@ TODO: document installing.
 
 ## Developing
 
-Nacar is written in Python 3. It includes type annotations that are checked with `mypy` and is linted with `pycodestyle` to ensure PEP8 compliance.
+Nacar is written in Python 3. It includes type annotations that are checked with 
+`mypy` and is linted with `pycodestyle` to ensure PEP8 compliance.
 
 1. Clone this repository and navigate into the project root.
 2. Create a virtual environment: `python3 -m venv venv`.
@@ -41,6 +42,14 @@ Nacar is written in Python 3. It includes type annotations that are checked with
 
 ### Validator
 
+Nacar's Validator verifies that the parsed blueprint will be correctly 
+interpreted by a Translator (see below).  
+It is built on top of the Cerberus validator, extending it to run checks not supported by Cerberus.
+These include checking that screen names are globally unique in a blueprint, 
+avoiding recursion by verifying that screens do not link to themselves, and that 'link' 
+directives point to existing screens.
+
+
 ### Translators
 
 Translators are packages that take a Python object (previously parsed from a YAML blueprint) 
@@ -55,4 +64,4 @@ aim to make interacting with the shell smoother and more beautiful.
 
 ---
 Copyright 2022 Alberto Morón Hernández  
-This software is provided under the MIT License.
+This software is provided as open-source under the MIT License.
