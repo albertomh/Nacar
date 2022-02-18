@@ -13,10 +13,14 @@ from typing import List
 
 
 class ITranslator(ABC):
+    """
+    """
 
     @abstractmethod
     def __init__(self, blueprint: dict) -> None:
         pass
+
+#   0. Bash translator utilities -----------------------------------------------
 
     @abstractmethod
     def get_max_line_length(self) -> int:
@@ -27,14 +31,20 @@ class ITranslator(ABC):
     def get_comment_lines(self, content: str) -> List[str]:
         raise NotImplementedError
 
+#   1. File header -------------------------------------------------------------
+
+    @abstractmethod
+    def get_title_lines(self) -> List[str]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_copyright_lines(self) -> List[str]:
+        raise NotImplementedError
+
     @abstractmethod
     def get_nacar_info_lines(self) -> List[str]:
         raise NotImplementedError
 
     @abstractmethod
     def get_file_heading(self) -> str:
-        raise NotImplementedError
-
-    @abstractmethod
-    def translate_blueprint(self) -> str:
         raise NotImplementedError
