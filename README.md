@@ -54,6 +54,10 @@ across a blueprint, verifying that screens do not link to themselves,
 
 Translators are packages that take a Python object (previously parsed from a YAML blueprint) 
 and turn it into a Nacar application written in a target language such as Bash.  
+Translators live inside the `translate` package. Here you will also find an `itranslator.py` interface 
+that defines the methods a translator should implement.  
+The files for each translator should live inside a package of their own under `translate`.
+This package should follow the naming convention `to_<target-language>`.
 
 
 ---
