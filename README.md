@@ -1,4 +1,4 @@
-# 🐚 Nacar
+<img src="docs/img/nacar-wordmark-alt.svg" alt="Nacar" width="300"/>
 
 Nacar is a tool for creating interactive text-based interfaces from user-defined blueprints.  
 Say goodbye to remembering long, arcane shell commands!
