@@ -49,6 +49,13 @@ class NacarValidator(Validator):
         if screen_links_are_recursive:
             super(NacarValidator, self)._error('screens', "Screens must not link to themselves.")  # noqa
 
+        # Check 'link' directives point to existing screens.
+        screen_link_targets: List[str] = [sl[1] for sl in screen_links]
+        linked_screens_exist = set(screen_link_targets).issubset(set(screen_names))  # noqa
+        if not linked_screens_exist:
+            super(NacarValidator, self)._error('screens', "Cannot link to an undefined screen.")  # noqa
+
         return (is_valid
                 and screen_names_are_unique
-                and not screen_links_are_recursive)
+                and not screen_links_are_recursive
+                and linked_screens_exist)
