@@ -11,7 +11,8 @@ TODO: document
 """
 
 from sys import argv
-from os.path import abspath
+import os.path as os_path
+from typing import Type, List
 
 from yaml.scanner import ScannerError
 
@@ -30,6 +31,24 @@ class Nacar:
         self.file_io = file_io
         self.schema = schema
         self.validator = validator
+
+    @staticmethod
+    def get_blueprint_path_from_arguments(arguments: List[str]) -> str:
+        try:
+            # First argument passed must be the path to a blueprint.
+            blueprint_path = arguments[1]
+        except IndexError:
+            raise IndexError("Please pass the path to a YAML blueprint as the first argument.")  # noqa
+
+        blueprint_abspath = os_path.abspath(blueprint_path)
+        if not os_path.isfile(blueprint_abspath):
+            raise FileNotFoundError("The specified YAML blueprint does not exist.")  # noqa
+
+        _, file_name = os_path.split(blueprint_abspath)
+        if not (file_name.endswith('.yml') or file_name.endswith('.yaml')):
+            raise RuntimeError("The specified blueprint does not seem to be a YAML document.")  # noqa
+
+        return blueprint_path
 
     def run(self, blueprint_path):
         """
@@ -68,22 +87,24 @@ class Nacar:
 
 
 def main():
-    # Two arguments must be present: `nacar.py` & a path to a blueprint.
-    if len(argv) != 2:
-        print("Please pass the filename of a YAML blueprint as Nacar's first argument.")  # noqa
+    try:
+        blueprint_path = Nacar.get_blueprint_path_from_arguments(argv)
+    except (IndexError, FileNotFoundError, RuntimeError) as e:
+        print(e)
         return
 
-    file_io = FileIO()
-    schema = Schema()
-    validator = NacarValidator()
-    nacar = Nacar(file_io, schema, validator)
+    if blueprint_path is not None:
+        file_io = FileIO()
+        schema = Schema()
+        validator = NacarValidator()
+        nacar = Nacar(file_io, schema, validator)
 
-    blueprint_path = argv[1]
-    try:
-        nacar.run(blueprint_path)
-    except InvalidSchemaError:
-        print(f"'{abspath(blueprint_path)}' is not a valid blueprint. "
-              f"Please provide a blueprint that conforms to the schema.")
+        try:
+            nacar.run(blueprint_path)
+        except InvalidSchemaError:
+            print(f"'{os_path.abspath(blueprint_path)}' is not a valid "
+                  f"blueprint. Please provide a blueprint that "
+                  f"conforms to the schema.")
 
 
 if __name__ == '__main__':
