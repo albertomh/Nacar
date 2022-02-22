@@ -59,6 +59,11 @@ that defines the methods a translator should implement.
 The files for each translator should live inside a package of their own under `translate`.
 This package should follow the naming convention `to_<target-language>`.
 
+For instance, the default Blueprint to Bash translator lives under `translate/to_bash/`.  
+Within this package there is a `to_bash.py` module which is the translator's entrypoint.  
+All the methods defined by `itranslator.py` must be implemented by this module. 
+The most important method is `translate_blueprint()` which returns the body of the bash program as a string.  
+
 
 ---
 **What's in a name?**  

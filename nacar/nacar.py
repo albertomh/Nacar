@@ -27,10 +27,12 @@ class Nacar:
     def __init__(self,
                  file_io: FileIO,
                  schema: Schema,
-                 validator: NacarValidator):
+                 validator: NacarValidator,
+                 translator_class: Type[ITranslator]):
         self.file_io = file_io
         self.schema = schema
         self.validator = validator
+        self.translator_class = translator_class
 
     @staticmethod
     def get_blueprint_path_from_arguments(arguments: List[str]) -> str:
@@ -64,6 +66,7 @@ class Nacar:
             print(str(e))
             return
 
+        # Pass the blueprint schema to the Cerberus validator.
         try:
             blueprint_schema: dict = Schema.get_blueprint_schema()
         except (FileNotFoundError, ScannerError) as e:
@@ -82,8 +85,12 @@ class Nacar:
         # TODO: add more defaults to the below method.
         blueprint = self.schema.set_missing_optional_attributes(blueprint)
 
-        translator: ITranslator = BlueprintToBash(blueprint)
-        print(translator.translate_blueprint())  # TODO: remove.
+        try:
+            translator: ITranslator = self.translator_class(blueprint)
+            print(translator.translate_blueprint())  # TODO: remove.
+        except (TypeError, NotImplementedError) as e:
+            print(e)
+            return
 
 
 def main():
@@ -97,7 +104,8 @@ def main():
         file_io = FileIO()
         schema = Schema()
         validator = NacarValidator()
-        nacar = Nacar(file_io, schema, validator)
+        translator_class: Type[ITranslator] = BlueprintToBash
+        nacar = Nacar(file_io, schema, validator, translator_class)
 
         try:
             nacar.run(blueprint_path)
