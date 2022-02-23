@@ -7,13 +7,14 @@ File IO utilities
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 TODO: document
 """
-
-import io
+import os
 from os.path import exists as file_exists
 from os.path import abspath
 
 from yaml import safe_load
 from yaml.scanner import ScannerError
+
+from translate.target_language import TargetLanguage
 
 
 class FileIO:
@@ -30,8 +31,24 @@ class FileIO:
             raise FileNotFoundError(f"The specified file '{abspath(file_path)}' does not exist.")  # noqa
 
         try:
-            with io.open(file_path, 'r') as stream:
+            with open(file_path, 'r') as stream:
                 data = safe_load(stream)
             return data
         except ScannerError:
             raise ScannerError(f"Invalid YAML in '{abspath(file_path)}'. Please provide a blueprint that is valid YAML.")  # noqa
+
+    @staticmethod
+    def write_nacar_app_to_file(script_content: str,
+                                file_path: str,
+                                target_language: TargetLanguage) -> None:
+        if file_exists(file_path):
+            os.remove(file_path)
+
+        if target_language == TargetLanguage.BASH:
+            with open(file_path, 'w') as outfile:
+                outfile.write(script_content)
+
+        else:
+            raise NotImplementedError(f"There is no writer configured for "
+                                      f"writing Nacar apps in "
+                                      f"{target_language.name.title()}.")
