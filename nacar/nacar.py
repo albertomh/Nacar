@@ -54,7 +54,8 @@ class Nacar:
 
     def run(self, blueprint_path):
         """
-        Read and parse the given blueprint and output a bash script.
+        Read and parse the given blueprint and validate it. If valid, output
+        a Nacar script written in the Translator's TargetLanguage.
         :param blueprint_path: Path to the YAML blueprint to process.
         :return:
         """
@@ -73,6 +74,7 @@ class Nacar:
             print(str(e))
             return
 
+        # Validate the blueprint schema.
         try:
             schema_is_valid: bool = (self.validator
                                      .validate(blueprint, blueprint_schema))
@@ -87,8 +89,20 @@ class Nacar:
 
         try:
             translator: ITranslator = self.translator_class(blueprint)
-            print(translator.translate_blueprint())  # TODO: remove.
+            translation: str = translator.translate_blueprint()
         except (TypeError, NotImplementedError) as e:
+            print(e)
+            return
+
+        # Write the Nacar app to a file that is a sibling of the blueprint.
+        outdir, file_name = os_path.split(os_path.abspath(blueprint_path))
+        blueprint_file_name, extension = os_path.splitext(file_name)
+        try:
+            FileIO.write_nacar_app_to_file(
+                translation,
+                os_path.join(outdir, blueprint_file_name),
+                translator.get_target_language())
+        except (NotImplementedError, FileNotFoundError) as e:
             print(e)
             return
 
