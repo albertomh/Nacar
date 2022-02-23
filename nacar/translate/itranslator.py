@@ -11,12 +11,15 @@ TODO: document
 from abc import ABC, abstractmethod
 from typing import List
 
+from .target_language import TargetLanguage
+
 
 class ITranslator(ABC):
     """
     ╶ __init__(blueprint: dict)
 
     <target_language> translator utilities
+      ├ get_target_language() -> TargetLanguage
       ├ get_max_line_length() -> int
       └ get_comment_lines(content: str) -> List[str]
 
@@ -35,6 +38,11 @@ class ITranslator(ABC):
         pass
 
 #   <target_language> translator utilities ─────────────────────────────────────
+
+    @staticmethod
+    @abstractmethod
+    def get_target_language() -> TargetLanguage:
+        raise NotImplementedError
 
     @abstractmethod
     def get_max_line_length(self) -> int:

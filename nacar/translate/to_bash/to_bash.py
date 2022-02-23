@@ -19,31 +19,39 @@ import textwrap
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))  # noqa
 from __version__ import __version__
 from translate.itranslator import ITranslator
+from translate.target_language import TargetLanguage
 
 
 class BlueprintToBash(ITranslator):
     """
+    [I] indicates a method implements the interface's definition.
+
     ╶ __init__()
 
     Bash translator utilities
-      ├ get_max_line_length() -> str
-      └ get_comment_lines(content: str) -> List[str]
+      ├ [I] get_target_language() -> TargetLanguage
+      ├ [I] get_max_line_length() -> str
+      └ [I] get_comment_lines(content: str) -> List[str]
 
     File heading
-      ├ get_hashbang_lines() -> List[str]
-      ├ get_title_lines() -> List[str]
-      ├ get_copyright_lines() -> List[str]
-      ├ get_nacar_info_lines() -> List[str]
-      └ get_file_heading() -> str
+      ├     get_hashbang_lines() -> List[str]
+      ├ [I] get_title_lines() -> List[str]
+      ├ [I] get_copyright_lines() -> List[str]
+      ├ [I] get_nacar_info_lines() -> List[str]
+      └ [I] get_file_heading() -> str
 
     Translate blueprint to Bash
-      └ translate_blueprint() -> str
+      └ [I] translate_blueprint() -> str
     """
 
     def __init__(self, blueprint: dict):
         self.blueprint = blueprint
 
 #   Bash translator utilities ──────────────────────────────────────────────────
+
+    @staticmethod
+    def get_target_language() -> TargetLanguage:
+        return TargetLanguage.BASH
 
     def get_max_line_length(self):
         return 80
