@@ -40,6 +40,9 @@ class BlueprintToBash(ITranslator):
       ├ [I] get_nacar_info_lines() -> List[str]
       └ [I] get_file_heading() -> str
 
+    Utilities
+      └     get_bash_styles_lines() -> str
+
     Translate blueprint to Bash
       └ [I] translate_blueprint() -> str
     """
@@ -119,6 +122,34 @@ class BlueprintToBash(ITranslator):
 
         return '\n'.join(file_header_lines)
 
+#   Utilities ──────────────────────────────────────────────────────────────────
+
+    def get_bash_styles_lines(self) -> List[str]:
+        # [gist.github.com/vratiu/9780109]
+        styles = {
+            'BLD': r"$'\e[1m'",
+            'DIM': r"$'\e[2m'",
+            'UND': r"$'\e[4m'",
+
+            'RED': r"$'\e[1;91m'",
+            'GRN': r"$'\e[1;32m'",
+            'YEL': r"$'\e[1;93m'",
+            'BLU': r"$'\e[1;34m'",
+            'END': r"$'\e[0m'"
+        }
+
+        styles_lines = []
+        for name, code in styles.items():
+            styles_lines.append(f"{name}={code}")
+
+        return styles_lines
+
+    def get_utilities(self) -> str:
+        utilities_lines = [f"# {'─' * 8} Utilities {'─' * 59}", ""]
+        utilities_lines += self.get_bash_styles_lines()
+
+        return '\n'.join(utilities_lines)
+
 #   Translate blueprint to Bash ────────────────────────────────────────────────
 
     def translate_blueprint(self) -> str:
@@ -129,5 +160,6 @@ class BlueprintToBash(ITranslator):
         """
 
         bash_translation = self.get_file_heading()
+        bash_translation += self.get_utilities()
 
         return bash_translation
