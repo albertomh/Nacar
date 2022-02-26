@@ -130,6 +130,17 @@ class BlueprintToBash(ITranslator):
 
         return '\n'.join(file_header_lines)
 
+#   Nacar app config ───────────────────────────────────────────────────────────
+
+    def get_app_config(self) -> str:
+        config_lines = [self.get_section_title('Nacar app config')]
+        config_lines += [""]
+        config_lines += [f"SCREEN_WIDTH={self.blueprint['meta']['width']}"]
+        config_lines += [f"TITLE={self.blueprint['title']}"]
+        config_lines += ["", "", ""]
+
+        return '\n'.join(config_lines)
+
 #   Utilities ──────────────────────────────────────────────────────────────────
 
     def get_bash_styles_lines(self) -> List[str]:
@@ -197,6 +208,7 @@ class BlueprintToBash(ITranslator):
         """
 
         bash_translation = self.get_file_heading()
+        bash_translation += self.get_app_config()
         bash_translation += self.get_utilities()
 
         return bash_translation

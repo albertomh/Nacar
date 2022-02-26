@@ -16,7 +16,7 @@ from .target_language import TargetLanguage
 
 class ITranslator(ABC):
     """
-    ╶ __init__(blueprint: dict)
+    __init__(blueprint: dict)
 
     <target_language> translator utilities
       ├ get_target_language() -> TargetLanguage
@@ -29,6 +29,9 @@ class ITranslator(ABC):
       ├ get_copyright_lines() -> List[str]
       ├ get_nacar_info_lines() -> List[str]
       └ get_file_heading() -> str
+
+    Nacar app config
+      └ get_app_config() -> str
 
     Utilities
       └ get_utilities() -> str
@@ -79,6 +82,13 @@ class ITranslator(ABC):
 
     @abstractmethod
     def get_file_heading(self) -> str:
+        raise NotImplementedError
+
+#   Nacar app config ───────────────────────────────────────────────────────────
+
+    @abstractmethod
+    def get_app_config(self) -> str:
+        # Nacar app settings eg. screen width, title.
         raise NotImplementedError
 
 #   Utilities ──────────────────────────────────────────────────────────────────
