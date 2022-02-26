@@ -31,7 +31,8 @@ class BlueprintToBash(ITranslator):
     Bash translator utilities
       ├ [I] get_target_language() -> TargetLanguage
       ├ [I] get_max_line_length() -> str
-      └ [I] get_comment_lines(content: str) -> List[str]
+      ├ [I] get_comment_lines(content: str) -> List[str]
+      └ [I] get_section_title(title: str) -> str
 
     File heading
       ├     get_hashbang_lines() -> List[str]
@@ -74,6 +75,10 @@ class BlueprintToBash(ITranslator):
             comment_lines = content
 
         return [f"# {c}" for c in comment_lines]
+
+    def get_section_title(self, title: str, rule_char='─') -> str:
+        len_right = self.get_max_line_length() - (2 + 5 + 1 + len(title) + 1)
+        return f"# {rule_char * 5} {title} {rule_char * len_right}"
 
 #   File heading ───────────────────────────────────────────────────────────────
 
@@ -164,14 +169,15 @@ class BlueprintToBash(ITranslator):
 
         repeat_method += [
             r"repeat() {",
-            r'	for i in $(seq 1 $2); do printf "$1"; done',
+            r'	  for i in $(seq 1 $2); do printf "$1"; done',
             r"}"
         ]
 
         return repeat_method
 
     def get_utilities(self) -> str:
-        utilities_lines = [f"# {'─' * 8} Utilities {'─' * 59}", ""]
+        utilities_lines = [self.get_section_title('Utilities')]
+        utilities_lines += [""]
         utilities_lines += self.get_bash_styles_lines()
         utilities_lines += [""]
         utilities_lines += self.get_clear_screen_lines()

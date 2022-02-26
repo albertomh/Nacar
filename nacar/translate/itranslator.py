@@ -21,7 +21,8 @@ class ITranslator(ABC):
     <target_language> translator utilities
       ├ get_target_language() -> TargetLanguage
       ├ get_max_line_length() -> int
-      └ get_comment_lines(content: str) -> List[str]
+      ├ get_comment_lines(content: str) -> List[str]
+      └ get_section_title(title: str) -> str
 
     File heading
       ├ get_title_lines() -> List[str]
@@ -54,6 +55,12 @@ class ITranslator(ABC):
 
     @abstractmethod
     def get_comment_lines(self, content: str) -> List[str]:
+        # Wrap lines to the max line length and make them comments.
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_section_title(self, title: str) -> str:
+        # Print a title embedded in a horizontal rule.
         raise NotImplementedError
 
 #   File heading ───────────────────────────────────────────────────────────────
