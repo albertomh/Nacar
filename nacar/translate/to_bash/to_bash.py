@@ -41,7 +41,10 @@ class BlueprintToBash(ITranslator):
       └ [I] get_file_heading() -> str
 
     Utilities
-      └     get_bash_styles_lines() -> str
+      ├     get_bash_styles_lines() -> List[str]
+      ├     get_clear_screen_lines() -> List[str]
+      ├     get_repeat_method_lines() -> List[str]
+      └ [I] get_utilities() -> str
 
     Translate blueprint to Bash
       └ [I] translate_blueprint() -> str
@@ -144,9 +147,37 @@ class BlueprintToBash(ITranslator):
 
         return styles_lines
 
+    def get_clear_screen_lines(self) -> List[str]:
+        return [
+            "clear_screen() {",
+            "    printf " r'"\033c"',
+            "}"
+        ]
+
+    def get_repeat_method_lines(self) -> List[str]:
+        repeat_method = []
+        repeat_method += self.get_comment_lines([
+            "Use: `repeat '-' 76`",
+            "@param $1 The string to repeat.",
+            "@param $2 How many times to repeat it."
+        ])
+
+        repeat_method += [
+            r"repeat() {",
+            r'	for i in $(seq 1 $2); do printf "$1"; done',
+            r"}"
+        ]
+
+        return repeat_method
+
     def get_utilities(self) -> str:
         utilities_lines = [f"# {'─' * 8} Utilities {'─' * 59}", ""]
         utilities_lines += self.get_bash_styles_lines()
+        utilities_lines += [""]
+        utilities_lines += self.get_clear_screen_lines()
+        utilities_lines += [""]
+        utilities_lines += self.get_repeat_method_lines()
+        utilities_lines += ["\n"]
 
         return '\n'.join(utilities_lines)
 

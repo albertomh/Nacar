@@ -64,6 +64,11 @@ Within this package there is a `to_bash.py` module which is the translator's ent
 All the methods defined by `itranslator.py` must be implemented by this module. 
 The most important method is `translate_blueprint()` which returns the body of the bash program as a string.  
 
+NOTE: Translators are only responsible for building valid programs (as strings) 
+in a target language from objects in memory. Actually persisting this program 
+(eg. as a `.sh` file) is the responsibility of the main loop in `nacar.py`, which 
+will write the translator's output to a file by handing it to the `file_io` module.  
+
 
 ---
 **What's in a name?**  

@@ -29,6 +29,9 @@ class ITranslator(ABC):
       ├ get_nacar_info_lines() -> List[str]
       └ get_file_heading() -> str
 
+    Utilities
+      └ get_utilities() -> str
+
     Translate blueprint to <target_language>
       └ translate_blueprint() -> str
     """
@@ -53,7 +56,7 @@ class ITranslator(ABC):
     def get_comment_lines(self, content: str) -> List[str]:
         raise NotImplementedError
 
-#   File header ────────────────────────────────────────────────────────────────
+#   File heading ───────────────────────────────────────────────────────────────
 
     @abstractmethod
     def get_title_lines(self) -> List[str]:
@@ -69,6 +72,12 @@ class ITranslator(ABC):
 
     @abstractmethod
     def get_file_heading(self) -> str:
+        raise NotImplementedError
+
+#   Utilities ──────────────────────────────────────────────────────────────────
+
+    @abstractmethod
+    def get_utilities(self) -> str:
         raise NotImplementedError
 
 #   Translate blueprint ────────────────────────────────────────────────────────
