@@ -36,6 +36,9 @@ class ITranslator(ABC):
     Utilities
       └ get_utilities() -> str
 
+    Screen flow
+      └ get_screen_flow_code() -> str
+
     Translate blueprint to <target_language>
       └ translate_blueprint() -> str
     """
@@ -95,6 +98,12 @@ class ITranslator(ABC):
 
     @abstractmethod
     def get_utilities(self) -> str:
+        raise NotImplementedError
+
+#   Screen flow ────────────────────────────────────────────────────────────────
+
+    @abstractmethod
+    def get_screen_flow_code(self) -> str:
         raise NotImplementedError
 
 #   Translate blueprint ────────────────────────────────────────────────────────

@@ -51,6 +51,8 @@ class BlueprintToBash(ITranslator):
       ├     get_print_blank_screen_line_method_lines() -> List[str]
       └ [I] get_screen_building_utilities() -> str
 
+    Screen flow
+
     Translate blueprint to Bash
       └ [I] translate_blueprint() -> str
     """
@@ -141,7 +143,7 @@ class BlueprintToBash(ITranslator):
         config_lines += [""]
         config_lines += [f"SCREEN_WIDTH={self.blueprint['meta']['width']}"]
         config_lines += [f"TITLE=\"{self.blueprint['title']}\""]
-        config_lines += ["", "", ""]
+        config_lines += ["\n\n"]
 
         return '\n'.join(config_lines)
 
@@ -198,7 +200,7 @@ class BlueprintToBash(ITranslator):
         utilities_lines += self.get_clear_screen_lines()
         utilities_lines += [""]
         utilities_lines += self.get_repeat_method_lines()
-        utilities_lines += ["\n"]
+        utilities_lines += ["\n\n"]
 
         return '\n'.join(utilities_lines)
 
@@ -231,14 +233,33 @@ class BlueprintToBash(ITranslator):
         ]
 
     def get_screen_building_utilities(self) -> str:
-        utilities_lines = [self.get_section_title('Screen-building utilities')]
-        utilities_lines += [""]
-        utilities_lines += self.get_print_blank_screen_line_method_lines()
-        utilities_lines += [""]
-        utilities_lines += self.get_print_screen_top_method_lines()
-        utilities_lines += [""]
+        screen_building_lines = [self.get_section_title('Screen-building utilities')]  # noqa
+        screen_building_lines += [""]
+        screen_building_lines += self.get_print_blank_screen_line_method_lines()
+        screen_building_lines += [""]
+        screen_building_lines += self.get_print_screen_top_method_lines()
+        screen_building_lines += ["\n\n"]
 
-        return '\n'.join(utilities_lines)
+        return '\n'.join(screen_building_lines)
+
+#   Screen flow ────────────────────────────────────────────────────────────────
+
+    def get_screen_flow_state_variables_lines(self) -> List[str]:
+        return [
+            r'declare -a BREADCRUMBS=()',
+            r'# The name of the screen to show. One of the `_SCREEN` constants below.',  # noqa
+            r'ACTIVE_SCREEN=""',
+            r'# The command to invoke on exit.',
+            r'INVOKE_ON_EXIT=""'
+        ]
+
+    def get_screen_flow_code(self) -> str:
+        screen_flow_code = [self.get_section_title('Screen flow')]
+        screen_flow_code += [""]
+        screen_flow_code += self.get_screen_flow_state_variables_lines()
+        screen_flow_code += [""]
+
+        return '\n'.join(screen_flow_code)
 
 #   Translate blueprint to Bash ────────────────────────────────────────────────
 
@@ -253,5 +274,6 @@ class BlueprintToBash(ITranslator):
         bash_translation += self.get_app_config()
         bash_translation += self.get_utilities()
         bash_translation += self.get_screen_building_utilities()
+        bash_translation += self.get_screen_flow_code()
 
         return bash_translation
