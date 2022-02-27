@@ -216,14 +216,29 @@ class BlueprintToBash(ITranslator):
             r'}'
         ]
 
+    def get_print_screen_top_method_lines(self) -> List[str]:
+        return [
+            r'print_screen_top() {',
+            r'    local title_charlen=${#TITLE}',
+            r'    local topline_width=$(($SCREEN_WIDTH - (2 + $title_charlen + 2)))',  # noqa
+            r'    local topline_width_left=$(($topline_width / 2))',
+            r'    local topline_width_right=$(($topline_width_left + ($topline_width % 2)))',  # noqa
+            "",
+            r'''    printf "\U256D%s $TITLE %s\U256E\n" $(repeat '\U2500' $topline_width_left) $(repeat '\U2500' $topline_width_right)''',  # noqa
+            "",
+            r'    print_blank_screen_line',
+            r'}'
+        ]
+
     def get_screen_building_utilities(self) -> str:
         utilities_lines = [self.get_section_title('Screen-building utilities')]
         utilities_lines += [""]
         utilities_lines += self.get_print_blank_screen_line_method_lines()
         utilities_lines += [""]
+        utilities_lines += self.get_print_screen_top_method_lines()
+        utilities_lines += [""]
 
         return '\n'.join(utilities_lines)
-
 
 #   Translate blueprint to Bash ────────────────────────────────────────────────
 
