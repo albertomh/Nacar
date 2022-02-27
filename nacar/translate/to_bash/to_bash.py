@@ -18,6 +18,7 @@ import textwrap
 # Add root Nacar package to syspath to make below imports possible.
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))  # noqa
 from __version__ import __version__
+from schema import Schema
 from translate.itranslator import ITranslator
 from translate.target_language import TargetLanguage
 
@@ -26,7 +27,8 @@ class BlueprintToBash(ITranslator):
     """
     [I] indicates a method implements the interface's definition.
 
-    ╶ __init__()
+    screens: List[str]
+    __init__(blueprint: dict) -> None
 
     Bash translator utilities
       ├ [I] get_target_language() -> TargetLanguage
@@ -52,13 +54,19 @@ class BlueprintToBash(ITranslator):
       └ [I] get_screen_building_utilities() -> str
 
     Screen flow
+      ├     get_screen_flow_state_variables_lines() -> List[str]
+      ├     get_screen_flow_constants_lines() -> List[str]
+      └ [I] get_screen_flow_code() -> str
 
     Translate blueprint to Bash
       └ [I] translate_blueprint() -> str
     """
 
-    def __init__(self, blueprint: dict):
+    screens: List[str] = []
+
+    def __init__(self, blueprint: dict) -> None:
         self.blueprint = blueprint
+        self.set_screens()
 
 #   Bash translator utilities ──────────────────────────────────────────────────
 
@@ -68,6 +76,9 @@ class BlueprintToBash(ITranslator):
 
     def get_max_line_length(self):
         return 80
+
+    def set_screens(self):
+        self.screens = Schema.get_screen_names(self.blueprint)
 
     def get_comment_lines(self, content: Union[str, List[str]]) -> List[str]:
         if len(content) == 0:
@@ -253,10 +264,20 @@ class BlueprintToBash(ITranslator):
             r'INVOKE_ON_EXIT=""'
         ]
 
+    def get_screen_flow_constants_lines(self) -> List[str]:
+        constants_lines = []
+
+        for screen in self.screens:
+            constants_lines += [fr'readonly {screen.upper()}_SCREEN="{screen.lower()}"']  # noqa
+
+        return constants_lines
+
     def get_screen_flow_code(self) -> str:
         screen_flow_code = [self.get_section_title('Screen flow')]
         screen_flow_code += [""]
         screen_flow_code += self.get_screen_flow_state_variables_lines()
+        screen_flow_code += [""]
+        screen_flow_code += self.get_screen_flow_constants_lines()
         screen_flow_code += [""]
 
         return '\n'.join(screen_flow_code)

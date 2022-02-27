@@ -16,11 +16,13 @@ from .target_language import TargetLanguage
 
 class ITranslator(ABC):
     """
-    __init__(blueprint: dict)
+    screens: List[str]
+    __init__(blueprint: dict) -> None
 
     <target_language> translator utilities
       ├ get_target_language() -> TargetLanguage
       ├ get_max_line_length() -> int
+      ├ set_screens() -> None
       ├ get_comment_lines(content: str) -> List[str]
       └ get_section_title(title: str) -> str
 
@@ -43,6 +45,12 @@ class ITranslator(ABC):
       └ translate_blueprint() -> str
     """
 
+    @property
+    @abstractmethod
+    def screens(self) -> List[str]:
+        # A list of screen names as defined by the blueprint.
+        raise NotImplementedError
+
     @abstractmethod
     def __init__(self, blueprint: dict) -> None:
         pass
@@ -57,6 +65,11 @@ class ITranslator(ABC):
     @abstractmethod
     def get_max_line_length(self) -> int:
         # Maximum line length in the target language. eg. 79 for Python.
+        raise NotImplementedError
+
+    @abstractmethod
+    def set_screens(self) -> None:
+        # Set the Translator's `screens` field.
         raise NotImplementedError
 
     @abstractmethod
