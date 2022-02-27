@@ -47,6 +47,10 @@ class BlueprintToBash(ITranslator):
       ├     get_repeat_method_lines() -> List[str]
       └ [I] get_utilities() -> str
 
+    Screen-building utilities
+      ├     get_print_blank_screen_line_method_lines() -> List[str]
+      └ [I] get_screen_building_utilities() -> str
+
     Translate blueprint to Bash
       └ [I] translate_blueprint() -> str
     """
@@ -136,7 +140,7 @@ class BlueprintToBash(ITranslator):
         config_lines = [self.get_section_title('Nacar app config')]
         config_lines += [""]
         config_lines += [f"SCREEN_WIDTH={self.blueprint['meta']['width']}"]
-        config_lines += [f"TITLE={self.blueprint['title']}"]
+        config_lines += [f"TITLE=\"{self.blueprint['title']}\""]
         config_lines += ["", "", ""]
 
         return '\n'.join(config_lines)
@@ -198,6 +202,29 @@ class BlueprintToBash(ITranslator):
 
         return '\n'.join(utilities_lines)
 
+#   Screen-building utilities ──────────────────────────────────────────────────
+
+    def get_print_blank_screen_line_method_lines(self) -> List[str]:
+        return [
+            r'print_blank_screen_line() {',
+            r'    local spaces_count=$(($SCREEN_WIDTH - 4))',
+            r'    if [[ $# -eq 0 ]]; then',
+            r'        printf "\U2502 %${spaces_count}s \U2502\n"',
+            r'    else',
+            r'        for i in $(seq 1 $1); do printf "\U2502 %${spaces_count}s \U2502\n"; done',  # noqa
+            r'    fi',
+            r'}'
+        ]
+
+    def get_screen_building_utilities(self) -> str:
+        utilities_lines = [self.get_section_title('Screen-building utilities')]
+        utilities_lines += [""]
+        utilities_lines += self.get_print_blank_screen_line_method_lines()
+        utilities_lines += [""]
+
+        return '\n'.join(utilities_lines)
+
+
 #   Translate blueprint to Bash ────────────────────────────────────────────────
 
     def translate_blueprint(self) -> str:
@@ -210,5 +237,6 @@ class BlueprintToBash(ITranslator):
         bash_translation = self.get_file_heading()
         bash_translation += self.get_app_config()
         bash_translation += self.get_utilities()
+        bash_translation += self.get_screen_building_utilities()
 
         return bash_translation

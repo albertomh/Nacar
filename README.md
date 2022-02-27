@@ -38,7 +38,7 @@ Nacar is written in Python 3. It includes type annotations that are checked with
 Python dependencies are defined by two files in the `requirements` directory and 
 can be installed using `pip`.  
 `common.txt` defines the requirements necessary both for development and runtime, 
-namely PyYAML for the parsing of YAML files and Cerberus for schema validation.  
+namely PyYAML for parsing YAML files and Cerberus for schema validation.  
 `dev.txt` defines packages necessary only for development tasks, such as linting
 and checking types.
 
