@@ -272,12 +272,23 @@ class BlueprintToBash(ITranslator):
 
         return constants_lines
 
+    def get_navigate_to_method_lines(self) -> List[str]:
+        return [
+            r'navigate_to() {',
+            r'    INVOKE_ON_EXIT=""',
+            r'    ACTIVE_SCREEN="$1"',
+            r'    BREADCRUMBS+=("$1")',
+            r'}'
+        ]
+
     def get_screen_flow_code(self) -> str:
         screen_flow_code = [self.get_section_title('Screen flow')]
         screen_flow_code += [""]
         screen_flow_code += self.get_screen_flow_state_variables_lines()
         screen_flow_code += [""]
         screen_flow_code += self.get_screen_flow_constants_lines()
+        screen_flow_code += [""]
+        screen_flow_code += self.get_navigate_to_method_lines()
         screen_flow_code += [""]
 
         return '\n'.join(screen_flow_code)
