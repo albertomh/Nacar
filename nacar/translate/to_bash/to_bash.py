@@ -281,6 +281,22 @@ class BlueprintToBash(ITranslator):
             r'}'
         ]
 
+    def get_navigate_back_method_lines(self) -> List[str]:
+        return [
+            r'# Remove last element of BREADCRUMBS.',
+            r'navigate_back() {',
+            r'    if [[ ${#BREADCRUMBS[@]} -eq 1 ]]; then',
+            r'        :  # Prevent navigating back when on homescreen.',
+            r'    else',
+            "        unset 'BREADCRUMBS[-1]'  # Remove current screen.",
+            r'        local previous_screen=${BREADCRUMBS[-1]}',
+            r'        # Remove previous screen since it will be added back by `navigate_to`.',  # noqa
+            "        unset 'BREADCRUMBS[-1]'",
+            r'        navigate_to ${previous_screen}',
+            r'    fi',
+            r'}'
+        ]
+
     def get_screen_flow_code(self) -> str:
         screen_flow_code = [self.get_section_title('Screen flow')]
         screen_flow_code += [""]
@@ -289,6 +305,8 @@ class BlueprintToBash(ITranslator):
         screen_flow_code += self.get_screen_flow_constants_lines()
         screen_flow_code += [""]
         screen_flow_code += self.get_navigate_to_method_lines()
+        screen_flow_code += [""]
+        screen_flow_code += self.get_navigate_back_method_lines()
         screen_flow_code += [""]
 
         return '\n'.join(screen_flow_code)
