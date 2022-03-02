@@ -297,6 +297,17 @@ class BlueprintToBash(ITranslator):
             r'}'
         ]
 
+    def get_show_active_screen_method_lines(self) -> List[str]:
+        return [
+            r'show_active_screen() {',
+            r'    # There should always be an active screen, exit if not.',
+            r'    if [[ ! ${ACTIVE_SCREEN} ]]; then return 1; fi',
+            "",
+            r'    clear_screen',
+            r'    eval "show_${ACTIVE_SCREEN}_screen"',
+            r'}'
+        ]
+
     def get_screen_flow_code(self) -> str:
         screen_flow_code = [self.get_section_title('Screen flow')]
         screen_flow_code += [""]
@@ -308,6 +319,8 @@ class BlueprintToBash(ITranslator):
         screen_flow_code += [""]
         screen_flow_code += self.get_navigate_back_method_lines()
         screen_flow_code += [""]
+        screen_flow_code += self.get_show_active_screen_method_lines()
+        screen_flow_code += ["\n\n"]
 
         return '\n'.join(screen_flow_code)
 
