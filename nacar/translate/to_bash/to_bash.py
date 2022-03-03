@@ -324,6 +324,28 @@ class BlueprintToBash(ITranslator):
 
         return '\n'.join(screen_flow_code)
 
+#   Nacar app's main loop ──────────────────────────────────────────────────────
+
+    def get_main_loop_code(self) -> str:
+        main_loop_lines = [
+            self.get_section_title('Main loop'),
+            "",
+            r'''navigate_to $HOME_SCREEN''',
+            "",
+            r'''while :; do''',
+            r'''    show_active_screen || break;''',
+            r'''done''',
+            "",
+            r'''if [[ -n $INVOKE_ON_EXIT ]]; then''',
+            r'''    invoke_action_on_exit''',
+            r'''else''',
+            r'''    show_exit_screen''',
+            r'''fi''',
+            ""
+        ]
+
+        return '\n'.join(main_loop_lines)
+
 #   Translate blueprint to Bash ────────────────────────────────────────────────
 
     def translate_blueprint(self) -> str:
@@ -338,5 +360,6 @@ class BlueprintToBash(ITranslator):
         bash_translation += self.get_utilities()
         bash_translation += self.get_screen_building_utilities()
         bash_translation += self.get_screen_flow_code()
+        bash_translation += self.get_main_loop_code()
 
         return bash_translation
