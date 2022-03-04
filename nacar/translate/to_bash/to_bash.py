@@ -330,6 +330,10 @@ class BlueprintToBash(ITranslator):
         main_loop_lines = [
             self.get_section_title('Main loop'),
             "",
+            r'''# Capture Ctrl+C interrupts.''',
+            # [kb.mit.edu/confluence/pages/viewpage.action?pageId=3907156]
+            r'''trap '{ exit_screen; exit 1; }' INT''',
+            "",
             r'''navigate_to $HOME_SCREEN''',
             "",
             r'''while :; do''',
