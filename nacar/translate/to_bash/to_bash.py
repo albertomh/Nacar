@@ -334,10 +334,20 @@ class BlueprintToBash(ITranslator):
             '}'
         ]
 
+    def get_show_exit_screen_lines(self) -> List[str]:
+        return [
+            'show_exit_screen() {',
+            '    clear_screen',
+            '    printf "Exited \n\n"',
+            '}'
+        ]
+
     def get_screen_rendering_code(self) -> str:
         screen_rendering_code = [self.get_section_title('Screen rendering')]
         screen_rendering_code += [""]
         screen_rendering_code += self.get_invoke_action_on_exit_lines()
+        screen_rendering_code += [""]
+        screen_rendering_code += self.get_show_exit_screen_lines()
         screen_rendering_code += ["\n\n"]
 
         return '\n'.join(screen_rendering_code)
