@@ -38,8 +38,17 @@ class ITranslator(ABC):
     Utilities
       └ get_utilities() -> str
 
+    Screen-building utilities
+      └ get_screen_building_utilities() -> str
+
     Screen flow
       └ get_screen_flow_code() -> str
+
+    Screen rendering
+      └ get_screen_rendering_code() -> str
+
+    Main loop
+      └ get_main_loop_code() -> str
 
     Translate blueprint to <target_language>
       └ translate_blueprint() -> str
@@ -113,10 +122,28 @@ class ITranslator(ABC):
     def get_utilities(self) -> str:
         raise NotImplementedError
 
+#   Screen-building utilities ──────────────────────────────────────────────────
+
+    @abstractmethod
+    def get_screen_building_utilities(self) -> str:
+        raise NotImplementedError
+
 #   Screen flow ────────────────────────────────────────────────────────────────
 
     @abstractmethod
     def get_screen_flow_code(self) -> str:
+        raise NotImplementedError
+
+#   Screen rendering ───────────────────────────────────────────────────────────
+
+    @abstractmethod
+    def get_screen_rendering_code(self) -> str:
+        raise NotImplementedError
+
+#   Nacar app's main loop ──────────────────────────────────────────────────────
+
+    @abstractmethod
+    def get_main_loop_code(self) -> str:
         raise NotImplementedError
 
 #   Translate blueprint ────────────────────────────────────────────────────────

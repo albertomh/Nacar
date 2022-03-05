@@ -324,6 +324,24 @@ class BlueprintToBash(ITranslator):
 
         return '\n'.join(screen_flow_code)
 
+#   Screen rendering ───────────────────────────────────────────────────────────
+
+    def get_invoke_action_on_exit_lines(self) -> List[str]:
+        return [
+            'invoke_action_on_exit() {',
+            '    clear_screen',
+            '    eval $INVOKE_ON_EXIT',
+            '}'
+        ]
+
+    def get_screen_rendering_code(self) -> str:
+        screen_rendering_code = [self.get_section_title('Screen rendering')]
+        screen_rendering_code += [""]
+        screen_rendering_code += self.get_invoke_action_on_exit_lines()
+        screen_rendering_code += ["\n\n"]
+
+        return '\n'.join(screen_rendering_code)
+
 #   Nacar app's main loop ──────────────────────────────────────────────────────
 
     def get_main_loop_code(self) -> str:
@@ -364,6 +382,7 @@ class BlueprintToBash(ITranslator):
         bash_translation += self.get_utilities()
         bash_translation += self.get_screen_building_utilities()
         bash_translation += self.get_screen_flow_code()
+        bash_translation += self.get_screen_rendering_code()
         bash_translation += self.get_main_loop_code()
 
         return bash_translation
