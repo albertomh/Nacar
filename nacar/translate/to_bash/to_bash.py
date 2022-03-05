@@ -51,12 +51,25 @@ class BlueprintToBash(ITranslator):
 
     Screen-building utilities
       ├     get_print_blank_screen_line_method_lines() -> List[str]
+      ├     get_print_screen_top_method_lines() -> List[str]
       └ [I] get_screen_building_utilities() -> str
 
     Screen flow
       ├     get_screen_flow_state_variables_lines() -> List[str]
       ├     get_screen_flow_constants_lines() -> List[str]
+      ├     get_navigate_to_method_lines() -> List[str]
+      ├     get_navigate_back_method_lines() -> List[str]
+      ├     get_show_active_screen_method_lines() -> List[str]
+      ├     get_check_keystroke_method_lines() -> List[str]
       └ [I] get_screen_flow_code() -> str
+
+    Screen rendering
+      ├     get_invoke_action_on_exit_lines() -> List[str]
+      ├     get_show_exit_screen_lines() -> List[str]
+      └ [I] get_screen_rendering_code() -> str
+
+    Nacar app's main loop
+      └ [I] get_main_loop_code() -> str
 
     Translate blueprint to Bash
       └ [I] translate_blueprint() -> str
