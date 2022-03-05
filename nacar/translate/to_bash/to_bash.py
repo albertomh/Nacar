@@ -308,6 +308,20 @@ class BlueprintToBash(ITranslator):
             r'}'
         ]
 
+    def get_check_keystroke_method_lines(self) -> List[str]:
+        check_keystroke_lines = self.get_comment_lines([
+            "@param $1 The screen this function is invoked from.",
+            "           One of the _SCREEN constants declared above."
+        ])
+        check_keystroke_lines += [
+            r'check_keystroke() {',
+            r'    local prompt=" ${GRN}\$${END}"',
+            r'    read -rs -p " ${prompt} " -n1 key'
+        ]
+        check_keystroke_lines += ['}']
+
+        return check_keystroke_lines
+
     def get_screen_flow_code(self) -> str:
         screen_flow_code = [self.get_section_title('Screen flow')]
         screen_flow_code += [""]
@@ -320,6 +334,8 @@ class BlueprintToBash(ITranslator):
         screen_flow_code += self.get_navigate_back_method_lines()
         screen_flow_code += [""]
         screen_flow_code += self.get_show_active_screen_method_lines()
+        screen_flow_code += [""]
+        screen_flow_code += self.get_check_keystroke_method_lines()
         screen_flow_code += ["\n\n"]
 
         return '\n'.join(screen_flow_code)
