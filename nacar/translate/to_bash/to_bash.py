@@ -336,10 +336,10 @@ class BlueprintToBash(ITranslator):
 
     def get_show_exit_screen_lines(self) -> List[str]:
         return [
-            'show_exit_screen() {',
-            '    clear_screen',
-            '    printf "Exited \n\n"',
-            '}'
+            r'show_exit_screen() {',
+            r'    clear_screen',
+            r'    printf "Exited \n\n"',
+            r'}'
         ]
 
     def get_screen_rendering_code(self) -> str:
