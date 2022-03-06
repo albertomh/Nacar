@@ -93,7 +93,7 @@ class BlueprintToBash(ITranslator):
     def set_screens(self):
         self.screens = Schema.get_screen_names(self.blueprint)
 
-    def get_comment_lines(self, content: Union[str, List[str]]) -> List[str]:
+    def get_comment_lines(self, content: Union[str, List[str]], lpad=0) -> List[str]:  # noqa
         if len(content) == 0:
             return ["#"]
 
@@ -104,7 +104,7 @@ class BlueprintToBash(ITranslator):
         elif type(content) is list:
             comment_lines = content
 
-        return [f"# {c}" for c in comment_lines]
+        return [f"{' ' * lpad}# {c}" for c in comment_lines]
 
     def get_section_title(self, title: str, rule_char='─') -> str:
         len_right = self.get_max_line_length() - (2 + 5 + 1 + len(title) + 1)
@@ -329,8 +329,29 @@ class BlueprintToBash(ITranslator):
         check_keystroke_lines += [
             r'check_keystroke() {',
             r'    local prompt=" ${GRN}\$${END}"',
-            r'    read -rs -p " ${prompt} " -n1 key'
+            r'    read -rs -p " ${prompt} " -n1 key',
+            r''
         ]
+
+        # Dynamically build case statements on a per-screen basis
+        # to handle keystrokes indicating option selection.
+        check_keystroke_lines += self.get_comment_lines([
+            "Keypresses related to a screen."
+        ], 4)
+        screen_case_lines = []
+        for i, screen in enumerate(self.screens):
+            conditional_keyword = 'if' if i == 0 else 'elif'
+            screen_case_lines += [
+                fr'    {conditional_keyword} [[ "$1" == "${screen.upper()}_SCREEN" ]]; then'  # noqa
+            ]
+            if i == (len(self.screens) - 1):
+                screen_case_lines += [
+                    '    fi',
+                    ''
+                ]
+
+        check_keystroke_lines += screen_case_lines
+
         check_keystroke_lines += ['}']
 
         return check_keystroke_lines
