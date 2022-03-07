@@ -350,6 +350,11 @@ class BlueprintToBash(ITranslator):
             options = Schema.get_options_for_screen(self.blueprint, screen)  # noqa
             for option in options:
                 key: str = option['name'][0]
+                screen_case_lines += [fr'            "{key.upper()}" | "{key.lower()}")']  # noqa
+                if 'link' in option:
+                    screen_constant = f"{option['link'].upper()}_SCREEN"
+                    lpad = " " * 16
+                    screen_case_lines += [fr'{lpad}navigate_to ${screen_constant}; return 0;;']  # noqa
 
             screen_case_lines += [
                 r'        esac',
