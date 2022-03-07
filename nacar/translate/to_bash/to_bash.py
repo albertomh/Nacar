@@ -355,6 +355,9 @@ class BlueprintToBash(ITranslator):
                     screen_constant = f"{option['link'].upper()}_SCREEN"
                     lpad = " " * 16
                     screen_case_lines += [fr'{lpad}navigate_to ${screen_constant}; return 0;;']  # noqa
+                elif 'action' in option:
+                    lpad = " " * 16
+                    screen_case_lines += [fr'{lpad}INVOKE_ON_EXIT="{option["action"]}"; return 1;;']  # noqa
 
             screen_case_lines += [
                 r'        esac',
