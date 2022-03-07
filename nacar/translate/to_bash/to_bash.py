@@ -339,11 +339,23 @@ class BlueprintToBash(ITranslator):
             "Keypresses related to a screen."
         ], 4)
         screen_case_lines = []
+
         for i, screen in enumerate(self.screens):
             conditional_keyword = 'if' if i == 0 else 'elif'
             screen_case_lines += [
                 fr'    {conditional_keyword} [[ "$1" == "${screen.upper()}_SCREEN" ]]; then'  # noqa
             ]
+            # Loop over the actions and/or links defined for this screen.
+            screen_case_lines += [r'        case "$key" in']
+            options = Schema.get_options_for_screen(self.blueprint, screen)  # noqa
+            for option in options:
+                key: str = option['name'][0]
+
+            screen_case_lines += [
+                r'        esac',
+                ''
+            ]
+
             if i == (len(self.screens) - 1):
                 screen_case_lines += [
                     '    fi',
