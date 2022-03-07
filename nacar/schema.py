@@ -120,6 +120,12 @@ class Schema:
 
         return []
 
+    @staticmethod
+    def get_options_for_screen(blueprint: dict, screen_name: str) -> list:
+        for screen in blueprint['screens']:
+            if screen['name'] == screen_name:
+                return screen['options']
+
 
 class InvalidSchemaError(Exception):
     """
