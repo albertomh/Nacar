@@ -150,6 +150,10 @@ class BlueprintToBash(ITranslator):
         return self.get_comment_lines([info, gh_info])
 
     def get_file_heading(self) -> str:
+        """
+        Add the hashbang and a comment with the copyright, year, and authors.
+        :return:
+        """
         file_header_lines = []
         file_header_lines += self.get_hashbang_lines()
         file_header_lines += self.get_title_lines()
@@ -231,7 +235,11 @@ class BlueprintToBash(ITranslator):
 #   Screen-building utilities ──────────────────────────────────────────────────
 
     def get_print_blank_screen_line_method_lines(self) -> List[str]:
-        return [
+        blank_screen_method = []
+        blank_screen_method += self.get_comment_lines(
+            "@param $1 Optional number of blank lines to print. Defaults to one."  # noqa
+        )
+        blank_screen_method += [
             r'print_blank_screen_line() {',
             r'    local spaces_count=$(($SCREEN_WIDTH - 4))',
             r'    if [[ $# -eq 0 ]]; then',
@@ -241,6 +249,7 @@ class BlueprintToBash(ITranslator):
             r'    fi',
             r'}'
         ]
+        return blank_screen_method
 
     def get_print_screen_top_method_lines(self) -> List[str]:
         return [
@@ -252,6 +261,15 @@ class BlueprintToBash(ITranslator):
             "",
             r'''    printf "\U256D%s $TITLE %s\U256E\n" $(repeat '\U2500' $topline_width_left) $(repeat '\U2500' $topline_width_right)''',  # noqa
             "",
+            r'    if [[ ${ACTIVE_SCREEN} == ${HOME_SCREEN} ]]; then',
+            r'        local left_margin=$((SCREEN_WIDTH - 10))',
+            r'        printf "\U2502 %${left_margin}s [${RED}ESC${END}] \U2502\n"',  # noqa
+            r'    else',
+            r'        local inner_margin=$((SCREEN_WIDTH - 15))',
+            r'        printf "\U2502 [${BLU}\U25C0${END} ] %${inner_margin}s [${RED}ESC${END}] \U2502\n"',  # noqa
+            r'    fi',
+            r'    print_blank_screen_line',
+            r'    print_breadcrumbs',
             r'    print_blank_screen_line',
             r'}'
         ]
