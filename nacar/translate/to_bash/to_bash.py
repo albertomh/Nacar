@@ -324,7 +324,7 @@ class BlueprintToBash(ITranslator):
     def get_check_keystroke_method_lines(self) -> List[str]:
         check_keystroke_lines = self.get_comment_lines([
             "@param $1 The screen this function is invoked from.",
-            "           One of the _SCREEN constants declared above."
+            "          One of the _SCREEN constants declared above."
         ])
         check_keystroke_lines += [
             r'check_keystroke() {',
@@ -371,6 +371,29 @@ class BlueprintToBash(ITranslator):
                 ]
 
         check_keystroke_lines += screen_case_lines
+
+        check_keystroke_lines += self.get_comment_lines([
+            "Handle [ESC] key and left arrow.",
+            "[unix.stackexchange.com/a/179193]"
+        ], 4)
+        check_keystroke_lines += [
+            r'    case "$key" in',
+            r"        $'\x1b')  # Handle ESC sequence.",
+            r'            read -rsn1 -t 0.1 additional_bytes',
+            r'            if [[ "$additional_bytes" == "[" ]]; then',
+            r'                read -rsn1 -t 0.1 additional_bytes',
+            r'                case "$additional_bytes" in',
+            r'                    "D")  # Left arrow.',
+            r'                        navigate_back; return 0;;',
+            r'                    *)  # Other escape sequences.',
+            r'                        return 0;;',
+            r'                esac',
+            r'            fi;;',
+            r'        *)  # Other single byte (char) cases.',
+            r'            return 0;;',
+            r'    esac',
+            r''
+        ]
 
         check_keystroke_lines += ['}']
 
