@@ -50,7 +50,6 @@ and checking types.
 
 
 ### Validator
-
 Nacar's Validator verifies that the parsed blueprint will be correctly 
 interpreted by a Translator (see below).  
 It is built on top of the Cerberus validator, extending it to run checks not 
@@ -60,23 +59,12 @@ and that 'link' directives point to existing screens.
 
 
 ### Translators
-
 Translators are packages that take a Python object (previously parsed from a YAML blueprint) 
 and turn it into a Nacar application written in a target language such as Bash.  
-Translators live inside the `translate` package. Here you will also find an `itranslator.py` interface 
-that defines the methods a translator should implement.  
-The files for each translator should live inside a package of their own under `translate`.
-This package should follow the naming convention `to_<target-language>`.
+Translators live in the `translate` package. Here you will also find an `itranslator.py` interface 
+that defines the methods a translator should implement.
 
-For instance, the default Blueprint to Bash translator lives under `translate/to_bash/`.  
-Within this package there is a `to_bash.py` module which is the translator's entrypoint.  
-All the methods defined by `itranslator.py` must be implemented by this module. 
-The most important method is `translate_blueprint()` which returns the body of the bash program as a string.  
-
-NOTE: Translators are only responsible for building valid programs (as strings) 
-in a target language from objects in memory. Actually persisting this program 
-(eg. as a `.sh` file) is the responsibility of the main loop in `nacar.py`, which 
-will write the translator's output to a file by handing it to the `file_io` module.  
+[Click here](docs/Translators.md) to read more about Translators.
 
 
 ---
