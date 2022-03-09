@@ -413,7 +413,11 @@ class BlueprintToBash(ITranslator):
             r''
         ]
 
-        check_keystroke_lines += ['}']
+        check_keystroke_lines += self.get_comment_lines("Default fallthrough.", 4)  # noqa
+        check_keystroke_lines += [
+            '    return 1',
+            '}'
+        ]
 
         return check_keystroke_lines
 
