@@ -274,12 +274,30 @@ class BlueprintToBash(ITranslator):
             r'}'
         ]
 
+    def get_print_screen_bottom_method_lines(self) -> List[str]:
+        screen_bottom_lines = []
+        screen_bottom_lines += self.get_comment_lines(
+            "@param $1 Optional number of blank lines before the bottom. Defaults to one."  # noqa
+        )
+        screen_bottom_lines += [
+            r'print_screen_bottom() {',
+            r'    local preBottomBlankLines=1',
+            r'    if [[ $# -ne 0 ]]; then preBottomBlankLines=$1; fi',
+            "",
+            r'    print_blank_screen_line $preBottomBlankLines',
+            r'''    printf "\U2570%s\U256F\n" $(repeat '\U2500' 78)''',
+            r'}'
+        ]
+        return screen_bottom_lines
+
     def get_screen_building_utilities(self) -> str:
         screen_building_lines = [self.get_section_title('Screen-building utilities')]  # noqa
         screen_building_lines += [""]
         screen_building_lines += self.get_print_blank_screen_line_method_lines()
         screen_building_lines += [""]
         screen_building_lines += self.get_print_screen_top_method_lines()
+        screen_building_lines += [""]
+        screen_building_lines += self.get_print_screen_bottom_method_lines()
         screen_building_lines += ["\n\n"]
 
         return '\n'.join(screen_building_lines)

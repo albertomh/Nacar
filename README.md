@@ -59,11 +59,11 @@ and that 'link' directives point to existing screens.
 
 
 ### Translators
-Translators are packages that take a Python object (previously parsed from a YAML blueprint) 
-and turn it into a Nacar application written in a target language such as Bash.  
-Translators live in the `translate` package. Here you will also find an `itranslator.py` interface 
-that defines the methods a translator should implement.
-
+Translators are packages that take a Python object (previously parsed from a 
+YAML blueprint) and turn it into a Nacar application written in a target 
+language such as Bash. Translators live in the `translate` package along 
+with an `itranslator.py` interface that defines the methods a translator 
+should implement.  
 [Click here](docs/Translators.md) to read more about Translators.
 
 
