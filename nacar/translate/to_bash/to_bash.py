@@ -285,7 +285,8 @@ class BlueprintToBash(ITranslator):
             r'    if [[ $# -ne 0 ]]; then preBottomBlankLines=$1; fi',
             "",
             r'    print_blank_screen_line $preBottomBlankLines',
-            r'''    printf "\U2570%s\U256F\n" $(repeat '\U2500' 78)''',
+            r'    local bottom_width=$((SCREEN_WIDTH - 2))',
+            r'''    printf "\U2570%s\U256F\n" $(repeat '\U2500' $bottom_width)''',  # noqa
             r'}'
         ]
         return screen_bottom_lines
