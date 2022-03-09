@@ -15,5 +15,32 @@ Within this package there is a `to_bash.py` module which is the translator's ent
 All the methods defined by `itranslator.py` must be implemented by this module. 
 
 
+## The `itranslator` interface
+
+The most important method is `translate_blueprint()` which returns the body of 
+the bash program as a string.  
+`get_target_language()` must be defined and return a single option from the TargetLanguage enum.  
+
+A compliant Translator comprises the following sections:
+
+**<target_language> translator utilities**  
+
+**File heading**  
+
+**Nacar app config**  
+
+**Utilities**  
+
+**Screen-building utilities**  
+
+**Screen flow**  
+
+**Screen rendering**  
+
+**Main loop**  
+
+**Translate blueprint to <target_language>**  
+
+
 ---
 Copyright 2022 Alberto Morón Hernández  
