@@ -24,22 +24,38 @@ the bash program as a string.
 A compliant Translator comprises the following sections:
 
 **<target_language> translator utilities**  
+eg. Format comments according to the language spec, or return the maximum
+line length (eg. as defined by PEP8 for Python).
 
 **File heading**  
+Get title, copyright, and info lines for the target Nacar app.
 
 **Nacar app config**  
+Nacar app settings (eg. screen width, title) used internally by the app itself, 
+may be stored internally as constants in the output app code.
 
 **Utilities**  
+The code to create utilities for internal use by the target app. 
+These may include methods to clear the screen, repeat a string, or set shell styles.
 
 **Screen-building utilities**  
+Methods called internally by the Nacar app to display screens in a composable manner.
+There may be separate methods for drawing the top or bottom of screens, or display breadcrumbs.
 
 **Screen flow**  
+Generate code to create links between screens and navigate between them. Manage 
+state variables holding the active screen or the current breadcrumb path. 
+Dynamically define the input loop to listen for keystrokes.
 
 **Screen rendering**  
+Generate methods to show each screen as defined in the blueprint, invoke actions
+when requested by the keystroke listener, and show the exit screen.
 
 **Main loop**  
+Show the relevant screen while an active screen is defined, handle behaviour on exit, and capture interrupts.
 
 **Translate blueprint to <target_language>**  
+A single method that brings together all the pieces performed by the above sections.
 
 
 ---
