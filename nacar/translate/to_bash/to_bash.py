@@ -282,6 +282,25 @@ class BlueprintToBash(ITranslator):
             r'    if [[ ! ${ACTIVE_SCREEN} ]]; then',
             r'        return 1;',
             r'    fi',
+            "",
+            r'    local breadcrumbs_str',
+            r'    local breadcrumbs_count="${#BREADCRUMBS[@]}"',
+            r'    local breadcrumbs_str=""',
+            r'    local delimiter=""',
+            r'    local breadcrumbs_width=0',
+            r'    local crumb_counter=0',
+            r'    for crumb in "${BREADCRUMBS[@]}"; do',
+            r'        crumb_counter=$((crumb_counter + 1))',
+            r'        if [[ $crumb_counter -eq $breadcrumbs_count ]]; then',
+            r'            crumb="${UND}$crumb${END}"',
+            r'        else',
+            r'            crumb="${DIM}$crumb${END}"',
+            r'        fi',
+            r'        breadcrumbs_str="$breadcrumbs_str$delimiter$crumb"',
+            r'        crumb_len=${#crumb}',
+            r'        breadcrumbs_width=$((breadcrumbs_width + crumb_len))',
+            r'        delimiter=" \U203A "',
+            r'    done'
             r'}'
         ]
 
