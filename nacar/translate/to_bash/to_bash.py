@@ -300,7 +300,16 @@ class BlueprintToBash(ITranslator):
             r'        crumb_len=${#crumb}',
             r'        breadcrumbs_width=$((breadcrumbs_width + crumb_len))',
             r'        delimiter=" \U203A "',
-            r'    done'
+            r'    done',
+            "",
+            r'    local surrounding_width=4  # Pipes and spaces around breadcrumbs.',  # noqa
+            r'    local chevrons_width=$(((breadcrumbs_count - 1) * 3))',
+            r'    local style_buffer=$((breadcrumbs_count * 8))',
+            r'    local breadcrumbs_str_len=$((breadcrumbs_width + chevrons_width))',  # noqa
+            "",
+            r'    local right_pad=$((SCREEN_WIDTH - (breadcrumbs_str_len + surrounding_width)))',  # noqa
+            r'    right_pad=$((right_pad + style_buffer))',
+            r'    printf "\U2502 ${breadcrumbs_str}%${right_pad}s \U2502\n"',
             r'}'
         ]
 
