@@ -25,7 +25,7 @@ from translate.target_language import TargetLanguage
 
 class BlueprintToBash(ITranslator):
     """
-    [I] indicates a method implements the interface's definition.
+    [I] indicates that a method implements the interface's definition.
 
     screens: List[str]
     __init__(blueprint: dict) -> None
@@ -52,6 +52,8 @@ class BlueprintToBash(ITranslator):
     Screen-building utilities
       ├     get_print_blank_screen_line_method_lines() -> List[str]
       ├     get_print_screen_top_method_lines() -> List[str]
+      ├     get_print_breadcrumbs_method_lines() -> List[str]
+      ├     get_print_screen_bottom_method_lines() -> List[str]
       └ [I] get_screen_building_utilities() -> str
 
     Screen flow
@@ -274,6 +276,15 @@ class BlueprintToBash(ITranslator):
             r'}'
         ]
 
+    def get_print_breadcrumbs_method_lines(self) -> List[str]:
+        return [
+            r'print_breadcrumbs() {',
+            r'    if [[ ! ${ACTIVE_SCREEN} ]]; then',
+            r'        return 1;',
+            r'    fi',
+            r'}'
+        ]
+
     def get_print_screen_bottom_method_lines(self) -> List[str]:
         screen_bottom_lines = []
         screen_bottom_lines += self.get_comment_lines(
@@ -297,6 +308,8 @@ class BlueprintToBash(ITranslator):
         screen_building_lines += self.get_print_blank_screen_line_method_lines()
         screen_building_lines += [""]
         screen_building_lines += self.get_print_screen_top_method_lines()
+        screen_building_lines += [""]
+        screen_building_lines += self.get_print_breadcrumbs_method_lines()
         screen_building_lines += [""]
         screen_building_lines += self.get_print_screen_bottom_method_lines()
         screen_building_lines += ["\n\n"]
