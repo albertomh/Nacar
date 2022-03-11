@@ -501,6 +501,17 @@ class BlueprintToBash(ITranslator):
 
 #   Screen rendering ───────────────────────────────────────────────────────────
 
+    def get_show_screen_methods_lines(self) -> List[str]:
+        screen_methods_lines = []
+
+        for screen in self.screens:
+            screen_methods_lines += [
+                f'show_{screen.lower()}_screen() {{',
+                '    print_screen_top',
+            ]
+
+        return screen_methods_lines
+
     def get_invoke_action_on_exit_lines(self) -> List[str]:
         return [
             'invoke_action_on_exit() {',
@@ -519,6 +530,8 @@ class BlueprintToBash(ITranslator):
 
     def get_screen_rendering_code(self) -> str:
         screen_rendering_code = [self.get_section_title('Screen rendering')]
+        screen_rendering_code += [""]
+        screen_rendering_code += self.get_show_screen_methods_lines()
         screen_rendering_code += [""]
         screen_rendering_code += self.get_invoke_action_on_exit_lines()
         screen_rendering_code += [""]

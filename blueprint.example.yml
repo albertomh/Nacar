@@ -15,11 +15,11 @@ meta:
   width: 80
 
 screens:
-  - name: screen1
+  - name: home
     options:
       - name: option1
-        link: screen2
-  - name: screen2
+        link: screen1
+  - name: screen1
     options:
       - name: run
-        action: "command --to-run"
+        action: "echo 'run a command'"
