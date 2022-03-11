@@ -510,6 +510,17 @@ class BlueprintToBash(ITranslator):
                 '    print_screen_top',
             ]
 
+            options = Schema.get_options_for_screen(self.blueprint, screen)
+            for option in options:
+                name: str = option['name']
+                printf_snippet = r'    printf "\U2502 '
+                key_snippet = fr'[${{YEL}}{name[0].upper()}${{END}}]'
+                len_right = self.blueprint['meta']['width'] - (len(name) + 7)
+                right_snippet = fr'%{len_right}s \U2502\n"'
+                screen_methods_lines += [
+                    fr'{printf_snippet}{key_snippet}{name.lower()[1:]} {right_snippet}'  # noqa
+                ]
+
         return screen_methods_lines
 
     def get_invoke_action_on_exit_lines(self) -> List[str]:
