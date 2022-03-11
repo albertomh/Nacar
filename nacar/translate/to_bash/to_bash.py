@@ -521,6 +521,16 @@ class BlueprintToBash(ITranslator):
                     fr'{printf_snippet}{key_snippet}{name.lower()[1:]} {right_snippet}'  # noqa
                 ]
 
+            max_options = Schema.get_max_screen_options_in_blueprint(self.blueprint)  # noqa
+            bottom_padding = 1 + (max_options - len(options))
+
+            screen_methods_lines += [
+                f'    print_screen_bottom {bottom_padding}',
+                '',
+                f'    check_keystroke ${screen.upper()}_SCREEN',
+                '}'
+            ]
+
         return screen_methods_lines
 
     def get_invoke_action_on_exit_lines(self) -> List[str]:

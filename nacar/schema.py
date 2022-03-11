@@ -121,6 +121,19 @@ class Schema:
         return []
 
     @staticmethod
+    def get_max_screen_options_in_blueprint(blueprint: dict) -> int:
+        """
+        @param blueprint {dict}: the blueprint under consideration.
+        @return {int}: the number of options in the screen with most options.
+        """
+        number_of_options_per_screen: List[int] = []
+        for screen in Schema.get_screen_names(blueprint):
+            options_count = len(Schema.get_options_for_screen(blueprint, screen))  # noqa
+            number_of_options_per_screen += [options_count]
+
+        return max(number_of_options_per_screen)
+
+    @staticmethod
     def get_options_for_screen(blueprint: dict, screen_name: str) -> list:
         for screen in blueprint['screens']:
             if screen['name'] == screen_name:
