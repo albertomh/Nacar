@@ -5,7 +5,10 @@ Copyright 2022 Alberto Morón Hernández
 
 Blueprint translator interface
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-TODO: document
+Translators are packages that take a Python object and turn it into a Nacar
+application written in a target language such as Bash. The `itranslator.py`
+interface defines the methods a translator should implement.
+Find out more about translators by reading `/docs/Translators.md`.
 """
 
 from abc import ABC, abstractmethod

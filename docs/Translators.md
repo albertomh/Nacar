@@ -58,5 +58,13 @@ Show the relevant screen while an active screen is defined, handle behaviour on 
 A single method that brings together all the pieces performed by the above sections.
 
 
+## Separation of concerns
+
+Do note that Translators are only responsible for building valid programs (as strings) 
+in a target language from objects in memory. Actually persisting this program 
+(eg. as a `.sh` file) is the responsibility of the main loop in `nacar.py`, which 
+will write the translator's output to a file by handing it to the `file_io` module.  
+
+
 ---
 Copyright 2022 Alberto Morón Hernández  

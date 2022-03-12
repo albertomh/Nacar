@@ -6,6 +6,7 @@ Copyright 2022 Alberto Morón Hernández
 Blueprint to bash translator
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 Implements the ITranslator interface to turn blueprints into bash Nacar apps.
+Find out more about translators by reading `/docs/Translators.md`.
 """
 
 from typing import List, Union
