@@ -5,22 +5,17 @@ Copyright 2022 Alberto Morón Hernández
 
 Blueprint to bash translator
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-TODO: document
+Implements the ITranslator interface to turn blueprints into bash Nacar apps.
 """
 
-import os
-import sys
-# Add `translate` module to path so ITranslator import may be performed.
 from typing import List, Union
 from datetime import datetime
 import textwrap
 
-# Add root Nacar package to syspath to make below imports possible.
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))  # noqa
-from __version__ import __version__
-from schema import Schema
-from translate.itranslator import ITranslator
-from translate.target_language import TargetLanguage
+from nacar.__version__ import __version__
+from nacar.schema import Schema
+from nacar.translate.itranslator import ITranslator
+from nacar.translate.target_language import TargetLanguage
 
 
 class BlueprintToBash(ITranslator):
@@ -425,7 +420,7 @@ class BlueprintToBash(ITranslator):
             ]
             # Loop over the actions and/or links defined for this screen.
             screen_case_lines += [r'        case "$key" in']
-            options = Schema.get_options_for_screen(self.blueprint, screen)  # noqa
+            options = Schema.get_options_for_screen(self.blueprint, screen)
             for option in options:
                 key: str = option['name'][0]
                 screen_case_lines += [fr'            "{key.upper()}" | "{key.lower()}")']  # noqa

@@ -44,6 +44,11 @@ and checking types.
 
 
 ### Application entrypoint
+The `main.py` module is the script's entrypoint when it is run from the command
+line. It is responsible for running initial checks, and orchestrating the core 
+functionalities such as reading YAML blueprints, parsing them into an in-memory 
+representation, validating the blueprint, translating to the target language, 
+and persisting the result to a file. 
 
 
 ### Parsing blueprints

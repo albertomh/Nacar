@@ -12,7 +12,7 @@ from typing import List
 
 from cerberus import Validator
 
-from schema import Schema
+from nacar.schema import Schema
 
 
 class NacarValidator(Validator):

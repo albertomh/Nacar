@@ -11,7 +11,7 @@ TODO: document
 from abc import ABC, abstractmethod
 from typing import List
 
-from .target_language import TargetLanguage
+from nacar.translate.target_language import TargetLanguage
 
 
 class ITranslator(ABC):

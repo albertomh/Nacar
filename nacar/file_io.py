@@ -16,7 +16,7 @@ import stat
 from yaml import safe_load
 from yaml.scanner import ScannerError
 
-from translate.target_language import TargetLanguage
+from nacar.translate.target_language import TargetLanguage
 
 
 class FileIO:
