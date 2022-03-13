@@ -538,12 +538,18 @@ class BlueprintToBash(ITranslator):
         ]
 
     def get_show_exit_screen_lines(self) -> List[str]:
-        return [
+        show_exit_lines = [
             r'show_exit_screen() {',
-            r'    clear_screen',
-            r'    printf "Exited \n\n"',
+            r'    clear_screen'
+        ]
+        if self.blueprint['meta']['show_made_with_on_exit']:
+            show_exit_lines += [r'    printf "Exited \U1F41A Made with Nacar \n\n"']  # noqa
+        else:
+            show_exit_lines += [r'    printf "Exited \n\n"']
+        show_exit_lines += [
             r'}'
         ]
+        return show_exit_lines
 
     def get_screen_rendering_code(self) -> str:
         screen_rendering_code = [self.get_section_title('Screen rendering')]

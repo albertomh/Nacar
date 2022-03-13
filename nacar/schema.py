@@ -26,7 +26,8 @@ class Schema:
                     'type': 'list', 'minlength': 1, 'maxlength': 10,
                     'schema': {'type': 'string', 'required': False, 'minlength': 1, 'maxlength': 64}  # noqa
                 },
-                'width': {'type': 'integer', 'required': False, 'min': 40, 'max': 180}                # noqa
+                'width': {'type': 'integer', 'required': False, 'min': 40, 'max': 180},               # noqa
+                'show_made_with_on_exit': {'type': 'boolean', 'required': False}
             },
 
             'screen': {
@@ -87,13 +88,19 @@ class Schema:
 
     @staticmethod
     def set_missing_optional_attributes(blueprint: dict) -> dict:
-        def exists(obj: dict, chain: list):
+        def exists(obj: dict, chain: List[str]) -> bool:
             _key = chain.pop(0)
             if _key in obj:
-                return exists(obj[_key], chain) if chain else obj[_key]
+                if len(chain) > 0:
+                    return exists(obj[_key], chain)
+                else:
+                    return obj[_key] is not None
+            return False
 
         if not exists(blueprint, ['meta', 'width']):
             blueprint['meta']['width'] = 80
+        if not exists(blueprint, ['meta', 'show_made_with_on_exit']):
+            blueprint['meta']['show_made_with_on_exit'] = True
 
         return blueprint
 
