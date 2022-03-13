@@ -5,7 +5,9 @@ Copyright 2022 Alberto Morón Hernández
 
 Custom Cerberus Validator
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-TODO: document
+Extend the Validator with rules that cannot be expressed directly
+using a Cerberus schema. Avoid screen name collisions,
+infinite loops, and pointers to inexistent screens.
 """
 
 from typing import List

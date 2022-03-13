@@ -7,7 +7,10 @@ Copyright 2022 Alberto Morón Hernández
 
 Application entrypoint
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-TODO: document
+Nacar's entrypoint when it is run from the command line. Responsible for
+running initial checks, catching any exceptions, and orchestrating core
+functionalities - read YAML blueprints, parse to in-memory object,
+translate, and finally write to file.
 """
 
 from sys import argv
@@ -16,11 +19,11 @@ from typing import Type, List
 
 from yaml.scanner import ScannerError
 
-from file_io import FileIO
-from schema import Schema, InvalidSchemaError
-from validator import NacarValidator
-from translate.itranslator import ITranslator
-from translate.to_bash.to_bash import BlueprintToBash
+from nacar.file_io import FileIO
+from nacar.schema import Schema, InvalidSchemaError
+from nacar.validator import NacarValidator
+from nacar.translate.itranslator import ITranslator
+from nacar.translate.to_bash.to_bash import BlueprintToBash
 
 
 class Nacar:
@@ -62,7 +65,7 @@ class Nacar:
         blueprint: dict
 
         try:
-            blueprint = self.file_io.parse_yml_file(blueprint_path)
+            blueprint: dict = self.file_io.parse_yml_file(blueprint_path)
         except (FileNotFoundError, ScannerError) as e:
             print(str(e))
             return

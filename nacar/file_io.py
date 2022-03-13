@@ -5,7 +5,8 @@ Copyright 2022 Alberto Morón Hernández
 
 File IO utilities
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-TODO: document
+Methods to interact with the filesystem, permissions,
+and read & write the content of files.
 """
 
 import os
@@ -40,23 +41,6 @@ class FileIO:
             raise ScannerError(f"Invalid YAML in '{abspath(file_path)}'. Please provide a blueprint that is valid YAML.")  # noqa
 
     @staticmethod
-    def write_nacar_app_to_file(script_content: str,
-                                file_path: str,
-                                target_language: TargetLanguage) -> None:
-        if file_exists(file_path):
-            os.remove(file_path)
-
-        if target_language == TargetLanguage.BASH:
-            with open(file_path, 'w') as outfile:
-                outfile.write(script_content)
-                FileIO.make_file_executable(file_path)
-
-        else:
-            raise NotImplementedError(f"There is no writer configured for "
-                                      f"writing Nacar apps in "
-                                      f"{target_language.name.title()}.")
-
-    @staticmethod
     def make_file_executable(file_path: str) -> None:
         """
         Set the given file's permissions to 0775 - executable by everyone.
@@ -69,3 +53,20 @@ class FileIO:
         # Bitwise OR current mode with executable modes (user, group, others).
         new_mode = current_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
         os.chmod(file_path, new_mode)
+
+    @staticmethod
+    def write_nacar_app_to_file(script_content: str,
+                                target_file_path: str,
+                                target_language: TargetLanguage) -> None:
+        if file_exists(target_file_path):
+            os.remove(target_file_path)
+
+        if target_language == TargetLanguage.BASH:
+            with open(target_file_path, 'w') as outfile:
+                outfile.write(script_content)
+                FileIO.make_file_executable(target_file_path)
+
+        else:
+            raise NotImplementedError(f"There is no writer configured for "
+                                      f"writing Nacar apps in "
+                                      f"{target_language.name.title()}.")

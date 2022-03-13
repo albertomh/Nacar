@@ -5,7 +5,9 @@ Copyright 2022 Alberto Morón Hernández
 
 Schema utilities
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-TODO: document
+Create modular subschemas to add to the Cerberus schema registry,
+set missing optional attributes on a blueprint, get properties
+from the parsed blueprint.
 """
 
 from typing import List
@@ -54,7 +56,8 @@ class Schema:
 
         return modular_schemas
 
-    def add_blueprint_subschemas_to_registry(self):
+    @staticmethod
+    def add_blueprint_subschemas_to_registry():
         """
         Add modular blueprint schemas to Cerberus' default schema registry.
         """
@@ -152,7 +155,7 @@ class InvalidSchemaError(Exception):
     The blueprint provided by the user did not contain a valid Nacar schema.
     """
 
-    def __init__(self, validator_errors):
+    def __init__(self, validator_errors: dict):
         errors_by_key = {}
 
         def walk_errors(errors_tree: dict, dotpath=""):

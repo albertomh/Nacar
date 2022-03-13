@@ -5,7 +5,8 @@ Copyright 2022 Alberto Morón Hernández
 
 Target Languages enumeration
 ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-TODO: document
+Used to identify Translators and to ensure the file_io module
+knows how to write out to a file of the specified type.
 """
 
 from enum import Enum
