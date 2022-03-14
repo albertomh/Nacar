@@ -2,3 +2,5 @@ pycodestyle==2.8.0   # PEP8 style validator.
 
 mypy==0.931          # Type annotation checker.
 types-PyYAML==6.0.4  # Mypy types for the PyYAML package.
+
+pytest==7.0.1        # Unit testing.
