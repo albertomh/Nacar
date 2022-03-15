@@ -32,6 +32,14 @@ Nacar is written in Python 3. It includes type annotations that are checked with
 4. Install dependencies: `pip3 install -r requirements/common.txt -r requirements/dev.txt`
 
 
+### Testing
+
+A full suite of unit tests is held under `/tests`. To run it, install the dev 
+requirements as detailed above and run `pytest` from the project root.  
+[Click here](docs/Tests.md) to read more about how tests are structured, 
+available fixtures & test data, running tests from PyCharm, and more.
+
+
 ## Project Structure
 
 ### Dependencies
