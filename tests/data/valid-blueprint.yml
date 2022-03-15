@@ -1,0 +1,23 @@
+title: Global Title
+
+meta:
+  authors:
+    - Author
+  width: 80
+
+
+screens:
+  - name: home
+    options:
+      - name: Develop
+        link: develop
+      - name: Test
+        link: test
+  - name: develop
+    options:
+      - name: build
+        action: "echo 'build code'"
+  - name: test
+    options:
+      - name: run
+        action: "echo 'run tests'"
