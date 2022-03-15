@@ -43,3 +43,13 @@ def test_parsing_valid_yaml_in_existing_file(test_data_dir):
     with open(valid_output_json_path) as file:
         valid_blueprint: dict = json_loads(file.read())
         assert blueprint == valid_blueprint
+
+
+#   Test `make_file_executable()` ──────────────────────────────────────────────
+
+def test_cannot_make_inexistent_file_executable():
+    path_to_inexistent_file = '/tmp/nacar_test-inexistent-file'
+    error_msg = f"Could not find '{os.path.abspath(path_to_inexistent_file)}' when attempting to make this file executable."  # noqa
+
+    with pytest.raises(FileNotFoundError, match=error_msg):
+        FileIO.make_file_executable(path_to_inexistent_file)
