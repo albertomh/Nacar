@@ -5,15 +5,17 @@ Say goodbye to remembering long, arcane shell commands!
 
 **TODO: add side-by-side comparison video of a simple YAML blueprint and the resulting screen in bash.** 
 
-You write a 'blueprint' of screens as a single YAML file, specifying the options and commands that should appear on each screen.
-Additionally, you can link between screens for fluid keyboard-based navigation.  
-
-Nacar will take that blueprint and produce a self-contained bash script containing your interface.
+You write a blueprint as a single YAML file, specifying the options and commands 
+that should appear on each screen. Add links between screens for fluid 
+keyboard-based navigation. Nacar will take that blueprint and produce a 
+self-contained bash script containing your interface.
 
 Both locally and on the server Nacar shines at creating management and 
 health-check utilities that provide easy access to common tasks.     
 
-Tested on Python 3.7+ | Type annotations checked by mypy | PEP8 compliant  
+<p>
+    <img id="badge--python" src="https://img.shields.io/badge/python-3.7%2B-blue" alt="" />
+</p>
 
 
 ## Installing & running

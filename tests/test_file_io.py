@@ -105,3 +105,15 @@ def test_writing_app_in_unimplemented_target_language(nacar_app_as_string):
             os.path.join('/tmp', 'nacar_cobol-app'),
             UnimplementedTargetLanguage.COBOL
         )
+
+
+def test_writing_bash_app_to_file(nacar_app_as_string):
+    FileIO.write_nacar_app_to_file(
+        nacar_app_as_string,
+        os.path.join('/tmp', 'nacar_test-writing-bash-app-to-file'),
+        TargetLanguage.BASH
+    )
+
+    bash_result = subprocess.run(['/tmp/nacar_test-writing-bash-app-to-file'], stdout=subprocess.PIPE)  # noqa
+    bash_result_str = bash_result.stdout.decode('utf-8')
+    assert bash_result_str == ('-' * 42)
