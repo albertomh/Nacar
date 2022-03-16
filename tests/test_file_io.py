@@ -7,6 +7,7 @@
 # Test persing YAML files, changing file mode, and writing Nacar apps to a file.
 
 import os
+import stat
 from json import loads as json_loads
 
 import pytest
@@ -53,3 +54,23 @@ def test_cannot_make_inexistent_file_executable():
 
     with pytest.raises(FileNotFoundError, match=error_msg):
         FileIO.make_file_executable(path_to_inexistent_file)
+
+
+def file_is_executable_by_everyone(file_path) -> bool:
+    mode = os.stat(file_path).st_mode
+    return (bool(mode & stat.S_IXUSR)
+            and bool(mode & stat.S_IXGRP)
+            and bool(mode & stat.S_IXOTH))
+
+
+def test_make_file_executable():
+    tmp_file_path = os.path.join('/tmp', 'nacar_test-make-file-executable.sh')
+    if os.path.exists(tmp_file_path):
+        os.remove(tmp_file_path)
+
+    with open(tmp_file_path, 'w') as tmp_file:
+        tmp_file.write("echo 'Nacar executable test'")
+    assert file_is_executable_by_everyone(tmp_file_path) is False
+
+    FileIO.make_file_executable(tmp_file_path)
+    assert file_is_executable_by_everyone(tmp_file_path) is True
