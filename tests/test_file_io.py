@@ -117,3 +117,13 @@ def test_writing_bash_app_to_file(nacar_app_as_string):
     bash_result = subprocess.run(['/tmp/nacar_test-writing-bash-app-to-file'], stdout=subprocess.PIPE)  # noqa
     bash_result_str = bash_result.stdout.decode('utf-8')
     assert bash_result_str == ('-' * 42)
+
+
+def test_writing_bash_app_to_file_sets_executable_permissions(nacar_app_as_string):
+    tmp_file_path = os.path.join('/tmp', 'nacar_test-writing-bash-sets-executable-permissions')  # noqa
+    FileIO.write_nacar_app_to_file(
+        nacar_app_as_string,
+        tmp_file_path,
+        TargetLanguage.BASH
+    )
+    assert file_is_executable_by_everyone(tmp_file_path) is True
