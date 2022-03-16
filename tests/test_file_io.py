@@ -7,13 +7,16 @@
 # Test persing YAML files, changing file mode, and writing Nacar apps to a file.
 
 import os
+import subprocess
 import stat
+from enum import Enum
 from json import loads as json_loads
 
 import pytest
 from yaml.scanner import ScannerError
 
 from nacar.file_io import FileIO
+from nacar.translate.target_language import TargetLanguage
 
 
 #   Test `parse_yml_file()` ───────────────────────────────────────────────────
@@ -74,3 +77,31 @@ def test_make_file_executable():
 
     FileIO.make_file_executable(tmp_file_path)
     assert file_is_executable_by_everyone(tmp_file_path) is True
+
+
+#   Test `write_nacar_app_to_file()` ───────────────────────────────────────────
+
+@pytest.fixture
+def nacar_app_as_string():
+    app_lines = [
+        '#!/bin/bash',
+        'repeat() {',
+        '	  for i in $(seq 1 $2); do printf "$1"; done',
+        '}',
+        'repeat - 42'
+    ]
+    return '\n'.join(app_lines)
+
+
+def test_writing_app_in_unimplemented_target_language(nacar_app_as_string):
+    languages = [lang.name for lang in TargetLanguage] + ['COBOL']
+    UnimplementedTargetLanguage = Enum('TargetLanguage', languages)
+
+    error_msg = f"There is no writer configured for writing Nacar apps in " \
+                f"{UnimplementedTargetLanguage.COBOL.name.title()}."
+    with pytest.raises(NotImplementedError, match=error_msg):
+        FileIO.write_nacar_app_to_file(
+            nacar_app_as_string,
+            os.path.join('/tmp', 'nacar_cobol-app'),
+            UnimplementedTargetLanguage.COBOL
+        )
