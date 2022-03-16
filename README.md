@@ -34,10 +34,10 @@ Nacar is written in Python 3. It includes type annotations that are checked with
 
 ### Testing
 
-A full suite of unit tests is held under `/tests`. To run it, install the dev 
-requirements as detailed above and run `pytest` from the project root.  
-[Click here](docs/Tests.md) to read more about how tests are structured, 
-available fixtures & test data, running tests from PyCharm, and more.
+A suite of unit & integration tests is held under `/tests/`. To run it, install 
+the dev requirements as detailed above and run `pytest` from the project root.  
+[Click here](docs/Tests.md) to read about how tests are structured, 
+available fixtures & test data, and running tests from PyCharm.
 
 
 ## Project Structure
@@ -56,7 +56,8 @@ The `main.py` module is the script's entrypoint when it is run from the command
 line. It is responsible for running initial checks, and orchestrating the core 
 functionalities such as reading YAML blueprints, parsing them into an in-memory 
 representation, validating the blueprint, translating to the target language, 
-and persisting the result to a file. 
+and persisting the result to a file.  
+[Click here](docs/Entrypoint.md) to read more about Nacar's entrypoint.
 
 
 ### Parsing blueprints

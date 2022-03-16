@@ -1,8 +1,8 @@
 # Tests
 
-A full suite of unit tests is held under `/tests/`. To run it, install the dev 
-requirements with  `pip3 install -r requirements/dev.txt` and run `pytest` from 
-the project root.
+A suite of unit & integration tests is held under `/tests/`. To run it, install 
+the dev requirements with  `pip3 install -r requirements/dev.txt` and run  
+`pytest` from the project root.
 
 
 ## Running tests from PyCharm
