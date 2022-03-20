@@ -81,3 +81,20 @@ def test_set_missing_optional_attributes__meta_width(
     blueprint = Schema.set_missing_optional_attributes(blueprint)
     assert get_nested_key(blueprint, path_chain) == default_value
 
+
+def test_get_screen_names(blueprint: dict):
+    screen_names = Schema.get_screen_names(blueprint)
+    expected_screen_names = ['home', 'develop', 'test']
+    assert screen_names == expected_screen_names
+
+
+def test_get_screen_links(blueprint: dict):
+    screen_links = Schema.get_screen_links(blueprint)
+    expected_screen_links = [['home', 'develop'], ['home', 'test']]
+    assert screen_links == expected_screen_links
+
+
+def test_get_max_screen_options_in_blueprint(blueprint: dict):
+    expected_max_screen_options = 2
+    max_screen_options = Schema.get_max_screen_options_in_blueprint(blueprint)  # noqa
+    assert max_screen_options == expected_max_screen_options
