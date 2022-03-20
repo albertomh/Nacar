@@ -30,8 +30,15 @@ create_venv() {
     --quiet
 }
 
+cleanup() {
+    printf "Removing virtual environment at '/docs/.venv/'.\n"
+    rm -rf $VENV_DIR
+}
+
 
 main() {
     create_venv
+
+    cleanup
 }
 main
