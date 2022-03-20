@@ -30,6 +30,31 @@ create_venv() {
     --quiet
 }
 
+run_tests() {
+    printf "Running tests\n"
+    cd $ROOT_DIR
+    local test_result=$(pytest -s | tail -n1)
+
+    local total_count=0
+    local failed_re='([0-9]+) failed'
+    local failed_count=0
+    local passed_re='([0-9]+) passed'
+    passed_count=0
+    if [[ $test_result =~ $failed_re ]]; then
+        failed_count=${BASH_REMATCH[1]}
+        total_count=$(($total_count + $failed_count))
+    fi
+    if [[ $test_result =~ $passed_re ]]; then
+        passed_count=${BASH_REMATCH[1]}
+        total_count=$(($total_count + $passed_count))
+    fi
+
+    passed_percent=0
+    if [[ $total_count -gt 0 ]]; then
+        passed_percent=$(( ( $passed_count * 100 ) / $total_count ))
+    fi
+}
+
 cleanup() {
     printf "Removing virtual environment at '/docs/.venv/'.\n"
     rm -rf $VENV_DIR
@@ -38,6 +63,8 @@ cleanup() {
 
 main() {
     create_venv
+
+    run_tests
 
     cleanup
 }
