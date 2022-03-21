@@ -55,6 +55,19 @@ run_tests() {
     fi
 }
 
+# Badges: Python 3.7+ | tests %
+set_badges_in_readme() {
+    printf "Setting badges in README.\n"
+    local readme_path="$ROOT_DIR/README.md"
+
+    # Set tests badge.
+    local test_badge_re='\/badge\/tests.+?brightgreen'
+    local new_test_badge="\/badge\/tests-${passed_count}%20"
+    new_test_badge="${new_test_badge}%5B${passed_percent}%25%5D%20%E2%9C%94"
+    new_test_badge="${new_test_badge}-brightgreen"
+    sed -i -E "s/$test_badge_re/$new_test_badge/g" "$readme_path"
+}
+
 cleanup() {
     printf "Removing virtual environment at '/docs/.venv/'.\n"
     rm -rf $VENV_DIR
@@ -65,6 +78,8 @@ main() {
     create_venv
 
     run_tests
+
+    set_badges_in_readme
 
     cleanup
 }
