@@ -35,3 +35,18 @@ def nacar_validator() -> NacarValidator:
 @pytest.fixture
 def blueprint_schema() -> dict:
     return Schema.get_blueprint_schema()
+
+
+@pytest.mark.parametrize('document,schema,error_msg', [
+    (None, None, "The Nacar validator was not handed a schema or a document to validate."),  # noqa
+    (None, {}, "The Nacar validator was not handed a document to validate."),
+    ({}, None, "The Nacar validator was not handed a schema to validate against.")  # noqa
+])
+def test_validate_with_missing_params(
+    nacar_validator: NacarValidator,
+    document: dict,
+    schema: dict,
+    error_msg: str
+) -> None:
+    with pytest.raises(RuntimeError, match=error_msg):
+        nacar_validator.validate(document, schema)
