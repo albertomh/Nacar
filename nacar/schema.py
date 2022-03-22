@@ -10,7 +10,7 @@ set missing optional attributes on a blueprint, get properties
 from the parsed blueprint.
 """
 
-from typing import List
+from typing import List, Dict
 
 from cerberus import schema_registry
 
@@ -154,29 +154,40 @@ class InvalidSchemaError(Exception):
     """
     The blueprint provided by the user did not contain a valid Nacar schema.
     """
+    _error_lines: List[str]
 
     def __init__(self, validator_errors: dict):
-        errors_by_key = {}
+        self._error_lines = []
+        _errors_by_key: Dict[str, List[str]] = {}
 
-        def walk_errors(errors_tree: dict, dotpath=""):
-            # Traverse the validator errors object and stop at each error.
-            for k, v in sorted(errors_tree.items(), key=lambda d: d[0]):
-                dotpath = k if dotpath == "" else f"{dotpath}.{k}"
-                if isinstance(v, dict):
-                    walk_errors(v, dotpath)
-                elif isinstance(v, list) and len(v) and isinstance(v[0], dict):
-                    walk_errors(v[0], dotpath)
-                else:
-                    errors_by_key[dotpath] = v
+        # validator_errors has the following shape:
+        # { 'schema_key': [{
+        #     'subkey1': [ "err1-1", ... ],
+        #     'subkey2': [ "err2-1", ... ] }]
+        # }
+        def walk_errors(validator_errors: dict, breadcrumbs: List[str]=None):
+            if breadcrumbs is None:
+                breadcrumbs = []
+            keys = validator_errors.keys()
+            level_keys = list(keys)
+            for key in keys:
+                errors = validator_errors[key]
+                breadcrumbs.append(key)
+                level_keys = [k for k in level_keys if k != key]
 
-        if len(validator_errors) > 0:
-            walk_errors(validator_errors)
+                if isinstance(errors[0], dict) and len(errors[0].keys()) > 0:
+                    walk_errors(errors[0], breadcrumbs)
 
-            print("\nPlease amend these schema errors in your blueprint:")
-            pad_length = max(map(len, errors_by_key))
-            key: str
-            errors: list
-            for key, errors in errors_by_key.items():
-                key = f"{key}:".ljust(pad_length + 1)
-                for e in [e for e in errors if isinstance(e, str)]:
-                    print(f"{key} {e}".replace('.,', ','))
+                # Important! Manipulating `breadcrumbs` below with `pop()` has
+                # been carefully chosen so that the same object is always kept
+                # in memory. Assigning `= []` to empty or slicing [:-1] create
+                # new lists, leading to a subtle, tricky bug.
+                elif isinstance(errors[0], str):
+                    errors = [err.capitalize() + ('.' if err[-1] != '.' else '')
+                              for err in errors]
+                    _errors_by_key['.'.join(breadcrumbs)] = errors
+                    if len(level_keys) > 0:
+                        breadcrumbs.pop()
+                    else:
+                        while len(breadcrumbs):
+                            breadcrumbs.pop()
