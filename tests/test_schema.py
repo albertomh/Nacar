@@ -10,7 +10,7 @@
 import pytest
 from cerberus import schema_registry
 
-from nacar.schema import Schema
+from nacar.schema import Schema, InvalidSchemaError
 from tests.utils import get_nested_key
 
 
@@ -98,3 +98,17 @@ def test_get_max_screen_options_in_blueprint(blueprint: dict):
     expected_max_screen_options = 2
     max_screen_options = Schema.get_max_screen_options_in_blueprint(blueprint)  # noqa
     assert max_screen_options == expected_max_screen_options
+
+
+@pytest.mark.parametrize('screen_name,expected_options', [
+    ('home', [{'name': 'Develop', 'link': 'develop'}, {'name': 'Test', 'link': 'test'}]),    # noqa
+    ('develop', [{'name': 'build', 'action': "echo 'build code'"}]),
+    ('test', [{'name': 'run', 'action': "echo 'run tests'"}]),
+])
+def test_get_options_for_screen(
+    blueprint: dict,
+    screen_name: str,
+    expected_options: list
+) -> None:
+    options_for_screen = Schema.get_options_for_screen(blueprint, screen_name)  # noqa
+    assert options_for_screen == expected_options
