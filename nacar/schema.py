@@ -66,7 +66,7 @@ class Schema:
 
     @staticmethod
     def get_blueprint_schema() -> dict:
-        schema = {
+        return {
             'title': {'type': 'string', 'required': True, 'minlength': 1, 'maxlength': 178},  # noqa
 
             'meta': {
@@ -86,8 +86,6 @@ class Schema:
                 }
             }
         }
-
-        return schema
 
     @staticmethod
     def set_missing_optional_attributes(blueprint: dict) -> dict:

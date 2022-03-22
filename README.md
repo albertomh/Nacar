@@ -47,8 +47,8 @@ Before committing your changes, perform the following steps:
 ### Testing
 A suite of unit & integration tests is held under `/tests/`. To run it, install 
 the dev requirements as detailed above and run `pytest` from the project root.  
-[Click here](docs/Tests.md) to read about how tests are structured, 
-available fixtures & test data, and running tests from PyCharm.
+[Read more](docs/Tests.md) about how tests are structured, available fixtures
+ & test data, and running tests from PyCharm.
 
 
 ## Project Structure
@@ -62,25 +62,26 @@ namely PyYAML for parsing YAML files and Cerberus for schema validation.
 and checking types.
 
 
-### Application entrypoint
+### Application Entrypoint
 The `main.py` module is the script's entrypoint when it is run from the command
 line. It is responsible for running initial checks, and orchestrating the core 
 functionalities such as reading YAML blueprints, parsing them into an in-memory 
 representation, validating the blueprint, translating to the target language, 
 and persisting the result to a file.  
-[Click here](docs/Entrypoint.md) to read more about Nacar's entrypoint.
+[Read more](docs/Entrypoint.md) about Nacar's entrypoint.
 
 
 ### Parsing blueprints
 
 
-### Validator
-Nacar's Validator verifies that the parsed blueprint will be correctly 
+### Blueprint Schema & Validator
+Nacar's `validator` module verifies that the parsed blueprint will be correctly 
 interpreted by a Translator (see below).  
-It is built on top of the Cerberus validator, extending it to run checks not 
-supported by Cerberus. These include checking that screen names are unique 
-across a blueprint, verifying that screens do not link to themselves, 
-and that 'link' directives point to existing screens.
+It is built on top of the Cerberus validator, checking the uniqueness of screen 
+names, avoiding screens linking to themselves, and that 'link' directives point 
+to existing screens.
+
+[Read more](docs/Schema_Validator.md) about the blueprint Schema & Validator.
 
 
 ### Translators
@@ -89,7 +90,7 @@ YAML blueprint) and turn it into a Nacar application written in a target
 language such as Bash. Translators live in the `translate` package along 
 with an `itranslator.py` interface that defines the methods a translator 
 should implement.  
-[Click here](docs/Translators.md) to read more about Translators.
+[Read more](docs/Translators.md) about Translators.
 
 
 ---
