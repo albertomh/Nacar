@@ -191,3 +191,19 @@ class InvalidSchemaError(Exception):
                     else:
                         while len(breadcrumbs):
                             breadcrumbs.pop()
+
+        if len(validator_errors) > 0:
+            walk_errors(validator_errors)
+
+            self._error_lines.append("Please amend these schema errors in your blueprint:")  # noqa
+            pad_length = max(map(len, _errors_by_key))
+            key: str
+            errors: list
+            for key, errors in _errors_by_key.items():
+                key = f"{key}:".ljust(pad_length + 1)
+                for e in [e for e in errors if isinstance(e, str)]:
+                    self._error_lines.append(f"{key} {e}".replace('.,', ','))
+
+    @property
+    def message(self) -> str:
+        return '\n'.join(self._error_lines)
