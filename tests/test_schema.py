@@ -112,3 +112,17 @@ def test_get_options_for_screen(
 ) -> None:
     options_for_screen = Schema.get_options_for_screen(blueprint, screen_name)  # noqa
     assert options_for_screen == expected_options
+
+
+@pytest.mark.parametrize('validator_errors,err_message', [
+    ({'meta': [{'width': ['min value is 40']}]},
+     "Please amend these schema errors in your blueprint:\nmeta.width: Min value is 40."),  # noqa
+    ({'meta': [{'show_made_with_on_exit': ['must be of boolean type']}], 'screens': ['Screens must not link to themselves.']},
+     "Please amend these schema errors in your blueprint:\nmeta.show_made_with_on_exit: Must be of boolean type.\nscreens:                     Screens must not link to themselves."),  # noqa
+])
+def test_invalid_schema_error(validator_errors: dict, err_message: str):
+    with pytest.raises(InvalidSchemaError) as excinfo:
+        raise InvalidSchemaError(validator_errors)
+
+    err: InvalidSchemaError = excinfo.value
+    assert err.message == err_message
