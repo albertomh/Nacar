@@ -67,7 +67,8 @@ The `main.py` module is the script's entrypoint when it is run from the command
 line. It is responsible for running initial checks, and orchestrating the core 
 functionalities such as reading YAML blueprints, parsing them into an in-memory 
 representation, validating the blueprint, translating to the target language, 
-and persisting the result to a file.  
+and persisting the result to a file.
+
 [Read more](docs/Entrypoint.md) about Nacar's entrypoint.
 
 
@@ -89,7 +90,8 @@ Translators are packages that take a Python object (previously parsed from a
 YAML blueprint) and turn it into a Nacar application written in a target 
 language such as Bash. Translators live in the `translate` package along 
 with an `itranslator.py` interface that defines the methods a translator 
-should implement.  
+should implement.
+
 [Read more](docs/Translators.md) about Translators.
 
 

@@ -8,9 +8,19 @@ questions about a given blueprint such as 'which screens does this contain?' or
 
 
 ## Subschemas
+Subschemas are modular and composeable snippets built using nested dictionaries.  
+They are defined in the `get_blueprint_subschemas` method. The aim behind using
+subschemas rather than a massive main schema object is to make smaller sections
+of the schema easier to debug and update.  
+Subschemas are added to Cerberus' schema registry upon initialisation of a Nacar
+Schema object.  
 
 
 ## The blueprint schema
+The schema provided by `get_blueprint_schema` is the main object that defines 
+how the modular subschemas fit in together to create a coherent schema against 
+which all parsed blueprints are evaluated.  
+It has three top-level properties named `title`, `meta`, and `screens`.  
 
 
 ## Schema utilities
