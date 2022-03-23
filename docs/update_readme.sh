@@ -20,10 +20,9 @@ create_venv() {
         python3 -m venv $VENV_DIR
     fi
 
-    printf "Activating virtual environment.\n"
     source $VENV_DIR/bin/activate
 
-    printf "Installing requirements with pip.\n"
+    printf "    Installing requirements with pip.\n"
     local requirements_dir="$ROOT_DIR/requirements"
     pip3 install \
     -r "$requirements_dir/common.txt" -r "$requirements_dir/dev.txt" \
@@ -66,6 +65,7 @@ set_badges_in_readme() {
     new_test_badge="${new_test_badge}%5B${passed_percent}%25%5D%20%E2%9C%94"
     new_test_badge="${new_test_badge}-brightgreen"
     sed -i -E "s/$test_badge_re/$new_test_badge/g" "$readme_path"
+    printf "    Set badge ( tests | ${passed_count} [${passed_percent}%%] \U2713 )\n"
 }
 
 cleanup() {
@@ -75,6 +75,8 @@ cleanup() {
 
 
 main() {
+    printf "\n=============== BEGIN UPDATE_README ===============\n"
+
     create_venv
 
     run_tests
@@ -82,5 +84,7 @@ main() {
     set_badges_in_readme
 
     cleanup
+
+    printf "======================= END =======================\n\n"
 }
 main

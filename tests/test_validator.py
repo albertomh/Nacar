@@ -7,6 +7,9 @@
 # Test the Validator extends Cerberus correctly, and that custom schemas
 # are correctly validated when an invalid document is supplied.
 
+from os import path as os_path
+from json import loads as json_loads
+
 import pytest
 
 from nacar.schema import Schema
@@ -50,3 +53,23 @@ def test_validate_with_missing_params(
 ) -> None:
     with pytest.raises(RuntimeError, match=error_msg):
         nacar_validator.validate(document, schema)
+
+
+# `invalid_blueprint_filename` points to a JSON file in `/tests/data/`.
+@pytest.mark.parametrize('invalid_blueprint_filename', [
+    'invalid-blueprint--missing-title.json',
+    'invalid-blueprint--empty-screens.json'
+    # TODO: add more per-attribute testcases eg. wrong data type for attributes in YAML blueprint.
+])
+def test_cerberus_validation(
+    blueprint_schema: dict,
+    nacar_validator: NacarValidator,
+    test_data_dir: str,
+    invalid_blueprint_filename: str
+):
+    """
+    Test the call in NacarValidator::validate to Cerberus' validate() method.
+    """
+    with open(os_path.join(test_data_dir, invalid_blueprint_filename)) as file:
+        invalid_blueprint: dict = json_loads(file.read())
+        assert nacar_validator.validate(invalid_blueprint, blueprint_schema) == False  # noqa

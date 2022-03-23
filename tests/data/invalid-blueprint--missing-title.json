@@ -1,0 +1,15 @@
+{
+	"screens": [{
+		"name": "home",
+		"options": [{
+			"name": "Develop",
+			"link": "develop"
+		}]
+	}, {
+		"name": "develop",
+		"options": [{
+			"name": "build",
+			"action": "echo 'build code'"
+		}]
+	}]
+}
