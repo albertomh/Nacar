@@ -9,10 +9,12 @@
 
 
 from os import path as os_path
+from typing import Union, List
 from json import loads as json_loads
 
 import pytest
 
+from nacar.translate.target_language import TargetLanguage
 from nacar.translate.to_bash.to_bash import BlueprintToBash
 
 
@@ -34,3 +36,34 @@ def to_bash_translator(test_data_dir) -> BlueprintToBash:
 
 def test_set_screens_was_called_upon_init(to_bash_translator):
     assert to_bash_translator.screens == ['home', 'develop', 'test']
+
+
+#   Test Translator utilities ──────────────────────────────────────────────────
+
+def test_get_target_language(to_bash_translator):
+    assert to_bash_translator.get_target_language() == TargetLanguage.BASH
+
+
+@pytest.mark.parametrize('content,lpad,expected', [
+    ("", None,
+     ["#"]),
+    ("Test get_comment_lines() without specifying an lpad value.", None,
+     ["# Test get_comment_lines() without specifying an lpad value."]),
+    ("Test with lpad.", 8,
+     ["        # Test with lpad."]),
+    (["Test a multiline comment", "with three different lines", "without specifying lpad."], None,  # noqa
+     ["# Test a multiline comment", "# with three different lines", "# without specifying lpad."]),  # noqa
+])
+def test_get_comment_lines(
+        to_bash_translator: BlueprintToBash,
+        content: Union[str, List[str]],
+        lpad: Union[int, None],
+        expected: List[str]
+):
+    result: List[str]
+    if lpad is None:
+        result = to_bash_translator.get_comment_lines(content)
+    else:
+        result = to_bash_translator.get_comment_lines(content, lpad)
+
+    assert result == expected
