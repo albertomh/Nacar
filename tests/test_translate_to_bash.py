@@ -28,3 +28,9 @@ def to_bash_translator(test_data_dir) -> BlueprintToBash:
         blueprint['meta']['show_made_with_on_exit'] = True
 
     return BlueprintToBash(blueprint)
+
+
+#   Test Translator initialisation ─────────────────────────────────────────────
+
+def test_set_screens_was_called_upon_init(to_bash_translator):
+    assert to_bash_translator.screens == ['home', 'develop', 'test']
