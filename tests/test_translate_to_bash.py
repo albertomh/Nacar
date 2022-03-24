@@ -53,6 +53,14 @@ def test_get_target_language(to_bash_translator):
      ["        # Test with lpad."]),
     (["Test a multiline comment", "with three different lines", "without specifying lpad."], None,  # noqa
      ["# Test a multiline comment", "# with three different lines", "# without specifying lpad."]),  # noqa
+    (["Test multiple comment", "lines with lpad."], 4,
+     ["    # Test multiple comment", "    # lines with lpad."]),
+    ("It is also necessary to test a really long single comment that exceeds the line limit of 80 characters.", None,  # noqa
+     ["# It is also necessary to test a really long single comment that exceeds the", "# line limit of 80 characters."]),  # noqa,
+    (["We must not neglect to test a comment spanning multiple lines with a really long line",  "as one of its elements."], None,  # noqa
+     ["# We must not neglect to test a comment spanning multiple lines with a really long line", "# as one of its elements."]),  # noqa
+    ("Here we test a comment that exceeds the eighty-character limit and which we would like indented.", 4,  # noqa
+     ["    # Here we test a comment that exceeds the eighty-character limit and which we", "    # would like indented."]),  # noqa
 ])
 def test_get_comment_lines(
         to_bash_translator: BlueprintToBash,
@@ -65,5 +73,23 @@ def test_get_comment_lines(
         result = to_bash_translator.get_comment_lines(content)
     else:
         result = to_bash_translator.get_comment_lines(content, lpad)
+
+    assert result == expected
+
+
+@pytest.mark.parametrize('title,rule_char,expected', [
+    ("This is a section title", None, "# ───── This is a section title ────────────────────────────────────────────────"),  # noqa
+    ("This is another section title", '*', "# ***** This is another section title ******************************************"),  # noqa
+    ("This is a section title that really gets out of hand, really it is longer than it has any right to be", None, "# ───── This is a section title that really gets out of hand, really it is longer than it has any right to be"),  # noqa
+])
+def test_get_section_title(
+        to_bash_translator: BlueprintToBash,
+        title: str, rule_char: Union[str, None], expected: str
+):
+    result: str
+    if rule_char is None:
+        result = to_bash_translator.get_section_title(title)
+    else:
+        result = to_bash_translator.get_section_title(title, rule_char)
 
     assert result == expected
