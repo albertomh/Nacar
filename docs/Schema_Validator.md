@@ -25,8 +25,23 @@ It has three top-level properties named `title`, `meta`, and `screens`.
 
 ## Schema utilities
 
+*Setting missing optional attributes*  
+set_missing_optional_attributes()  
+
+*Getting blueprint properties*
+get_screen_names()  
+get_screen_links()  
+get_max_screen_options_in_blueprint()  
+get_options_for_screen()  
+
 
 ## The InvalidSchemaError
+The `InvalidSchemaError` is a custom exception raised by `main::run()` when the
+Validator's `validate()` method returns False.  
+It accepts a tree of validator errors as its only parameter. Its constructor
+defines a recursive `walk_errors()` function that traverses the errors tree and
+generates a dictionary of `breadcrumb: error description` pairs.  
+When this exception is raised these validator errors are pretty-printed to the console.
 
 
 ---

@@ -178,8 +178,8 @@ class InvalidSchemaError(Exception):
 
                 # Important! Manipulating `breadcrumbs` below with `pop()` has
                 # been carefully chosen so that the same object is always kept
-                # in memory. Assigning `= []` to empty or slicing [:-1] create
-                # new lists, leading to a subtle, tricky bug.
+                # in memory. Assigning `= []` in order to empty or slicing [:-1]
+                # create new lists, leading to a subtle, tricky bug.
                 elif isinstance(errors[0], str):
                     errors = [err.capitalize() + ('.' if err[-1] != '.' else '')
                               for err in errors]
