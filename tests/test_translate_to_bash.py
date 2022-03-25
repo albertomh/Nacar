@@ -135,3 +135,13 @@ def test_get_file_heading(to_bash_translator: BlueprintToBash):
         result = to_bash_translator.get_file_heading()
 
         assert result == expected
+
+
+#   Test Nacar app config ──────────────────────────────────────────────────────
+
+def test_get_app_config(to_bash_translator: BlueprintToBash):
+    expected = (f"# ───── Nacar app config {'─' * 55}\n"
+                "\n"
+                "SCREEN_WIDTH=80\n"
+                "TITLE=\"Global Title\"\n\n\n")
+    assert to_bash_translator.get_app_config() == expected
