@@ -145,3 +145,20 @@ def test_get_app_config(to_bash_translator: BlueprintToBash):
                 "SCREEN_WIDTH=80\n"
                 "TITLE=\"Global Title\"\n\n\n")
     assert to_bash_translator.get_app_config() == expected
+
+
+#   Test utilities; Test screen-building utilities ─────────────────────────────
+
+# Tests for these utilities intentionally not implemented since there is very
+# little dynamic behaviour as most simply return static strings.
+
+
+#   Test screen flow utilities ─────────────────────────────────────────────────
+
+def test_get_screen_flow_constants_lines(to_bash_translator: BlueprintToBash):
+    expected = [
+        'readonly HOME_SCREEN="home"',
+        'readonly DEVELOP_SCREEN="develop"',
+        'readonly TEST_SCREEN="test"'
+    ]
+    assert to_bash_translator.get_screen_flow_constants_lines() == expected
