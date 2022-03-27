@@ -243,3 +243,19 @@ def test_get_show_screen_methods_lines(to_bash_translator: BlueprintToBash):
         '    check_keystroke $TEST_SCREEN', '}'
     ]
     assert to_bash_translator.get_show_screen_methods_lines() == expected
+
+
+def test_get_show_exit_screen_lines(to_bash_translator: BlueprintToBash):
+    expected = [
+        'show_exit_screen() {',
+        '    clear_screen',
+        '    printf "Exited \\U1F41A Made with Nacar \\n\\n"',
+        '}'
+    ]
+    assert to_bash_translator.get_show_exit_screen_lines() == expected
+
+
+#   Test main loop writer; Test translating blueprint to Bash ──────────────────
+
+# Tests for these methods intentionally not implemented since dynamic behaviour
+# that feeds through to these functions is defined in methods tested above.
