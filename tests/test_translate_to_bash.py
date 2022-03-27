@@ -218,3 +218,28 @@ def test_get_check_keystroke_method_lines(to_bash_translator: BlueprintToBash):
         '}'
     ]
     assert to_bash_translator.get_check_keystroke_method_lines() == expected
+
+
+#   Test screen rendering utilities ────────────────────────────────────────────
+
+def test_get_show_screen_methods_lines(to_bash_translator: BlueprintToBash):
+    expected = [
+        'show_home_screen() {',
+        '    print_screen_top',
+        '    printf "\\U2502 [${YEL}D${END}]evelop %66s \\U2502\\n"',
+        '    printf "\\U2502 [${YEL}T${END}]est %69s \\U2502\\n"',
+        '    print_screen_bottom 1', '',
+        '    check_keystroke $HOME_SCREEN', '}',
+        'show_develop_screen() {',
+        '    print_screen_top',
+        '    printf "\\U2502 [${YEL}B${END}]uild %68s \\U2502\\n"',
+        '    print_screen_bottom 2', '',
+        '    check_keystroke $DEVELOP_SCREEN', '}',
+        'show_test_screen() {',
+        '    print_screen_top',
+        '    printf "\\U2502 [${YEL}R${END}]un %70s \\U2502\\n"',
+        '    print_screen_bottom 2',
+        '',
+        '    check_keystroke $TEST_SCREEN', '}'
+    ]
+    assert to_bash_translator.get_show_screen_methods_lines() == expected
