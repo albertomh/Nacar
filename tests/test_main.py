@@ -9,7 +9,19 @@
 
 import pytest
 
+from nacar.file_io import FileIO
+from nacar.schema import Schema
+from nacar.validator import NacarValidator
+from nacar.translate.to_bash.to_bash import BlueprintToBash
 from nacar.main import Nacar
+
+
+@pytest.fixture
+def nacar() -> Nacar:
+    file_io = FileIO()
+    schema = Schema()
+    validator = NacarValidator()
+    return Nacar(file_io, schema, validator, BlueprintToBash)
 
 
 @pytest.mark.parametrize('arguments,error_type,error_msg', [
