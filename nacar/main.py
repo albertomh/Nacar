@@ -23,6 +23,7 @@ from nacar.file_io import FileIO
 from nacar.schema import Schema, InvalidSchemaError
 from nacar.validator import NacarValidator
 from nacar.translate.itranslator import ITranslator
+from nacar.translate.target_language import TargetLanguage
 from nacar.translate.to_bash.to_bash import BlueprintToBash
 
 
@@ -90,6 +91,7 @@ class Nacar:
         # TODO: add more defaults to the below method.
         blueprint = self.schema.set_missing_optional_attributes(blueprint)
 
+        # Translate the in-memory blueprint to a Nacar app (as a string).
         try:
             translator: ITranslator = self.translator_class(blueprint)
             translation: str = translator.translate_blueprint()
@@ -109,6 +111,16 @@ class Nacar:
             print(e)
             return
 
+        # Print out a message to signal successful execution.
+        success_message = f"\nConverted blueprint '{file_name}' to "
+
+        if translator.get_target_language() == TargetLanguage.BASH:
+            success_message += f"bash Nacar app '{blueprint_file_name}'."
+            with open(os_path.join(outdir, blueprint_file_name)) as app:
+                success_message += f" Wrote {len(app.readlines()) + 1} lines."
+
+        print(f"{success_message}\n")
+
 
 def main():
     try:
@@ -121,15 +133,15 @@ def main():
         file_io = FileIO()
         schema = Schema()
         validator = NacarValidator()
+        # The only translator for the time being is the Bash Translator.
         translator_class: Type[ITranslator] = BlueprintToBash
         nacar = Nacar(file_io, schema, validator, translator_class)
 
         try:
             nacar.run(blueprint_path)
-        except InvalidSchemaError:
-            print(f"'{os_path.abspath(blueprint_path)}' is not a valid "
-                  f"blueprint. Please provide a blueprint that "
-                  f"conforms to the schema.")
+        except InvalidSchemaError as err:
+            print(f"'{os_path.abspath(blueprint_path)}' is not a valid blueprint.")  # noqa
+            print(f"{err.message}")
 
 
 if __name__ == '__main__':
