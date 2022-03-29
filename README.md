@@ -72,15 +72,20 @@ and persisting the result to a file.
 [Read more](docs/Entrypoint.md) about Nacar's entrypoint.
 
 
-### Parsing blueprints
+### Filesystem operations
+The `file_io` module parses YAML files as input and writes in-memory 
+representations of Nacar apps out as executable files. It is responsible for 
+interacting with the filesystem, setting permissions on resulting apps, and 
+handling any I/O exceptions.
+
+[Read more](docs/FileIO.md) about reading from and writing to files. 
 
 
 ### Blueprint Schema & Validator
 Nacar's `validator` module verifies that the parsed blueprint will be correctly 
-interpreted by a Translator (see below).  
-It is built on top of the Cerberus validator, checking the uniqueness of screen 
-names, avoiding screens linking to themselves, and that 'link' directives point 
-to existing screens.
+interpreted by a Translator (see below). It is built on top of the Cerberus 
+validator, checking the uniqueness of screen names, avoiding screens linking to 
+themselves, and that 'link' directives point to existing screens.
 
 [Read more](docs/Schema_Validator.md) about the blueprint Schema & Validator.
 

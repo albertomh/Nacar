@@ -25,9 +25,9 @@ class FileIO:
     @staticmethod
     def parse_yml_file(file_path: str) -> dict:
         """
-        Read and parse a YML file, representing its contents as a dictionary.
+        Read and parse a YAML file, representing its contents as a dictionary.
         :param file_path: Relative to the project's root directory.
-        :return: A dictionary built from the YML object.
+        :return: A dictionary built from the YAML object.
         """
 
         if not file_exists(file_path):
