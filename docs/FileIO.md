@@ -23,6 +23,23 @@ The file's default permissions are bitwise ORed with new permissions to make the
 file executable by the owner, group, and others - effectively achieving the same 
 result as invoking `chmod +x` on the file in question. 
 
+## write_nacar_app_to_file()
+Writes an in-memory representation of a Nacar app to a file and sets the relevant 
+file modes. This is the last utility invoked by the entrypoint's `run()` method. 
+It takes as parameters the content of the resulting Nacar app, the file path the 
+app will be written to, and the target language:
+
+The file content should be a string, the output of a 
+[Translator's](./Translators.md) `translate_blueprint()` method.
+
+The path argument is the absolute path where the resulting app will be written to. 
+Customarily this file will be a sibling to the YAML blueprint, and have the 
+same filename eg. the app created by running Nacar's bash translator on 
+`app-blueprint.yml` should produce the file `app-blueprint.sh`.  
+
+Finally, the target language argument should be a value of the `translate` 
+module's `TargetLanguage` enum.
+
 
 ---
 Copyright 2022 Alberto Morón Hernández  

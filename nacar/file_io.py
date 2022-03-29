@@ -58,6 +58,12 @@ class FileIO:
     def write_nacar_app_to_file(script_content: str,
                                 target_file_path: str,
                                 target_language: TargetLanguage) -> None:
+        """
+        Write an in-memory representation of a Nacar app to a file and set the relevant file modes.
+        :param script_content: output of a Translator's 'translate_blueprint()' method.
+        :param target_file_path: absolute path where the resulting app will be written to.
+        :param target_language: a TargetLanguage enum value.
+        """
         if file_exists(target_file_path):
             os.remove(target_file_path)
 
