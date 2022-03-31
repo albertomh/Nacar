@@ -21,7 +21,10 @@ health-check utilities that provide easy access to common tasks.
 
 ## Installing & running
 
-TODO: document installing.
+1. Clone the repo.
+2. Write a Nacar blueprint - you can use `blueprint.example.yml` as an example.
+3. Run `python nacar/main.py <path-to-your-blueprint>.yml`
+4. A bash Nacar app will be created in the same directory as your blueprint. 
 
 
 ## Developing

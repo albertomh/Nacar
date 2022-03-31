@@ -4,11 +4,10 @@
 #
 # YAML blueprint example
 # ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-# TODO: document
+# Use this file as a template for writing your own Nacar blueprints.
 
 title: Global Title
 
-# TODO: some of meta (or entire meta) should be optional, with sensible defaults provided by the application.
 meta:
   authors:
     - Your Name
