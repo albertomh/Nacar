@@ -182,8 +182,10 @@ class InvalidSchemaError(Exception):
                 # create new lists, leading to a subtle, tricky bug.
                 elif isinstance(errors[0], str):
                     errors = [err.capitalize() + ('.' if err[-1] != '.' else '')
-                              for err in errors]
-                    _errors_by_key['.'.join(breadcrumbs)] = errors
+                              for err in errors if isinstance(err, str)]
+                    breadcrumbs_key = '.'.join([b for b in breadcrumbs
+                                                if isinstance(b, str)])
+                    _errors_by_key[breadcrumbs_key] = errors
                     if len(level_keys) > 0:
                         breadcrumbs.pop()
                     else:
