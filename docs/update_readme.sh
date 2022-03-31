@@ -54,7 +54,7 @@ run_tests() {
     fi
 }
 
-# Badges: Python 3.7+ | tests %
+# Badges: Python 3.7+ | tests % | version
 set_badges_in_readme() {
     printf "Setting badges in README.\n"
     local readme_path="$ROOT_DIR/README.md"
@@ -65,7 +65,20 @@ set_badges_in_readme() {
     new_test_badge="${new_test_badge}%5B${passed_percent}%25%5D%20%E2%9C%94"
     new_test_badge="${new_test_badge}-brightgreen"
     sed -i -E "s/$test_badge_re/$new_test_badge/g" "$readme_path"
-    printf "    Set badge ( tests | ${passed_count} [${passed_percent}%%] \U2713 )\n"
+    printf "Set badge ( tests | ${passed_count}\U2714 [${passed_percent}%%] )\n"
+
+    # Set version badge.
+    local version_path="$ROOT_DIR/nacar/__version__.py"
+    local version_text=$(cat $version_path)
+    local version_re="__version__ = '([0-9]\.[0-9]\.[0-9])'"
+    local version=""
+    if [[ $version_text =~ $version_re ]]; then
+        version=${BASH_REMATCH[1]}
+    fi
+    local version_badge_re='\/badge\/version.+?white'
+    local new_version_badge="\/badge\/version-${version}-white"
+    sed -i -E "s/$version_badge_re/$new_version_badge/g" "$readme_path"
+    printf "Set badge ( version | ${version} )\n"
 }
 
 cleanup() {
