@@ -3,7 +3,7 @@
 Nacar is a tool for creating interactive text-based interfaces from simple user-defined blueprints.  
 Say goodbye to remembering long, arcane shell commands!
 
-**TODO: add side-by-side comparison video of a simple YAML blueprint and the resulting screen in bash.** 
+<img src="docs/img/nacar-showcase.gif" height="240" alt="Nacar showcase"/>
 
 You write a blueprint as a single YAML file, specifying the options and commands 
 that should appear on each screen. Add links between screens for fluid 
