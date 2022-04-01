@@ -72,15 +72,6 @@ class ITranslator(ABC):
         # Set the Translator's `screens` field.
         raise NotImplementedError
 
-    @abstractmethod
-    def get_comment_lines(self, content: str) -> List[str]:
-        # Wrap lines to the max line length and make them comments.
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_section_title(self, title: str) -> str:
-        # Print a title embedded in a horizontal rule.
-        raise NotImplementedError
 
 #   File heading ───────────────────────────────────────────────────────────────
 

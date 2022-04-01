@@ -56,60 +56,14 @@ def test_jinja_environment_was_set_on_init(to_bash_translator):
     assert env.lstrip_blocks is True
 
 
+def test_template_data_is_empty_on_init(to_bash_translator):
+    assert to_bash_translator.template_data == {}
+
+
 #   Test Translator utilities ──────────────────────────────────────────────────
 
 def test_get_target_language(to_bash_translator):
     assert to_bash_translator.get_target_language() == TargetLanguage.BASH
-
-
-@pytest.mark.parametrize('content,lpad,expected', [
-    ("", None,
-     ["#"]),
-    ("Test get_comment_lines() without specifying an lpad value.", None,
-     ["# Test get_comment_lines() without specifying an lpad value."]),
-    ("Test with lpad.", 8,
-     ["        # Test with lpad."]),
-    (["Test a multiline comment", "with three different lines", "without specifying lpad."], None,  # noqa
-     ["# Test a multiline comment", "# with three different lines", "# without specifying lpad."]),  # noqa
-    (["Test multiple comment", "lines with lpad."], 4,
-     ["    # Test multiple comment", "    # lines with lpad."]),
-    ("It is also necessary to test a really long single comment that exceeds the line limit of 80 characters.", None,  # noqa
-     ["# It is also necessary to test a really long single comment that exceeds the", "# line limit of 80 characters."]),  # noqa,
-    (["We must not neglect to test a comment spanning multiple lines with a really long line",  "as one of its elements."], None,  # noqa
-     ["# We must not neglect to test a comment spanning multiple lines with a really long line", "# as one of its elements."]),  # noqa
-    ("Here we test a comment that exceeds the eighty-character limit and which we would like indented.", 4,  # noqa
-     ["    # Here we test a comment that exceeds the eighty-character limit and which we", "    # would like indented."]),  # noqa
-])
-def test_get_comment_lines(
-        to_bash_translator: BlueprintToBash,
-        content: Union[str, List[str]],
-        lpad: Union[int, None],
-        expected: List[str]
-):
-    result: List[str]
-    if lpad is None:
-        result = to_bash_translator.get_comment_lines(content)
-    else:
-        result = to_bash_translator.get_comment_lines(content, lpad)
-
-    assert result == expected
-
-
-@pytest.mark.parametrize('title,rule_char,expected', [
-    ("This is a section title", None, "# ───── This is a section title ────────────────────────────────────────────────"),  # noqa
-    ("This is another section title", '*', "# ***** This is another section title ******************************************"),  # noqa
-])
-def test_get_section_title(
-        to_bash_translator: BlueprintToBash,
-        title: str, rule_char: Union[str, None], expected: str
-):
-    result: str
-    if rule_char is None:
-        result = to_bash_translator.get_section_title(title)
-    else:
-        result = to_bash_translator.get_section_title(title, rule_char)
-
-    assert result == expected
 
 
 #   Test file heading utilities ────────────────────────────────────────────────

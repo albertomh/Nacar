@@ -51,25 +51,6 @@ class BlueprintToBash(ITranslator):
     def get_max_line_length(self):
         return 80
 
-    def set_screens(self):
-        self.screens = Schema.get_screen_names(self.blueprint)
-
-    def get_comment_lines(self, content: Union[str, List[str]], lpad=0) -> List[str]:  # noqa
-        if len(content) == 0:
-            return ["#"]
-
-        comment_lines: List[str] = []
-        if type(content) is str:
-            width = self.get_max_line_length() - 2
-            comment_lines = textwrap.wrap(content, width)
-        elif type(content) is list:
-            comment_lines = content
-
-        return [f"{' ' * lpad}# {c}" for c in comment_lines]
-
-    def get_section_title(self, title: str, rule_char='─') -> str:
-        len_right = self.get_max_line_length() - (2 + 5 + 1 + len(title) + 1)
-        return f"# {rule_char * 5} {title} {rule_char * len_right}"
 
 #   File heading ───────────────────────────────────────────────────────────────
 
