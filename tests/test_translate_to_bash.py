@@ -9,12 +9,14 @@
 
 
 from os import path as os_path
-from typing import Union, List
+from os.path import dirname, abspath
 from json import loads as json_loads
 import datetime
 
 from unittest.mock import patch
 import pytest
+from jinja2 import Environment as JinjaEnvironment
+from jinja2.loaders import FileSystemLoader as JinjaFSLoader
 
 from nacar.translate.target_language import TargetLanguage
 from nacar.translate.to_bash.to_bash import BlueprintToBash
@@ -24,7 +26,7 @@ from nacar.translate.to_bash.to_bash import BlueprintToBash
 # rather than once per test method as is default.
 @pytest.fixture(scope='module', autouse=True)
 def to_bash_translator(test_data_dir) -> BlueprintToBash:
-    valid_output_json_path = os_path.join(test_data_dir, 'valid-blueprint.json')
+    valid_output_json_path = os_path.join(test_data_dir, 'valid-blueprint.json')  # noqa
     blueprint: dict
     with open(valid_output_json_path) as file:
         blueprint = json_loads(file.read())
@@ -36,8 +38,22 @@ def to_bash_translator(test_data_dir) -> BlueprintToBash:
 
 #   Test Translator initialisation ─────────────────────────────────────────────
 
-def test_set_screens_was_called_upon_init(to_bash_translator):
+def test_set_screens_was_called_on_init(to_bash_translator):
     assert to_bash_translator.screens == ['home', 'develop', 'test']
+
+
+def test_jinja_environment_was_set_on_init(to_bash_translator):
+    env = to_bash_translator.jinja_env
+    assert isinstance(env, JinjaEnvironment)
+    assert isinstance(env.loader, JinjaFSLoader)
+
+    nacar_root = dirname(dirname(abspath(__file__)))
+    searchpath = env.loader.searchpath[0]
+    expected_path = os_path.join(nacar_root, 'nacar', 'translate', 'to_bash', 'templates')  # noqa
+    assert searchpath == expected_path
+
+    assert env.trim_blocks is True
+    assert env.lstrip_blocks is True
 
 
 #   Test Translator utilities ──────────────────────────────────────────────────
