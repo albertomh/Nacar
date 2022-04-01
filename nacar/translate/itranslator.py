@@ -11,8 +11,11 @@ interface defines the methods a translator should implement.
 Find out more about translators by reading `/docs/Translators.md`.
 """
 
+from os import path as os_path
 from abc import ABC, abstractmethod
 from typing import List
+
+from jinja2 import Environment, FileSystemLoader
 
 from nacar.translate.target_language import TargetLanguage
 
@@ -37,9 +40,20 @@ class ITranslator(ABC):
     def set_template_data(self, data: dict) -> None:
         raise NotImplementedError
 
+    @property
     @abstractmethod
-    def __init__(self, blueprint: dict) -> None:
-        pass
+    def screens(self) -> List[str]:
+        # A list of screen names as defined by the blueprint.
+        raise NotImplementedError
+
+    def __init__(self, blueprint: dict, translator_dir: str) -> None:
+        self.blueprint = blueprint
+        self.set_screens()
+
+        templates_dir = os_path.join(translator_dir, 'templates')
+        self.jinja_env = Environment(loader=FileSystemLoader(templates_dir))
+        self.jinja_env.trim_blocks = True
+        self.jinja_env.lstrip_blocks = True
 
 #   <target_language> translator utilities ─────────────────────────────────────
 

@@ -9,6 +9,7 @@ Implements the ITranslator interface to turn blueprints into bash Nacar apps.
 Find out more about translators by reading `/docs/Translators.md`.
 """
 
+from os.path import dirname, abspath
 from typing import List
 from datetime import datetime
 
@@ -32,9 +33,14 @@ class BlueprintToBash(ITranslator):
     def set_template_data(self, data: dict) -> None:
         self.template_data = data
 
+    screens: List[str] = []
+
+    def set_screens(self) -> None:
+        self.screens = Schema.get_screen_names(self.blueprint)
+
     def __init__(self, blueprint: dict) -> None:
-        self.blueprint = blueprint
-        self.set_screens()
+        translator_dir = dirname(abspath(__file__))
+        super().__init__(blueprint, translator_dir)
 
 #   Bash translator utilities ──────────────────────────────────────────────────
 
