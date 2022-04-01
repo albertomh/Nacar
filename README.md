@@ -89,6 +89,7 @@ handling any I/O exceptions.
 
 
 ### Blueprint Schema & Validator
+The `schema` module defines the rules used for validating parsed blueprints.  
 Nacar's `validator` module verifies that the parsed blueprint will be correctly 
 interpreted by a Translator (see below). It is built on top of the Cerberus 
 validator, checking the uniqueness of screen names, avoiding screens linking to 

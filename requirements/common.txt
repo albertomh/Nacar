@@ -1,2 +1,3 @@
 PyYAML==6.0      # Handle YAML.
 Cerberus==1.3.4  # Schema validation.
+Jinja2==3.0.3    # Templating engine
