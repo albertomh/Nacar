@@ -516,12 +516,9 @@ class BlueprintToBash(ITranslator):
         to be persisted to a file and used as a Nacar application.
         """
 
-        bash_translation = self.get_file_heading()
-        bash_translation += self.get_app_config()
-        bash_translation += self.get_utilities()
-        bash_translation += self.get_screen_building_utilities()
-        bash_translation += self.get_screen_flow_code()
-        bash_translation += self.get_screen_rendering_code()
-        bash_translation += self.get_main_loop_code()
+        self.set_heading_template_variables()
+
+        template = self.jinja_env.get_template('base.sh.template')
+        bash_translation: str = template.render(self.template_data)
 
         return bash_translation

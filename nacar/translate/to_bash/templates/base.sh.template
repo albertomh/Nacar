@@ -1,0 +1,4 @@
+#!/bin/bash
+
+{# File heading #}
+{%+ include 'file_heading.sh.template' +%}

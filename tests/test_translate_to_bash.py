@@ -78,6 +78,19 @@ def get_expected_heading_template_data() -> dict:
     }
 
 
+def test_set_heading_template_variables(to_bash_translator):
+    with patch('nacar.translate.to_bash.to_bash.datetime', wraps=datetime.datetime) as dt, \
+            patch('nacar.translate.to_bash.to_bash.__version__', '1.2.3'):
+        dt.now.return_value = datetime.datetime(2022, 1, 1)
+        to_bash_translator.set_heading_template_variables()
+        result = to_bash_translator.template_data
+
+    expected = {
+        'heading': get_expected_heading_template_data()
+    }
+    assert result == expected
+
+
 #   Test Nacar app config ──────────────────────────────────────────────────────
 
 def test_get_app_config(to_bash_translator: BlueprintToBash):
