@@ -27,6 +27,13 @@ class ITranslator(ABC):
     screens: List[str]
     set_screens() -> None
     __init__(blueprint: dict) -> None
+
+    <target_language> translator utilities
+      ├ get_target_language() -> TargetLanguage
+      └ get_max_line_length() -> int
+
+    File heading
+      └ set_heading_template_variables() -> None
     """
 
     @property
@@ -72,23 +79,10 @@ class ITranslator(ABC):
         # Set the Translator's `screens` field.
         raise NotImplementedError
 
-
 #   File heading ───────────────────────────────────────────────────────────────
 
     @abstractmethod
-    def get_title_lines(self) -> List[str]:
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_copyright_lines(self) -> List[str]:
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_nacar_info_lines(self) -> List[str]:
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_file_heading(self) -> str:
+    def set_heading_template_variables(self) -> None:
         raise NotImplementedError
 
 #   Nacar app config ───────────────────────────────────────────────────────────
