@@ -3,7 +3,10 @@
 Nacar is a tool for creating interactive text-based interfaces from simple user-defined blueprints.  
 Say goodbye to remembering long, arcane shell commands!
 
-<img src="docs/img/nacar-showcase.gif" height="240" alt="Nacar showcase"/>
+<img src="docs/img/nacar-showcase.gif" height="320" alt="Nacar showcase"/>
+
+**A Nacar YAML blueprint and the resulting bash Nacar app running in the terminal.** 
+
 
 You write a blueprint as a single YAML file, specifying the options and commands 
 that should appear on each screen. Add links between screens for fluid 
@@ -23,7 +26,7 @@ health-check utilities that provide easy access to common tasks.
 ## Installing & running
 
 1. Clone the repo.
-2. Write a Nacar blueprint - you can use `blueprint.example.yml` as an example.
+2. Write a Nacar blueprint - you can use `blueprint.example.yml` as a template.
 3. Run `python nacar/main.py <path-to-your-blueprint>.yml`
 4. A bash Nacar app will be created in the same directory as your blueprint. 
 
@@ -106,7 +109,7 @@ should implement.
 
 ---
 **What's in a name?**  
-*Nacar* means 'mother of pearl' in Spanish. This name reflects the tool's 
+*Nácar* means 'mother of pearl' in Spanish. This name reflects the tool's 
 aim to make interacting with the shell smoother and more beautiful.
 
 
