@@ -19,48 +19,22 @@ from nacar.translate.target_language import TargetLanguage
 
 class ITranslator(ABC):
     """
+    template_data: dict
+    set_template_data(data: dict) -> None
     screens: List[str]
+    set_screens() -> None
     __init__(blueprint: dict) -> None
-
-    <target_language> translator utilities
-      ├ get_target_language() -> TargetLanguage
-      ├ get_max_line_length() -> int
-      ├ set_screens() -> None
-      ├ get_comment_lines(content: str) -> List[str]
-      └ get_section_title(title: str) -> str
-
-    File heading
-      ├ get_title_lines() -> List[str]
-      ├ get_copyright_lines() -> List[str]
-      ├ get_nacar_info_lines() -> List[str]
-      └ get_file_heading() -> str
-
-    Nacar app config
-      └ get_app_config() -> str
-
-    Utilities
-      └ get_utilities() -> str
-
-    Screen-building utilities
-      └ get_screen_building_utilities() -> str
-
-    Screen flow
-      └ get_screen_flow_code() -> str
-
-    Screen rendering
-      └ get_screen_rendering_code() -> str
-
-    Main loop
-      └ get_main_loop_code() -> str
-
-    Translate blueprint to <target_language>
-      └ translate_blueprint() -> str
     """
 
     @property
     @abstractmethod
-    def screens(self) -> List[str]:
-        # A list of screen names as defined by the blueprint.
+    def template_data(self) -> dict:
+        # A dictionary containing all data necessary to
+        # generate the application using templates.
+        raise NotImplementedError
+
+    @abstractmethod
+    def set_template_data(self, data: dict) -> None:
         raise NotImplementedError
 
     @abstractmethod

@@ -9,9 +9,8 @@ Implements the ITranslator interface to turn blueprints into bash Nacar apps.
 Find out more about translators by reading `/docs/Translators.md`.
 """
 
-from typing import List, Union
+from typing import List
 from datetime import datetime
-import textwrap
 
 from nacar.__version__ import __version__
 from nacar.schema import Schema
@@ -21,59 +20,17 @@ from nacar.translate.target_language import TargetLanguage
 
 class BlueprintToBash(ITranslator):
     """
-    [I] indicates that a method implements the interface's definition.
-
-    screens: List[str]
-    __init__(blueprint: dict) -> None
-
-    Bash translator utilities
-      ├ [I] get_target_language() -> TargetLanguage
-      ├ [I] get_max_line_length() -> str
-      ├ [I] get_comment_lines(content: str) -> List[str]
-      └ [I] get_section_title(title: str) -> str
-
-    File heading
-      ├     get_hashbang_lines() -> List[str]
-      ├ [I] get_title_lines() -> List[str]
-      ├ [I] get_copyright_lines() -> List[str]
-      ├ [I] get_nacar_info_lines() -> List[str]
-      └ [I] get_file_heading() -> str
-
-    Utilities
-      ├     get_bash_styles_lines() -> List[str]
-      ├     get_clear_screen_lines() -> List[str]
-      ├     get_repeat_method_lines() -> List[str]
-      └ [I] get_utilities() -> str
-
-    Screen-building utilities
-      ├     get_print_blank_screen_line_method_lines() -> List[str]
-      ├     get_print_screen_top_method_lines() -> List[str]
-      ├     get_print_breadcrumbs_method_lines() -> List[str]
-      ├     get_print_screen_bottom_method_lines() -> List[str]
-      └ [I] get_screen_building_utilities() -> str
-
-    Screen flow
-      ├     get_screen_flow_state_variables_lines() -> List[str]
-      ├     get_screen_flow_constants_lines() -> List[str]
-      ├     get_navigate_to_method_lines() -> List[str]
-      ├     get_navigate_back_method_lines() -> List[str]
-      ├     get_show_active_screen_method_lines() -> List[str]
-      ├     get_check_keystroke_method_lines() -> List[str]
-      └ [I] get_screen_flow_code() -> str
-
-    Screen rendering
-      ├     get_invoke_action_on_exit_lines() -> List[str]
-      ├     get_show_exit_screen_lines() -> List[str]
-      └ [I] get_screen_rendering_code() -> str
-
-    Nacar app's main loop
-      └ [I] get_main_loop_code() -> str
-
-    Translate blueprint to Bash
-      └ [I] translate_blueprint() -> str
+    [I] template_data: dict
+    [I] set_template_data(data: dict) -> None
+    [I] screens: List[str]
+    [I] set_screens() -> None
+    [I] __init__(blueprint: dict) -> None
     """
 
-    screens: List[str] = []
+    template_data = {}
+
+    def set_template_data(self, data: dict) -> None:
+        self.template_data = data
 
     def __init__(self, blueprint: dict) -> None:
         self.blueprint = blueprint
