@@ -79,17 +79,17 @@ class BlueprintToBash(ITranslator):
             **{'heading': heading_data}
         })
 
-
 #   Nacar app config ───────────────────────────────────────────────────────────
 
-    def get_app_config(self) -> str:
-        config_lines = [self.get_section_title('Nacar app config')]
-        config_lines += [""]
-        config_lines += [f"SCREEN_WIDTH={self.blueprint['meta']['width']}"]
-        config_lines += [f"TITLE=\"{self.blueprint['title']}\""]
-        config_lines += ["\n\n"]
-
-        return '\n'.join(config_lines)
+    def set_app_config_template_variables(self) -> None:
+        app_config_data = {
+            'screen_width': self.blueprint['meta']['width'],
+            'title': self.blueprint['title']
+        }
+        self.set_template_data({
+            **self.template_data,
+            **{'app_config': app_config_data}
+        })
 
 #   Utilities ──────────────────────────────────────────────────────────────────
 
@@ -517,6 +517,7 @@ class BlueprintToBash(ITranslator):
         """
 
         self.set_heading_template_variables()
+        self.set_app_config_template_variables()
 
         template = self.jinja_env.get_template('base.sh.template')
         bash_translation: str = template.render(self.template_data)

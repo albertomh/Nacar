@@ -88,7 +88,7 @@ class ITranslator(ABC):
 #   Nacar app config ───────────────────────────────────────────────────────────
 
     @abstractmethod
-    def get_app_config(self) -> str:
+    def set_app_config_template_variables(self) -> None:
         # Nacar app settings eg. screen width, title.
         raise NotImplementedError
 

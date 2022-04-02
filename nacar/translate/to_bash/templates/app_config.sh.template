@@ -1,0 +1,4 @@
+# ───── Nacar app config ───────────────────────────────────────────────────────
+
+SCREEN_WIDTH={{ app_config.screen_width }}
+TITLE="{{ app_config.title }}"

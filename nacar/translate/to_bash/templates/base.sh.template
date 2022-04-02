@@ -2,3 +2,6 @@
 
 {# File heading #}
 {%+ include 'file_heading.sh.template' +%}
+
+{# App config #}
+{%+ include 'app_config.sh.template' +%}
