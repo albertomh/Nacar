@@ -93,12 +93,22 @@ def test_set_heading_template_variables(to_bash_translator):
 
 #   Test Nacar app config ──────────────────────────────────────────────────────
 
-def test_get_app_config(to_bash_translator: BlueprintToBash):
-    expected = (f"# ───── Nacar app config {'─' * 55}\n"
-                "\n"
-                "SCREEN_WIDTH=80\n"
-                "TITLE=\"Global Title\"\n\n\n")
-    assert to_bash_translator.get_app_config() == expected
+def get_expected_app_config_template_variables() -> dict:
+    return {
+        'screen_width': 80,
+        'title': 'Global Title'
+    }
+
+
+def test_set_app_config_template_variables(to_bash_translator):
+    to_bash_translator.set_app_config_template_variables()
+    result = to_bash_translator.template_data
+
+    expected = {
+        'heading': get_expected_heading_template_data(),
+        'app_config': get_expected_app_config_template_variables()
+    }
+    assert result == expected
 
 
 #   Test utilities; Test screen-building utilities ─────────────────────────────
