@@ -1,0 +1,16 @@
+# ───── Utilities ──────────────────────────────────────────────────────────────
+
+{% for name, code in utilities.bash_styles.items() %}
+{{ name }}={{ code }}
+{% endfor %}
+
+clear_screen() {
+    printf "\033c"
+}
+
+# Use: `repeat '-' 76`
+# @param $1 The string to repeat.
+# @param $2 How many times to repeat it.
+repeat() {
+	  for i in $(seq 1 $2); do printf "$1"; done
+}

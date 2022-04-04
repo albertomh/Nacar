@@ -5,3 +5,6 @@
 
 {# App config #}
 {%+ include 'app_config.sh.template' +%}
+
+{# Utilities #}
+{%+ include 'utilities.sh.template' +%}
