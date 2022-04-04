@@ -107,6 +107,15 @@ class BlueprintToBash(ITranslator):
             'END': r"$'\e[0m'"
         }
 
+    def set_utilities_template_variables(self) -> None:
+        utilities_data = {
+            'bash_styles': self.get_bash_styles()
+        }
+        self.set_template_data({
+            **self.template_data,
+            **{'utilities': utilities_data}
+        })
+
 #   Screen-building utilities ──────────────────────────────────────────────────
 
     def get_print_blank_screen_line_method_lines(self) -> List[str]:
@@ -477,6 +486,7 @@ class BlueprintToBash(ITranslator):
 
         self.set_heading_template_variables()
         self.set_app_config_template_variables()
+        self.set_utilities_template_variables()
 
         template = self.jinja_env.get_template('base.sh.template')
         bash_translation: str = template.render(self.template_data)
