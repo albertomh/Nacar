@@ -93,9 +93,9 @@ class BlueprintToBash(ITranslator):
 
 #   Utilities ──────────────────────────────────────────────────────────────────
 
-    def get_bash_styles_lines(self) -> List[str]:
+    def get_bash_styles(self) -> dict:
         # [gist.github.com/vratiu/9780109]
-        styles = {
+        return {
             'BLD': r"$'\e[1m'",
             'DIM': r"$'\e[2m'",
             'UND': r"$'\e[4m'",
@@ -106,47 +106,6 @@ class BlueprintToBash(ITranslator):
             'BLU': r"$'\e[1;34m'",
             'END': r"$'\e[0m'"
         }
-
-        styles_lines = []
-        for name, code in styles.items():
-            styles_lines.append(f"{name}={code}")
-
-        return styles_lines
-
-    def get_clear_screen_lines(self) -> List[str]:
-        return [
-            "clear_screen() {",
-            "    printf " r'"\033c"',
-            "}"
-        ]
-
-    def get_repeat_method_lines(self) -> List[str]:
-        repeat_method = []
-        repeat_method += self.get_comment_lines([
-            "Use: `repeat '-' 76`",
-            "@param $1 The string to repeat.",
-            "@param $2 How many times to repeat it."
-        ])
-
-        repeat_method += [
-            r"repeat() {",
-            r'	  for i in $(seq 1 $2); do printf "$1"; done',
-            r"}"
-        ]
-
-        return repeat_method
-
-    def get_utilities(self) -> str:
-        utilities_lines = [self.get_section_title('Utilities')]
-        utilities_lines += [""]
-        utilities_lines += self.get_bash_styles_lines()
-        utilities_lines += [""]
-        utilities_lines += self.get_clear_screen_lines()
-        utilities_lines += [""]
-        utilities_lines += self.get_repeat_method_lines()
-        utilities_lines += ["\n\n"]
-
-        return '\n'.join(utilities_lines)
 
 #   Screen-building utilities ──────────────────────────────────────────────────
 
