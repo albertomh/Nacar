@@ -8,3 +8,6 @@
 
 {# Utilities #}
 {%+ include 'utilities.sh.template' +%}
+
+{# Screen-building utilities #}
+{%+ include 'screen_building_utilities.sh.template' +%}
