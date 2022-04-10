@@ -11,3 +11,6 @@
 
 {# Screen-building utilities #}
 {%+ include 'screen_building_utilities.sh.template' +%}
+
+{# Screen flow code #}
+{%+ include 'screen_flow.sh.template' +%}
