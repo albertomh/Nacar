@@ -118,158 +118,20 @@ class BlueprintToBash(ITranslator):
 
 #   Screen flow ────────────────────────────────────────────────────────────────
 
-    def get_screen_flow_state_variables_lines(self) -> List[str]:
-        return [
-            r'declare -a BREADCRUMBS=()',
-            r'# The name of the screen to show. One of the `_SCREEN` constants below.',  # noqa
-            r'ACTIVE_SCREEN=""',
-            r'# The command to invoke on exit.',
-            r'INVOKE_ON_EXIT=""'
-        ]
-
-    def get_screen_flow_constants_lines(self) -> List[str]:
-        constants_lines = []
-
+    def set_screen_flow_template_variables(self) -> None:
+        screen_options = {}
         for screen in self.screens:
-            constants_lines += [fr'readonly {screen.upper()}_SCREEN="{screen.lower()}"']  # noqa
-
-        return constants_lines
-
-    def get_navigate_to_method_lines(self) -> List[str]:
-        return [
-            r'navigate_to() {',
-            r'    INVOKE_ON_EXIT=""',
-            r'    ACTIVE_SCREEN="$1"',
-            r'    BREADCRUMBS+=("$1")',
-            r'}'
-        ]
-
-    def get_navigate_back_method_lines(self) -> List[str]:
-        return [
-            r'# Remove last element of BREADCRUMBS.',
-            r'navigate_back() {',
-            r'    if [[ ${#BREADCRUMBS[@]} -eq 1 ]]; then',
-            r'        :  # Prevent navigating back when on homescreen.',
-            r'    else',
-            "        unset 'BREADCRUMBS[-1]'  # Remove current screen.",
-            r'        local previous_screen=${BREADCRUMBS[-1]}',
-            r'        # Remove previous screen since it will be added back by `navigate_to`.',  # noqa
-            "        unset 'BREADCRUMBS[-1]'",
-            r'        navigate_to ${previous_screen}',
-            r'    fi',
-            r'}'
-        ]
-
-    def get_show_active_screen_method_lines(self) -> List[str]:
-        return [
-            r'show_active_screen() {',
-            r'    # There should always be an active screen, exit if not.',
-            r'    if [[ ! ${ACTIVE_SCREEN} ]]; then return 1; fi',
-            "",
-            r'    clear_screen',
-            r'    eval "show_${ACTIVE_SCREEN}_screen"',
-            r'}'
-        ]
-
-    def get_check_keystroke_method_lines(self) -> List[str]:
-        check_keystroke_lines = self.get_comment_lines([
-            "@param $1 The screen this function is invoked from.",
-            "          One of the _SCREEN constants declared above."
-        ])
-        check_keystroke_lines += [
-            r'check_keystroke() {',
-            r'    local prompt=" ${GRN}\$${END}"',
-            r'    read -rs -p " ${prompt} " -n1 key',
-            r''
-        ]
-
-        # Dynamically build case statements on a per-screen basis
-        # to handle keystrokes indicating option selection.
-        check_keystroke_lines += self.get_comment_lines([
-            "Keypresses related to a screen."
-        ], 4)
-        screen_case_lines = []
-
-        for i, screen in enumerate(self.screens):
-            conditional_keyword = 'if' if i == 0 else 'elif'
-            screen_case_lines += [
-                fr'    {conditional_keyword} [[ "$1" == "${screen.upper()}_SCREEN" ]]; then'  # noqa
-            ]
-            # Loop over the actions and/or links defined for this screen.
-            screen_case_lines += [r'        case "$key" in']
             options = Schema.get_options_for_screen(self.blueprint, screen)
-            for option in options:
-                key: str = option['name'][0]
-                screen_case_lines += [fr'            "{key.upper()}" | "{key.lower()}")']  # noqa
-                if 'link' in option:
-                    screen_constant = f"{option['link'].upper()}_SCREEN"
-                    lpad = " " * 16
-                    screen_case_lines += [fr'{lpad}navigate_to ${screen_constant}; return 0;;']  # noqa
-                elif 'action' in option:
-                    lpad = " " * 16
-                    screen_case_lines += [fr'{lpad}INVOKE_ON_EXIT="{option["action"]}"; return 1;;']  # noqa
+            screen_options[screen] = options
 
-            screen_case_lines += [
-                r'        esac',
-                ''
-            ]
-
-            if i == (len(self.screens) - 1):
-                screen_case_lines += [
-                    '    fi',
-                    ''
-                ]
-
-        check_keystroke_lines += screen_case_lines
-
-        check_keystroke_lines += self.get_comment_lines([
-            "Handle [ESC] key and left arrow.",
-            "[unix.stackexchange.com/a/179193]"
-        ], 4)
-        check_keystroke_lines += [
-            r'    case "$key" in',
-            r"        $'\x1b')  # Handle ESC sequence.",
-            r'            read -rsn1 -t 0.1 additional_bytes',
-            r'            if [[ "$additional_bytes" == "[" ]]; then',
-            r'                read -rsn1 -t 0.1 additional_bytes',
-            r'                case "$additional_bytes" in',
-            r'                    "D")  # Left arrow.',
-            r'                        navigate_back; return 0;;',
-            r'                    *)  # Other escape sequences.',
-            r'                        return 0;;',
-            r'                esac',
-            r'            fi;;',
-            r'        *)  # Other single byte (char) cases.',
-            r'            return 0;;',
-            r'    esac',
-            r''
-        ]
-
-        check_keystroke_lines += self.get_comment_lines("Default fallthrough.", 4)  # noqa
-        check_keystroke_lines += [
-            '    return 1',
-            '}'
-        ]
-
-        return check_keystroke_lines
-
-    def get_screen_flow_code(self) -> str:
-        screen_flow_code = [self.get_section_title('Screen flow')]
-        screen_flow_code += [""]
-        screen_flow_code += self.get_screen_flow_state_variables_lines()
-        screen_flow_code += [""]
-        screen_flow_code += self.get_screen_flow_constants_lines()
-        screen_flow_code += [""]
-        screen_flow_code += self.get_navigate_to_method_lines()
-        screen_flow_code += [""]
-        screen_flow_code += self.get_navigate_back_method_lines()
-        screen_flow_code += [""]
-        screen_flow_code += self.get_show_active_screen_method_lines()
-        screen_flow_code += [""]
-        screen_flow_code += self.get_check_keystroke_method_lines()
-        screen_flow_code += ["\n\n"]
-
-        return '\n'.join(screen_flow_code)
+        screen_flow_data = {
+            'screens': self.screens,
+            'screen_options': screen_options,
+        }
+        self.set_template_data({
+            **self.template_data,
+            **{'screen_flow': screen_flow_data}
+        })
 
 #   Screen rendering ───────────────────────────────────────────────────────────
 
