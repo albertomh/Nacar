@@ -135,71 +135,24 @@ class BlueprintToBash(ITranslator):
 
 #   Screen rendering ───────────────────────────────────────────────────────────
 
-    def get_show_screen_methods_lines(self) -> List[str]:
-        screen_methods_lines = []
-
+    def set_screen_rendering_template_variables(self) -> None:
+        bottom_padding_screen_map = {}
         for screen in self.screens:
-            screen_methods_lines += [
-                f'show_{screen.lower()}_screen() {{',
-                '    print_screen_top',
-            ]
-
             options = Schema.get_options_for_screen(self.blueprint, screen)
-            for option in options:
-                name: str = option['name']
-                printf_snippet = r'    printf "\U2502 '
-                key_snippet = fr'[${{YEL}}{name[0].upper()}${{END}}]'
-                len_right = self.blueprint['meta']['width'] - (len(name) + 7)
-                right_snippet = fr'%{len_right}s \U2502\n"'
-                screen_methods_lines += [
-                    fr'{printf_snippet}{key_snippet}{name.lower()[1:]} {right_snippet}'  # noqa
-                ]
-
-            max_options = Schema.get_max_screen_options_in_blueprint(self.blueprint)  # noqa
+            max_options = Schema.get_max_screen_options_in_blueprint(
+                self.blueprint)  # noqa
             bottom_padding = 1 + (max_options - len(options))
+            bottom_padding_screen_map[screen] = bottom_padding
 
-            screen_methods_lines += [
-                f'    print_screen_bottom {bottom_padding}',
-                '',
-                f'    check_keystroke ${screen.upper()}_SCREEN',
-                '}'
-            ]
-
-        return screen_methods_lines
-
-    def get_invoke_action_on_exit_lines(self) -> List[str]:
-        return [
-            'invoke_action_on_exit() {',
-            '    clear_screen',
-            '    eval $INVOKE_ON_EXIT',
-            '}'
-        ]
-
-    def get_show_exit_screen_lines(self) -> List[str]:
-        show_exit_lines = [
-            r'show_exit_screen() {',
-            r'    clear_screen'
-        ]
-        if self.blueprint['meta']['show_made_with_on_exit']:
-            show_exit_lines += [r'    printf "Exited \U1F41A Made with Nacar \n\n"']  # noqa
-        else:
-            show_exit_lines += [r'    printf "Exited \n\n"']
-        show_exit_lines += [
-            r'}'
-        ]
-        return show_exit_lines
-
-    def get_screen_rendering_code(self) -> str:
-        screen_rendering_code = [self.get_section_title('Screen rendering')]
-        screen_rendering_code += [""]
-        screen_rendering_code += self.get_show_screen_methods_lines()
-        screen_rendering_code += [""]
-        screen_rendering_code += self.get_invoke_action_on_exit_lines()
-        screen_rendering_code += [""]
-        screen_rendering_code += self.get_show_exit_screen_lines()
-        screen_rendering_code += ["\n\n"]
-
-        return '\n'.join(screen_rendering_code)
+        screen_rendering_data = {
+            'show_made_with_on_exit': self.blueprint['meta'][
+                'show_made_with_on_exit'],  # noqa
+            'bottom_padding_screen_map': bottom_padding_screen_map
+        }
+        self.set_template_data({
+            **self.template_data,
+            **{'screen_rendering': screen_rendering_data}
+        })
 
 #   Nacar app's main loop ──────────────────────────────────────────────────────
 
