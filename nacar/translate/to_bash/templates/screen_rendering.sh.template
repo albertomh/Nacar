@@ -3,7 +3,16 @@
 {% for screen in screen_flow.screens %}
 show_{{ screen.lower() }}_screen() {
     print_screen_top
+    {% for option in screen_flow.screen_options[screen] %}
+        {% set name = option['name'] %}
+        {% set key_snippet = '[${YEL}' + name[0].upper() + '${END}]' %}
+        {% set len_right = app_config.screen_width - (name|length + 7) %}
+        {% set right_snippet = '%' ~ len_right ~ 's \\U2502\\n' %}
+    printf "\U2502 {{ key_snippet }}{{ name[1:] }} {{ right_snippet }}"
+    {% endfor %}
     print_screen_bottom {{ screen_rendering.bottom_padding_screen_map[screen] }}
+
+    check_keystroke ${{ screen.upper() }}_SCREEN
 }
 
 {% endfor -%}
