@@ -1,0 +1,9 @@
+# ───── Screen rendering ───────────────────────────────────────────────────────
+
+{% for screen in screen_flow.screens %}
+show_{{ screen.lower() }}_screen() {
+    print_screen_top
+    print_screen_bottom {{ screen_rendering.bottom_padding_screen_map[screen] }}
+}
+
+{% endfor -%}

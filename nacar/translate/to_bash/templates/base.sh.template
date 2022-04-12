@@ -14,3 +14,6 @@
 
 {# Screen flow code #}
 {%+ include 'screen_flow.sh.template' +%}
+
+{# Screen rendering code #}
+{%+ include 'screen_rendering.sh.template' +%}
