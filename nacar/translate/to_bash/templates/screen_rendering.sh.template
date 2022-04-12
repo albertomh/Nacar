@@ -21,3 +21,12 @@ invoke_action_on_exit() {
     clear_screen
     eval $INVOKE_ON_EXIT
 }
+
+show_exit_screen() {
+    clear_screen
+    {% if screen_rendering.show_made_with_on_exit %}
+    printf "Exited \U1F41A Made with Nacar \n\n"
+    {% else %}
+    printf "Exited\n\n"
+    {% endif %}
+}
