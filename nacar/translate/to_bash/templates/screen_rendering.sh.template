@@ -16,3 +16,8 @@ show_{{ screen.lower() }}_screen() {
 }
 
 {% endfor -%}
+
+invoke_action_on_exit() {
+    clear_screen
+    eval $INVOKE_ON_EXIT
+}
