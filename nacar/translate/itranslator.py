@@ -95,25 +95,24 @@ class ITranslator(ABC):
 #   Utilities ──────────────────────────────────────────────────────────────────
 
     @abstractmethod
-    def get_utilities(self) -> str:
+    def set_utilities_template_variables(self) -> None:
         raise NotImplementedError
 
 #   Screen-building utilities ──────────────────────────────────────────────────
 
-    @abstractmethod
-    def get_screen_building_utilities(self) -> str:
-        raise NotImplementedError
+    # Screen-building methods are the same for all Nacar apps
+    # - not dependent on the blueprint.
 
 #   Screen flow ────────────────────────────────────────────────────────────────
 
     @abstractmethod
-    def get_screen_flow_code(self) -> str:
+    def set_screen_flow_template_variables(self) -> None:
         raise NotImplementedError
 
 #   Screen rendering ───────────────────────────────────────────────────────────
 
     @abstractmethod
-    def get_screen_rendering_code(self) -> str:
+    def set_screen_rendering_template_variables(self) -> None:
         raise NotImplementedError
 
 #   Nacar app's main loop ──────────────────────────────────────────────────────
