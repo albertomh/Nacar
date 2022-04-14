@@ -119,69 +119,27 @@ def test_set_app_config_template_variables(to_bash_translator):
 
 #   Test screen flow utilities ─────────────────────────────────────────────────
 
-def test_get_screen_flow_constants_lines(to_bash_translator: BlueprintToBash):
-    expected = [
-        'readonly HOME_SCREEN="home"',
-        'readonly DEVELOP_SCREEN="develop"',
-        'readonly TEST_SCREEN="test"'
-    ]
-    assert to_bash_translator.get_screen_flow_constants_lines() == expected
+def get_expected_screen_flow_template_variables() -> dict:
+    return {
+        'screens': ['home', 'develop', 'test'],
+        'screen_options': {
+            'home': [{'link': 'develop', 'name': 'Develop'}, {'link': 'test', 'name': 'Test'}],
+            'develop': [{'action': "echo 'build code'", 'name': 'build'}],
+            'test': [{'action': "echo 'run tests'", 'name': 'run'}]
+        }
+    }
 
 
-def test_get_check_keystroke_method_lines(to_bash_translator: BlueprintToBash):
-    expected = [
-        '# @param $1 The screen this function is invoked from.',
-        '#           One of the _SCREEN constants declared above.',
-        'check_keystroke() {',
-        '    local prompt=" ${GRN}\\$${END}"',
-        '    read -rs -p " ${prompt} " -n1 key',
-        '',
-        '    # Keypresses related to a screen.',
-        '    if [[ "$1" == "$HOME_SCREEN" ]]; then',
-        '        case "$key" in',
-        '            "D" | "d")',
-        '                navigate_to $DEVELOP_SCREEN; return 0;;',
-        '            "T" | "t")',
-        '                navigate_to $TEST_SCREEN; return 0;;',
-        '        esac',
-        '',
-        '    elif [[ "$1" == "$DEVELOP_SCREEN" ]]; then',
-        '        case "$key" in',
-        '            "B" | "b")',
-        '                INVOKE_ON_EXIT="echo \'build code\'"; return 1;;',
-        '        esac',
-        '',
-        '    elif [[ "$1" == "$TEST_SCREEN" ]]; then',
-        '        case "$key" in',
-        '            "R" | "r")',
-        '                INVOKE_ON_EXIT="echo \'run tests\'"; return 1;;',
-        '        esac',
-        '',
-        '    fi',
-        '',
-        '    # Handle [ESC] key and left arrow.',
-        '    # [unix.stackexchange.com/a/179193]',
-        '    case "$key" in',
-        "        $'\\x1b')  # Handle ESC sequence.",
-        '            read -rsn1 -t 0.1 additional_bytes',
-        '            if [[ "$additional_bytes" == "[" ]]; then',
-        '                read -rsn1 -t 0.1 additional_bytes',
-        '                case "$additional_bytes" in',
-        '                    "D")  # Left arrow.',
-        '                        navigate_back; return 0;;',
-        '                    *)  # Other escape sequences.',
-        '                        return 0;;',
-        '                esac',
-        '            fi;;',
-        '        *)  # Other single byte (char) cases.',
-        '            return 0;;',
-        '    esac',
-        '',
-        '    # Default fallthrough.',
-        '    return 1',
-        '}'
-    ]
-    assert to_bash_translator.get_check_keystroke_method_lines() == expected
+def test_set_screen_flow_template_variables(to_bash_translator):
+    to_bash_translator.set_screen_flow_template_variables()
+    result = to_bash_translator.template_data
+
+    expected = {
+        'heading': get_expected_heading_template_data(),
+        'app_config': get_expected_app_config_template_variables(),
+        'screen_flow': get_expected_screen_flow_template_variables()
+    }
+    assert result == expected
 
 
 #   Test screen rendering utilities ────────────────────────────────────────────
