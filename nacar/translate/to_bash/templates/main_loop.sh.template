@@ -1,0 +1,16 @@
+# ───── Main loop ──────────────────────────────────────────────────────────────
+
+# Capture Ctrl+C interrupts.
+trap '{ exit_screen; exit 1; }' INT
+
+navigate_to $HOME_SCREEN
+
+while :; do
+    show_active_screen || break;
+done
+
+if [[ -n $INVOKE_ON_EXIT ]]; then
+    invoke_action_on_exit
+else
+    show_exit_screen
+fi

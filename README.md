@@ -5,7 +5,7 @@ Say goodbye to remembering long, arcane shell commands!
 
 <img src="docs/img/nacar-showcase.gif" height="320" alt="Nacar showcase"/>
 
-**A Nacar YAML blueprint and the resulting bash Nacar app running in the terminal.** 
+**Above: a Nacar YAML blueprint (left) and the resulting bash Nacar app running in the terminal (right).** 
 
 
 You write a blueprint as a single YAML file, specifying the options and commands 
@@ -18,7 +18,7 @@ health-check utilities that provide easy access to common tasks.
 
 <p>
     <img id="badge--python" src="https://img.shields.io/badge/python-3.7%2B-blue" alt="python3.7" />
-    <img id="badge--tests" src="https://img.shields.io/badge/tests-54%20%5B100%25%5D%20%E2%9C%94-brightgreen" alt="test coverage" />
+    <img id="badge--tests" src="https://img.shields.io/badge/tests-32%20%5B96%25%5D%20%E2%9C%94-brightgreen" alt="test coverage" />
     <img id="badge--version" src="https://img.shields.io/badge/version-1.0.0-white" alt="version" />
 </p>
 

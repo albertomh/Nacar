@@ -17,3 +17,6 @@
 
 {# Screen rendering code #}
 {%+ include 'screen_rendering.sh.template' +%}
+
+{# Main loop code #}
+{%+ include 'main_loop.sh.template' +%}
