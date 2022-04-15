@@ -34,6 +34,29 @@ class ITranslator(ABC):
 
     File heading
       └ set_heading_template_variables() -> None
+
+    Nacar app config
+      └ set_app_config_template_variables() -> None
+
+    Utilities
+      └ set_utilities_template_variables() -> None
+
+    Screen-building utilities
+      Screen-building methods are the same for all Nacar apps
+      - not dependent on the blueprint.
+
+    Screen flow
+      └ set_screen_flow_template_variables() -> None
+
+    Screen rendering
+      └ set_screen_rendering_template_variables() -> None
+
+    Main loop
+      The main loop is the same for all Nacar apps
+      - not dependent on the blueprint.
+
+    Translate blueprint to <target_language>
+      └ translate_blueprint() -> str
     """
 
     @property
@@ -117,9 +140,8 @@ class ITranslator(ABC):
 
 #   Nacar app's main loop ──────────────────────────────────────────────────────
 
-    @abstractmethod
-    def get_main_loop_code(self) -> str:
-        raise NotImplementedError
+    # The main loop is the same for all Nacar apps
+    # - not dependent on the blueprint.
 
 #   Translate blueprint ────────────────────────────────────────────────────────
 

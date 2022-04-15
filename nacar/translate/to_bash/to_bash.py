@@ -21,20 +21,36 @@ from nacar.translate.target_language import TargetLanguage
 
 class BlueprintToBash(ITranslator):
     """
-    [I] template_data: dict
-    [I] set_template_data(data: dict) -> None
-    [I] screens: List[str]
-    [I] set_screens() -> None
-    [I] __init__(blueprint: dict) -> None
+    template_data: dict
+    set_template_data(data: dict) -> None
+    screens: List[str]
+    set_screens() -> None
+    __init__(blueprint: dict) -> None
 
     Bash translator utilities
-      ├ [I] get_target_language() -> TargetLanguage
-      ├ [I] get_max_line_length() -> str
-      ├ [I] get_comment_lines(content: str) -> List[str]
-      └ [I] get_section_title(title: str) -> str
+      ├ get_target_language() -> TargetLanguage
+      ├ get_max_line_length() -> str
+      ├ get_comment_lines(content: str) -> List[str]
+      └ get_section_title(title: str) -> str
 
     File heading
-      └ [I] set_heading_template_variables() -> None
+      └ set_heading_template_variables() -> None
+
+    Utilities
+      ├ get_bash_styles() -> dict
+      └ set_utilities_template_variables() -> None
+
+    Screen-building utilities
+      └ set_screen_building_utilities() -> None
+
+    Screen-rendering code
+      └ set_screen_rendering_template_variables() -> None
+
+    Nacar app's main loop
+      └ set_main_loop_code_template_variables() -> None
+
+    Translate blueprint to Bash
+      └ translate_blueprint() -> str
     """
 
     template_data = {}
@@ -57,7 +73,7 @@ class BlueprintToBash(ITranslator):
     def get_target_language() -> TargetLanguage:
         return TargetLanguage.BASH
 
-    def get_max_line_length(self):
+    def get_max_line_length(self) -> int:
         return 80
 
 #   File heading ───────────────────────────────────────────────────────────────
@@ -83,8 +99,7 @@ class BlueprintToBash(ITranslator):
 
     def set_app_config_template_variables(self) -> None:
         app_config_data = {
-            'screen_width': self.blueprint['meta']['width'],
-            'title': self.blueprint['title']
+            'screen_width': self.blueprint['meta']['width']
         }
         self.set_template_data({
             **self.template_data,
@@ -139,46 +154,18 @@ class BlueprintToBash(ITranslator):
         bottom_padding_screen_map = {}
         for screen in self.screens:
             options = Schema.get_options_for_screen(self.blueprint, screen)
-            max_options = Schema.get_max_screen_options_in_blueprint(
-                self.blueprint)  # noqa
+            max_options = Schema.get_max_screen_options_in_blueprint(self.blueprint)  # noqa
             bottom_padding = 1 + (max_options - len(options))
             bottom_padding_screen_map[screen] = bottom_padding
 
         screen_rendering_data = {
-            'show_made_with_on_exit': self.blueprint['meta'][
-                'show_made_with_on_exit'],  # noqa
+            'show_made_with_on_exit': self.blueprint['meta']['show_made_with_on_exit'],  # noqa
             'bottom_padding_screen_map': bottom_padding_screen_map
         }
         self.set_template_data({
             **self.template_data,
             **{'screen_rendering': screen_rendering_data}
         })
-
-#   Nacar app's main loop ──────────────────────────────────────────────────────
-
-    def get_main_loop_code(self) -> str:
-        main_loop_lines = [
-            self.get_section_title('Main loop'),
-            "",
-            r'''# Capture Ctrl+C interrupts.''',
-            # [kb.mit.edu/confluence/pages/viewpage.action?pageId=3907156]
-            r'''trap '{ exit_screen; exit 1; }' INT''',
-            "",
-            r'''navigate_to $HOME_SCREEN''',
-            "",
-            r'''while :; do''',
-            r'''    show_active_screen || break;''',
-            r'''done''',
-            "",
-            r'''if [[ -n $INVOKE_ON_EXIT ]]; then''',
-            r'''    invoke_action_on_exit''',
-            r'''else''',
-            r'''    show_exit_screen''',
-            r'''fi''',
-            ""
-        ]
-
-        return '\n'.join(main_loop_lines)
 
 #   Translate blueprint to Bash ────────────────────────────────────────────────
 
@@ -192,6 +179,8 @@ class BlueprintToBash(ITranslator):
         self.set_heading_template_variables()
         self.set_app_config_template_variables()
         self.set_utilities_template_variables()
+        self.set_screen_flow_template_variables()
+        self.set_screen_rendering_template_variables()
 
         template = self.jinja_env.get_template('base.sh.template')
         bash_translation: str = template.render(self.template_data)
