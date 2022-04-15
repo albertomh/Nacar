@@ -18,7 +18,7 @@ health-check utilities that provide easy access to common tasks.
 
 <p>
     <img id="badge--python" src="https://img.shields.io/badge/python-3.7%2B-blue" alt="python3.7" />
-    <img id="badge--tests" src="https://img.shields.io/badge/tests-32%20%5B96%25%5D%20%E2%9C%94-brightgreen" alt="test coverage" />
+    <img id="badge--tests" src="https://img.shields.io/badge/tests-41%20%5B100%25%5D%20%E2%9C%94-brightgreen" alt="test coverage" />
     <img id="badge--version" src="https://img.shields.io/badge/version-1.0.0-white" alt="version" />
 </p>
 
