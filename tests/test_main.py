@@ -41,5 +41,5 @@ def test_success_message(capsys, test_data_dir, nacar: Nacar):
     path_to_blueprint = os.path.join(test_data_dir, 'valid-blueprint.yml')
     nacar.run(path_to_blueprint)
     captured = capsys.readouterr()
-    assert captured.out == "\nConverted blueprint 'valid-blueprint.yml' to bash Nacar app 'valid-blueprint'. Wrote 258 lines.\n\n"  # noqa
+    assert captured.out == "\nConverted blueprint 'valid-blueprint.yml' to bash Nacar app 'valid-blueprint'. Wrote 255 lines.\n\n"  # noqa
     os.remove(os.path.join(test_data_dir, 'valid-blueprint'))

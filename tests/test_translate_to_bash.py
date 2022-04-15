@@ -12,6 +12,7 @@ from os import path as os_path
 from os.path import dirname, abspath
 from json import loads as json_loads
 import datetime
+import hashlib
 
 from unittest.mock import patch
 import pytest
@@ -95,8 +96,7 @@ def test_set_heading_template_variables(to_bash_translator):
 
 def get_expected_app_config_template_variables() -> dict:
     return {
-        'screen_width': 80,
-        'title': 'Global Title'
+        'screen_width': 80
     }
 
 
@@ -144,38 +144,24 @@ def test_set_screen_flow_template_variables(to_bash_translator):
 
 #   Test screen rendering utilities ────────────────────────────────────────────
 
-def test_get_show_screen_methods_lines(to_bash_translator: BlueprintToBash):
-    expected = [
-        'show_home_screen() {',
-        '    print_screen_top',
-        '    printf "\\U2502 [${YEL}D${END}]evelop %66s \\U2502\\n"',
-        '    printf "\\U2502 [${YEL}T${END}]est %69s \\U2502\\n"',
-        '    print_screen_bottom 1', '',
-        '    check_keystroke $HOME_SCREEN', '}',
-        'show_develop_screen() {',
-        '    print_screen_top',
-        '    printf "\\U2502 [${YEL}B${END}]uild %68s \\U2502\\n"',
-        '    print_screen_bottom 2', '',
-        '    check_keystroke $DEVELOP_SCREEN', '}',
-        'show_test_screen() {',
-        '    print_screen_top',
-        '    printf "\\U2502 [${YEL}R${END}]un %70s \\U2502\\n"',
-        '    print_screen_bottom 2',
-        '',
-        '    check_keystroke $TEST_SCREEN', '}'
-    ]
-    assert to_bash_translator.get_show_screen_methods_lines() == expected
+def get_expected_screen_rendering_template_variables() -> dict:
+    return {
+        'show_made_with_on_exit': True,
+        'bottom_padding_screen_map': {'develop': 2, 'home': 1, 'test': 2}
+    }
 
 
-def test_get_show_exit_screen_lines(to_bash_translator: BlueprintToBash):
-    expected = [
-        'show_exit_screen() {',
-        '    clear_screen',
-        '    printf "Exited \\U1F41A Made with Nacar \\n\\n"',
-        '}'
-    ]
-    assert to_bash_translator.get_show_exit_screen_lines() == expected
+def test_set_screen_rendering_template_variables(to_bash_translator):
+    to_bash_translator.set_screen_rendering_template_variables()
+    result = to_bash_translator.template_data
 
+    expected = {
+        'heading': get_expected_heading_template_data(),
+        'app_config': get_expected_app_config_template_variables(),
+        'screen_flow': get_expected_screen_flow_template_variables(),
+        'screen_rendering': get_expected_screen_rendering_template_variables()
+    }
+    assert result == expected
 
 #   Test main loop writer; Test translating blueprint to Bash ──────────────────
 
