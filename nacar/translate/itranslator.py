@@ -29,8 +29,7 @@ class ITranslator(ABC):
     __init__(blueprint: dict) -> None
 
     <target_language> translator utilities
-      ├ get_target_language() -> TargetLanguage
-      └ get_max_line_length() -> int
+      └ get_target_language() -> TargetLanguage
 
     File heading
       └ set_heading_template_variables() -> None
@@ -90,11 +89,6 @@ class ITranslator(ABC):
     @staticmethod
     @abstractmethod
     def get_target_language() -> TargetLanguage:
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_max_line_length(self) -> int:
-        # Maximum line length in the target language. eg. 79 for Python.
         raise NotImplementedError
 
     @abstractmethod

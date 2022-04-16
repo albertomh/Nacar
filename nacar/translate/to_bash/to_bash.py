@@ -29,7 +29,6 @@ class BlueprintToBash(ITranslator):
 
     Bash translator utilities
       ├ get_target_language() -> TargetLanguage
-      ├ get_max_line_length() -> str
       ├ get_comment_lines(content: str) -> List[str]
       └ get_section_title(title: str) -> str
 
@@ -72,9 +71,6 @@ class BlueprintToBash(ITranslator):
     @staticmethod
     def get_target_language() -> TargetLanguage:
         return TargetLanguage.BASH
-
-    def get_max_line_length(self) -> int:
-        return 80
 
 #   File heading ───────────────────────────────────────────────────────────────
 
