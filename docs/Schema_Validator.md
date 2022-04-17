@@ -25,14 +25,17 @@ It has three top-level properties named `title`, `meta`, and `screens`.
 
 ## Schema utilities
 
-*Setting missing optional attributes*  
-set_missing_optional_attributes()  
+**Subschemas and optional attributes**   
+`get_blueprint_subschemas()` Return modular subschemas that can be used to recursively build more complex schemas against which to validate app blueprints.  
+`add_blueprint_subschemas_to_registry()` Add modular blueprint schemas to Cerberus' default schema registry.  
+`get_blueprint_schema()`  
+`set_missing_optional_attributes()` Populate an in-memory blueprint with sensible defaults for missing attributes.  
 
-*Getting blueprint properties*
-get_screen_names()  
-get_screen_links()  
-get_max_screen_options_in_blueprint()  
-get_options_for_screen()  
+**Getting blueprint properties**  
+`get_screen_names()` Return a flat list of every screen name in the blueprint.  
+`get_screen_links()` Return a list of [screen1, screen2] pairs showing how screens link to other screens.  
+`get_max_screen_options_in_blueprint()` Return the number of options in the screen with most options.   
+`get_options_for_screen()`  
 
 
 ## The InvalidSchemaError

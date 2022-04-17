@@ -22,6 +22,10 @@ class Schema:
 
     @staticmethod
     def get_blueprint_subschemas() -> dict:
+        """
+        Return modular subschemas that can be used to recursively build more complex
+        schemas against which to validate app blueprints.
+        """
         modular_schemas = {
             'meta': {
                 'authors': {
@@ -89,6 +93,11 @@ class Schema:
 
     @staticmethod
     def set_missing_optional_attributes(blueprint: dict) -> dict:
+        """
+        :param blueprint: An in-memory blueprint.
+        :return: The input blueprint, with missing optional attributes
+           populated with sensible defaults.
+        """
         def exists(obj: dict, chain: List[str]) -> bool:
             _key = chain.pop(0)
             if _key in obj:
