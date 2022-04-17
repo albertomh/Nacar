@@ -4,13 +4,19 @@
 # Copyright 2022 Alberto Morón Hernández
 # [github.com/albertomh/Nacar]
 #
-# README updater
-# ▔▔▔▔▔▔▔▔▔▔▔▔▔▔
-# Run this script to update badges in the README.md file.
+# Pre-commit checks
+# ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
+# Check types, lint code, and check style against PEP8.
+# Run a full test suite and update badges in the README.md file.
 
 
 SCRIPT_PATH=$(dirname $(realpath -s $0))
 ROOT_DIR=$(dirname "$SCRIPT_PATH")
+# When invoked from a git hook, the context changes to the `.git/`
+# directory. Use `pwd` instead when called by a git hook.
+if [[ "$SCRIPT_PATH" == *".git"* ]]; then
+    ROOT_DIR=$(pwd)
+fi
 VENV_DIR="$ROOT_DIR/docs/.venv/"
 
 # Create a venv (if it doesn't exist) and install requirements.
@@ -30,7 +36,7 @@ create_venv() {
 }
 
 run_tests() {
-    printf "Running tests\n"
+    printf "\nRunning tests\n"
     cd $ROOT_DIR
     local test_result=$(pytest -s | tail -n1)
 
@@ -56,7 +62,7 @@ run_tests() {
 
 # Badges: Python 3.7+ | tests % | version
 set_badges_in_readme() {
-    printf "Setting badges in README.\n"
+    printf "\nSetting badges in README.\n"
     local readme_path="$ROOT_DIR/README.md"
 
     # Set tests badge.
@@ -65,7 +71,7 @@ set_badges_in_readme() {
     new_test_badge="${new_test_badge}%5B${passed_percent}%25%5D%20%E2%9C%94"
     new_test_badge="${new_test_badge}-brightgreen"
     sed -i -E "s/$test_badge_re/$new_test_badge/g" "$readme_path"
-    printf "Set badge ( tests | ${passed_count}\U2714 [${passed_percent}%%] )\n"
+    printf "    Set badge ( tests | ${passed_count}\U2714 [${passed_percent}%%] )\n"
 
     # Set version badge.
     local version_path="$ROOT_DIR/nacar/__version__.py"
@@ -78,19 +84,25 @@ set_badges_in_readme() {
     local version_badge_re='\/badge\/version.+?white'
     local new_version_badge="\/badge\/version-${version}-white"
     sed -i -E "s/$version_badge_re/$new_version_badge/g" "$readme_path"
-    printf "Set badge ( version | ${version} )\n"
+    printf "    Set badge ( version | ${version} )\n"
 }
 
 cleanup() {
-    printf "Removing virtual environment at '/docs/.venv/'.\n"
+    printf "\nRemoving virtual environment at '/docs/.venv/'.\n"
     rm -rf $VENV_DIR
 }
 
 
 main() {
-    printf "\n=============== BEGIN UPDATE_README ===============\n"
+    printf "\n============= BEGIN PRE_COMMIT_CHECKS =============\n"
 
     create_venv
+
+    printf "\nChecking types with mypy\n"
+    mypy -p nacar
+
+    printf "\nChecking style against PEP8\n"
+    pycodestyle nacar
 
     run_tests
 

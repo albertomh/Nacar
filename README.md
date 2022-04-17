@@ -45,11 +45,13 @@ You can now run Nacar with `python3 nacar/nacar.py <path-to-blueprint>.yml`.
 If you wish to make changes to Nacar itself, read the **Project Structure** 
 section below for details on how the code is structured.
 
-Before committing your changes, perform the following steps:
-1. Check type annotations: `mypy -p nacar`.
-2. Lint in accordance with PEP8: `pycodestyle nacar`.
-3. Run the test suite by running `pytest` from the project root.
-4. Run `docs/update_readme.sh` to update the test results and version badges in the README.
+Install the `pre-commit` git hook provided under `/hooks/` to have the following 
+steps performed before each commit:
+- Checking type annotations with `mypy`.
+- Lint in accordance with PEP8 with `pycodestyle`.
+- Run the full test suite.
+- Update test result and version badges in the README.
+
 
 ### Testing
 A suite of unit & integration tests is held under `/tests/`. To run it, install 

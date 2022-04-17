@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# If any command fails, exit immediately with that command's exit status
+# [gist.github.com/vncsna/64825d5609c146e80de8b1fd623011ca]
+# set -eo pipefail
+
+# NB. Scripts called by the hook behave as though they were being invoked from the
+# project's root, not the `.git/` directory.
+# However, the execution context from the invoked script's perspective seems to
+# be the `.git/` subdirectory after all.
+
+# This line seems necessary to make the hook 'realise' its working directory.
+# It is unable to find the `pre_commit_checks` script otherwise.
+echo "$(pwd)" >/dev/null 2>&1
+
+source ./pre_commit_checks.sh
