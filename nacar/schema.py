@@ -146,6 +146,7 @@ class Schema:
         for screen in blueprint['screens']:
             if screen['name'] == screen_name:
                 return screen['options']
+        return []
 
 
 class InvalidSchemaError(Exception):

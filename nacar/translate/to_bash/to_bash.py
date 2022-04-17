@@ -52,7 +52,7 @@ class BlueprintToBash(ITranslator):
       └ translate_blueprint() -> str
     """
 
-    template_data = {}
+    template_data: dict = {}
 
     def set_template_data(self, data: dict) -> None:
         self.template_data = data
