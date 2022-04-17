@@ -23,8 +23,8 @@ class Schema:
     @staticmethod
     def get_blueprint_subschemas() -> dict:
         """
-        Return modular subschemas that can be used to recursively build more complex
-        schemas against which to validate app blueprints.
+        Return modular subschemas that can be used to recursively build more
+        complex schemas against which to validate app blueprints.
         """
         modular_schemas = {
             'meta': {

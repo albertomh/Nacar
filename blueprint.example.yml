@@ -11,8 +11,8 @@ title: Global Title
 meta:
   authors:
     - Your Name
-  width: 80  # Optional
-  # show_made_with_on_exit: false  # Optional
+  width: 80                        # Optional | default: 80
+  # show_made_with_on_exit: false  # Optional | default: true
 
 screens:
   - name: home

@@ -33,6 +33,13 @@ class NacarValidator(Validator):
         # Validate with Cerberus.
         is_valid: bool = super(NacarValidator, self).validate(document, schema)
 
+        # Check the title does not exceed the app width.
+        title_does_not_exceed_app_width = False
+        if len(document['title']) <= (document['meta']['width'] - 4):
+            title_does_not_exceed_app_width = True
+        else:
+            super(NacarValidator, self)._error('title', "The title must not be longer than the width.")  # noqa
+
         # Check uniqueness of screen names.
         screen_names_are_unique = False
         screen_names: List[str] = Schema.get_screen_names(document)
@@ -58,6 +65,7 @@ class NacarValidator(Validator):
             super(NacarValidator, self)._error('screens', "Cannot link to an undefined screen.")  # noqa
 
         return (is_valid
+                and title_does_not_exceed_app_width
                 and screen_names_are_unique
                 and not screen_links_are_recursive
                 and linked_screens_exist)
