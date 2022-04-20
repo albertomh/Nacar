@@ -50,7 +50,9 @@ steps performed before each commit:
 - Checking type annotations with `mypy`.
 - Lint in accordance with PEP8 with `pycodestyle`.
 - Run the full test suite.
-- Update test result and version badges in the README.
+- Update test result and version badges in the README.  
+
+You may also manually invoke the  `pre_commit_checks.sh` script to perform the above checks at any time.
 
 
 ### Testing
