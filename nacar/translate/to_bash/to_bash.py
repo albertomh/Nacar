@@ -66,13 +66,13 @@ class BlueprintToBash(ITranslator):
         translator_dir = dirname(abspath(__file__))
         super().__init__(blueprint, translator_dir)
 
-#   Bash translator utilities ──────────────────────────────────────────────────
+#   Bash translator utilities ─────────────────────────────────────────────────
 
     @staticmethod
     def get_target_language() -> TargetLanguage:
         return TargetLanguage.BASH
 
-#   File heading ───────────────────────────────────────────────────────────────
+#   File heading ──────────────────────────────────────────────────────────────
 
     def set_heading_template_variables(self) -> None:
         """
@@ -91,7 +91,7 @@ class BlueprintToBash(ITranslator):
             **{'heading': heading_data}
         })
 
-#   Nacar app config ───────────────────────────────────────────────────────────
+#   Nacar app config ──────────────────────────────────────────────────────────
 
     def set_app_config_template_variables(self) -> None:
         app_config_data = {
@@ -102,7 +102,7 @@ class BlueprintToBash(ITranslator):
             **{'app_config': app_config_data}
         })
 
-#   Utilities ──────────────────────────────────────────────────────────────────
+#   Utilities ─────────────────────────────────────────────────────────────────
 
     def get_bash_styles(self) -> dict:
         # [gist.github.com/vratiu/9780109]
@@ -127,7 +127,7 @@ class BlueprintToBash(ITranslator):
             **{'utilities': utilities_data}
         })
 
-#   Screen flow ────────────────────────────────────────────────────────────────
+#   Screen flow ───────────────────────────────────────────────────────────────
 
     def set_screen_flow_template_variables(self) -> None:
         screen_options = {}
@@ -144,7 +144,7 @@ class BlueprintToBash(ITranslator):
             **{'screen_flow': screen_flow_data}
         })
 
-#   Screen rendering ───────────────────────────────────────────────────────────
+#   Screen rendering ──────────────────────────────────────────────────────────
 
     def set_screen_rendering_template_variables(self) -> None:
         bottom_padding_screen_map = {}
@@ -163,7 +163,7 @@ class BlueprintToBash(ITranslator):
             **{'screen_rendering': screen_rendering_data}
         })
 
-#   Translate blueprint to Bash ────────────────────────────────────────────────
+#   Translate blueprint to Bash ───────────────────────────────────────────────
 
     def translate_blueprint(self) -> str:
         """

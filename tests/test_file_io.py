@@ -119,7 +119,7 @@ def test_writing_bash_app_to_file(nacar_app_as_string):
     assert bash_result_str == ('-' * 42)
 
 
-def test_writing_bash_app_to_file_sets_executable_permissions(nacar_app_as_string):
+def test_writing_bash_app_to_file_sets_executable_permissions(nacar_app_as_string):  # noqa
     tmp_file_path = os.path.join('/tmp', 'nacar_test-writing-bash-sets-executable-permissions')  # noqa
     FileIO.write_nacar_app_to_file(
         nacar_app_as_string,

@@ -59,9 +59,10 @@ class FileIO:
                                 target_file_path: str,
                                 target_language: TargetLanguage) -> None:
         """
-        Write an in-memory representation of a Nacar app to a file and set the relevant file modes.
-        :param script_content: output of a Translator's 'translate_blueprint()' method.
-        :param target_file_path: absolute path where the resulting app will be written to.
+        Write an in-memory representation of a Nacar app to a file and set the
+        relevant file modes.
+        :param script_content: output of Translator's 'translate_blueprint()'.
+        :param target_file_path: absolute path the Nacar app is written to.
         :param target_language: a TargetLanguage enum value.
         """
         if file_exists(target_file_path):

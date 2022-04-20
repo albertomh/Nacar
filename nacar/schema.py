@@ -33,7 +33,7 @@ class Schema:
                     'schema': {'type': 'string', 'required': False, 'minlength': 1, 'maxlength': 64}  # noqa
                 },
                 'width': {'type': 'integer', 'required': False, 'min': 40, 'max': 180},               # noqa
-                'show_made_with_on_exit': {'type': 'boolean', 'required': False}
+                'show_made_with_on_exit': {'type': 'boolean', 'required': False}                      # noqa
             },
 
             'screen': {
@@ -188,10 +188,10 @@ class InvalidSchemaError(Exception):
 
                 # Important! Manipulating `breadcrumbs` below with `pop()` has
                 # been carefully chosen so that the same object is always kept
-                # in memory. Assigning `= []` in order to empty or slicing [:-1]
-                # create new lists, leading to a subtle, tricky bug.
+                # in memory. Assigning `= []` to empty or slicing [:-1] create
+                # new lists, leading to a subtle, tricky bug.
                 elif isinstance(errors[0], str):
-                    errors = [err.capitalize() + ('.' if err[-1] != '.' else '')
+                    errors = [err.capitalize() + ('.' if err[-1] != '.' else '')  # noqa
                               for err in errors if isinstance(err, str)]
                     breadcrumbs_key = '.'.join([b for b in breadcrumbs
                                                 if isinstance(b, str)])

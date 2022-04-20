@@ -84,7 +84,7 @@ class ITranslator(ABC):
         self.jinja_env.trim_blocks = True
         self.jinja_env.lstrip_blocks = True
 
-#   <target_language> translator utilities ─────────────────────────────────────
+#   <target_language> translator utilities ────────────────────────────────────
 
     @staticmethod
     @abstractmethod
@@ -96,48 +96,48 @@ class ITranslator(ABC):
         # Set the Translator's `screens` field.
         raise NotImplementedError
 
-#   File heading ───────────────────────────────────────────────────────────────
+#   File heading ──────────────────────────────────────────────────────────────
 
     @abstractmethod
     def set_heading_template_variables(self) -> None:
         raise NotImplementedError
 
-#   Nacar app config ───────────────────────────────────────────────────────────
+#   Nacar app config ──────────────────────────────────────────────────────────
 
     @abstractmethod
     def set_app_config_template_variables(self) -> None:
         # Nacar app settings eg. screen width, title.
         raise NotImplementedError
 
-#   Utilities ──────────────────────────────────────────────────────────────────
+#   Utilities ─────────────────────────────────────────────────────────────────
 
     @abstractmethod
     def set_utilities_template_variables(self) -> None:
         raise NotImplementedError
 
-#   Screen-building utilities ──────────────────────────────────────────────────
+#   Screen-building utilities ─────────────────────────────────────────────────
 
     # Screen-building methods are the same for all Nacar apps
     # - not dependent on the blueprint.
 
-#   Screen flow ────────────────────────────────────────────────────────────────
+#   Screen flow ───────────────────────────────────────────────────────────────
 
     @abstractmethod
     def set_screen_flow_template_variables(self) -> None:
         raise NotImplementedError
 
-#   Screen rendering ───────────────────────────────────────────────────────────
+#   Screen rendering ──────────────────────────────────────────────────────────
 
     @abstractmethod
     def set_screen_rendering_template_variables(self) -> None:
         raise NotImplementedError
 
-#   Nacar app's main loop ──────────────────────────────────────────────────────
+#   Nacar app's main loop ─────────────────────────────────────────────────────
 
     # The main loop is the same for all Nacar apps
     # - not dependent on the blueprint.
 
-#   Translate blueprint ────────────────────────────────────────────────────────
+#   Translate blueprint ───────────────────────────────────────────────────────
 
     @abstractmethod
     def translate_blueprint(self) -> str:

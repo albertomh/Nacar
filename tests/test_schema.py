@@ -26,7 +26,7 @@ def blueprint() -> dict:
         'screens': [
             {
                 'name': 'home',
-                'options': [{'name': 'Develop', 'link': 'develop'}, {'name': 'Test', 'link': 'test'}]
+                'options': [{'name': 'Develop', 'link': 'develop'}, {'name': 'Test', 'link': 'test'}]  # noqa
             },
             {
                 'name': 'develop',
@@ -117,7 +117,7 @@ def test_get_options_for_screen(
 @pytest.mark.parametrize('validator_errors,err_message', [
     ({'meta': [{'width': ['min value is 40']}]},
      "Please amend these schema errors in your blueprint:\nmeta.width: Min value is 40."),  # noqa
-    ({'meta': [{'show_made_with_on_exit': ['must be of boolean type']}], 'screens': ['Screens must not link to themselves.']},
+    ({'meta': [{'show_made_with_on_exit': ['must be of boolean type']}], 'screens': ['Screens must not link to themselves.']},  # noqa
      "Please amend these schema errors in your blueprint:\nmeta.show_made_with_on_exit: Must be of boolean type.\nscreens:                     Screens must not link to themselves."),  # noqa
 ])
 def test_invalid_schema_error(validator_errors: dict, err_message: str):
