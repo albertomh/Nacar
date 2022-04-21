@@ -70,7 +70,6 @@ def test_add_blueprint_subschemas_to_registry():
 @pytest.mark.parametrize('path_chain,default_value', [
     (['meta', 'width'], 80),
     (['meta', 'show_made_with_on_exit'], True),
-    # TODO: add other optional attributes as they are added in `set_missing_optional_attributes()`.
 ])
 def test_set_missing_optional_attributes__meta_width(
     blueprint: dict,
