@@ -28,3 +28,20 @@
 ## Main loop
 `main::main`
 - Add other target language translators and select via command line argument, with the Bash Translator as the default.
+
+
+# blueprint.example.yml
+- Add option to strip comments from target Nacar app bash file / minify target file.  
+- Create a handful of colour schemes that can be selected with option.  
+- Allow users to create custom colour schemes.  
+- Enforce root node - first item in 'screens' array MUST have `name: home`.  
+- Add optional 'key' item for links & actions (ensuring unique per screen), defaulting to [F]irst char.  
+
+
+## Testing
+
+`test_schema::test_set_missing_optional_attributes__meta_width()`
+- Add other optional attributes to test parameters as they are added in `set_missing_optional_attributes()`.
+
+`test_validator::test_cerberus_validation()`
+- Add more per-attribute testcases to test parameters eg. wrong data type for attributes in YAML blueprint.

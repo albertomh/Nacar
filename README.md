@@ -54,6 +54,8 @@ steps performed before each commit:
 
 You may also manually invoke the  `pre_commit_checks.sh` script to perform the above checks at any time.
 
+Check the [feature roadmap](ROADMAP.md) to see planned & in-progress improvements to Nacar.
+
 
 ### Testing
 A suite of unit & integration tests is held under `/tests/`. To run it, install 
