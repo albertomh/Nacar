@@ -19,7 +19,10 @@ from nacar.schema import Schema
 
 class NacarValidator(Validator):
 
-    def validate(self, document, schema) -> bool:
+    # def __init__(self, *args, **kwargs):  # TODO: reinstate?
+    #     super(NacarValidator, self).__init__(*args, **kwargs)
+
+    def validate(self, document: dict, schema: dict) -> bool:
         if document is None or schema is None:
             error_message = "The Nacar validator was not handed a "
             if document is None and schema is None:
@@ -34,11 +37,14 @@ class NacarValidator(Validator):
         is_valid: bool = super(NacarValidator, self).validate(document, schema)
 
         # Check the title does not exceed the app width.
-        title_does_not_exceed_app_width = False
-        if len(document['title']) <= (document['meta']['width'] - 4):
-            title_does_not_exceed_app_width = True
+        title_exceeds_app_width = True
+        if not hasattr(document, 'title'):
+            title_exceeds_app_width = False
         else:
-            super(NacarValidator, self)._error('title', "The title must not be longer than the width.")  # noqa
+            if len(document['title']) > (document['meta']['width'] - 4):
+                super(NacarValidator, self)._error('title', "The title must not be longer than the width.")  # noqa
+            else:
+                title_exceeds_app_width = False
 
         # Check uniqueness of screen names.
         screen_names_are_unique = False
@@ -65,7 +71,7 @@ class NacarValidator(Validator):
             super(NacarValidator, self)._error('screens', "Cannot link to an undefined screen.")  # noqa
 
         return (is_valid
-                and title_does_not_exceed_app_width
+                and not title_exceeds_app_width
                 and screen_names_are_unique
                 and not screen_links_are_recursive
                 and linked_screens_exist)
