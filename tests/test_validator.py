@@ -59,7 +59,6 @@ def test_validate_with_missing_params(
 @pytest.mark.parametrize('invalid_blueprint_filename', [
     'invalid-blueprint--missing-title.json',
     'invalid-blueprint--empty-screens.json'
-    # TODO: add more per-attribute testcases eg. wrong data type for attributes in YAML blueprint.
 ])
 def test_cerberus_validation(
     blueprint_schema: dict,
@@ -72,7 +71,7 @@ def test_cerberus_validation(
     """
     with open(os_path.join(test_data_dir, invalid_blueprint_filename)) as file:
         invalid_blueprint: dict = json_loads(file.read())
-        assert nacar_validator.validate(invalid_blueprint, blueprint_schema) == False  # noqa
+        assert nacar_validator.validate(invalid_blueprint, blueprint_schema) is False  # noqa
 
 
 @pytest.mark.parametrize('invalid_blueprint,expected_errors', [
@@ -80,10 +79,10 @@ def test_cerberus_validation(
     ({'screens': [{'name': 'home'}, {'name': 'home'}]},
      {'screens': ['All screen names must be unique.'], 'title': ['required field']}),  # noqa
     # Ensure screens do not link to themselves.
-    ({'screens': [{'name': 'home', 'options': [{'name': 'Self-link', 'link': 'home'}] }]},  # noqa
+    ({'screens': [{'name': 'home', 'options': [{'name': 'Self-link', 'link': 'home'}]}]},  # noqa
      {'screens': ['Screens must not link to themselves.'], 'title': ['required field']}),  # noqa
     # Ensure all links point to existing screens.
-    ({'screens': [{'name': 'home', 'options': [{'name': 'Inexistent link', 'link': 'inexistentScreen'}] }]},  # noqa
+    ({'screens': [{'name': 'home', 'options': [{'name': 'Inexistent link', 'link': 'inexistentScreen'}]}]},  # noqa
      {'screens': ['Cannot link to an undefined screen.'], 'title': ['required field']}),  # noqa
 ])
 def test_validator_rejects_non_unique_screen_names(
@@ -95,4 +94,4 @@ def test_validator_rejects_non_unique_screen_names(
     is_valid = nacar_validator.validate(invalid_blueprint, blueprint_schema)
     cerberus_errors = super(NacarValidator, nacar_validator).errors
     assert cerberus_errors == expected_errors
-    assert is_valid == False
+    assert is_valid is False

@@ -163,7 +163,17 @@ def test_set_screen_rendering_template_variables(to_bash_translator):
     }
     assert result == expected
 
-#   Test main loop writer; Test translating blueprint to Bash ──────────────────
+
+#   Test main loop writer ──────────────────────────────────────────────────────
 
 # Tests for these methods intentionally not implemented since dynamic behaviour
 # that feeds through to these functions is defined in methods tested above.
+
+
+#   Test translating blueprint to Bash ─────────────────────────────────────────
+
+def test_translate_blueprint(to_bash_translator):
+    translation = to_bash_translator.translate_blueprint()
+    translation_hash = hashlib.md5(translation.encode('utf-8')).hexdigest()
+    expected_hash = '934d970f9192bf9326c239163a7e5b84'
+    assert translation_hash == expected_hash
