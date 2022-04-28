@@ -24,6 +24,10 @@
 - Test multiple authors.
 - Add method to add comments documenting all methods in the output script.
 
+`BlueprintToBash::set_screen_flow_template_variables`  
+- Handle optional `key` attribute (not yet implemented), making default for 
+`key` the first char of the name. Reflect this behaviour in `screen_flow.sh.template`.
+
 
 ## Main loop
 `main::main`

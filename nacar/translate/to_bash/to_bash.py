@@ -129,9 +129,6 @@ class BlueprintToBash(ITranslator):
 #   Screen flow ───────────────────────────────────────────────────────────────
 
     def set_screen_flow_template_variables(self) -> None:
-        # TODO: Handle optional `key` attribute (not yet implemented), making
-        # TODO: default for `key` var below the first char of the name.
-        # TODO: Reflect this behaviour in `screen_flow.sh.template`.
         screen_options = {}
         for screen in self.screens:
             options = Schema.get_options_for_screen(self.blueprint, screen)
