@@ -1,6 +1,15 @@
+### 1.1.1
+2022-04-29  
+**Gilding the lily**
+- Misc. minor validator fixes & consistency enhancements.
+- Achieve 100% test coverage and improve documentation for the `to_bash` translator.
+- Add PEP8 linting & type correctness checks to the pre-commit hook.
+- Create a [feature roadmap](ROADMAP.md).
+
+
 ### 1.1.0
 2022-04-17  
-**The templating upgrade**
+**The templating upgrade**  
 - Rewrote to use template-based translators, making them more lightweight and modular.
 - No change to the user-facing API - ie. existing YML templates will continue to work.
 - Made blueprint validation more robust by adding new checks, improving existing ones, and enhancing test coverage.
@@ -9,7 +18,7 @@
 
 ### 1.0.0
 2022-03-08  
-**MVP release**
+**MVP release**  
 - `FileIO` module: parses YAML files as input and writes in-memory representations of Nacar apps out as executable files. Interacts with the filesystem, sets permissions on resulting apps, and handles any I/O exceptions
 - `Schema` module: defines the rules used for validating parsed blueprints.
 - `Validator` module: built on top of the Cerberus validator. Verifies that the parsed blueprint will be correctly interpreted by a Translator.
