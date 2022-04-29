@@ -11,7 +11,7 @@
 
 
 SCRIPT_PATH=$(dirname $(realpath -s $0))
-ROOT_DIR=$(dirname "$SCRIPT_PATH")
+ROOT_DIR=$SCRIPT_PATH
 # When invoked from a git hook, the context changes to the `.git/`
 # directory. Use `pwd` instead when called by a git hook.
 if [[ "$SCRIPT_PATH" == *".git"* ]]; then
@@ -60,7 +60,7 @@ run_tests() {
     fi
 }
 
-# Badges: Python 3.7+ | tests % | version
+# Badges: Python 3.7+ | tests % | pep8 compliance | version
 set_badges_in_readme() {
     printf "\nSetting badges in README.\n"
     local readme_path="$ROOT_DIR/README.md"
@@ -85,6 +85,16 @@ set_badges_in_readme() {
     local new_version_badge="\/badge\/version-${version}-white"
     sed -i -E "s/$version_badge_re/$new_version_badge/g" "$readme_path"
     printf "    Set badge ( version | ${version} )\n"
+
+    # Set pycodestyle/PEP8 badge.
+    local pep8_outcome="compliant"
+    if [[ ! "$PEP8_STATUS" -eq "0" ]]; then
+        pep8_outcome="not compliant"
+    fi
+    local pep8_badge_re='\/badge\/pep8.+?orange'
+    local new_pep8_badge="\/badge\/pep8-${pep8_outcome}-orange"
+    sed -i -E "s/$pep8_badge_re/$new_pep8_badge/g" "$readme_path"
+    printf "    Set badge ( pep8 | ${pep8_outcome} types )\n"
 }
 
 cleanup() {
@@ -92,17 +102,20 @@ cleanup() {
     rm -rf $VENV_DIR
 }
 
+# ─────────────────────────────────────────────────────────────────────────────
+PEP8_STATUS=0
 
 main() {
-    printf "\n============= BEGIN PRE_COMMIT_CHECKS =============\n"
+    printf "\n───────────── BEGIN PRE_COMMIT_CHECKS ─────────────\n"
 
     create_venv
 
-    printf "\nChecking types with mypy\n"
-    mypy -p nacar
-
     printf "\nChecking style against PEP8\n"
     pycodestyle nacar
+    PEP8_STATUS=$?
+
+    printf "\nChecking types with mypy\n"
+    mypy -p nacar
 
     run_tests
 
@@ -110,6 +123,6 @@ main() {
 
     cleanup
 
-    printf "======================= END =======================\n\n"
+    printf "─────────────────────── END ───────────────────────\n\n"
 }
 main

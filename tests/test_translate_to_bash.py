@@ -175,5 +175,5 @@ def test_set_screen_rendering_template_variables(to_bash_translator):
 def test_translate_blueprint(to_bash_translator):
     translation = to_bash_translator.translate_blueprint()
     translation_hash = hashlib.md5(translation.encode('utf-8')).hexdigest()
-    expected_hash = '934d970f9192bf9326c239163a7e5b84'
+    expected_hash = '7bbb6b7d8b3cf27f24ed67f0c8124cf1'
     assert translation_hash == expected_hash
