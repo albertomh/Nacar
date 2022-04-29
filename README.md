@@ -20,6 +20,7 @@ health-check utilities that provide easy access to common tasks.
     <img id="badge--python" src="https://img.shields.io/badge/python-3.7%2B-blue" alt="python3.7" />
     <img id="badge--tests" src="https://img.shields.io/badge/tests-42%20%5B100%25%5D%20%E2%9C%94-brightgreen" alt="test coverage" />
     <img id="badge--pep8" src="https://img.shields.io/badge/pep8-compliant-orange" alt="PEP8 compliance" />
+    <img id="badge--mypy" src="https://img.shields.io/badge/mypy-valid%20types-blueviolet" alt="mypy validity" />
     <img id="badge--version" src="https://img.shields.io/badge/version-1.1.1-white" alt="version" />
 </p>
 

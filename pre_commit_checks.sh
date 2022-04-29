@@ -60,7 +60,7 @@ run_tests() {
     fi
 }
 
-# Badges: Python 3.7+ | tests % | pep8 compliance | version
+# Badges: Python 3.7+ | tests % | pep8 compliance | mypy validity | version
 set_badges_in_readme() {
     printf "\nSetting badges in README.\n"
     local readme_path="$ROOT_DIR/README.md"
@@ -95,6 +95,16 @@ set_badges_in_readme() {
     local new_pep8_badge="\/badge\/pep8-${pep8_outcome}-orange"
     sed -i -E "s/$pep8_badge_re/$new_pep8_badge/g" "$readme_path"
     printf "    Set badge ( pep8 | ${pep8_outcome} types )\n"
+
+    # Set mypy badge.
+    local mypy_outcome="valid"
+    if [[ ! "$MYPY_STATUS" -eq "0" ]]; then
+        mypy_outcome="invalid"
+    fi
+    local mypy_badge_re='\/badge\/mypy.+?blueviolet'
+    local new_mypy_badge="\/badge\/mypy-${mypy_outcome}%20types-blueviolet"
+    sed -i -E "s/$mypy_badge_re/$new_mypy_badge/g" "$readme_path"
+    printf "    Set badge ( mypy | ${mypy_outcome} types )\n"
 }
 
 cleanup() {
@@ -104,6 +114,7 @@ cleanup() {
 
 # ─────────────────────────────────────────────────────────────────────────────
 PEP8_STATUS=0
+MYPY_STATUS=0
 
 main() {
     printf "\n───────────── BEGIN PRE_COMMIT_CHECKS ─────────────\n"
@@ -116,6 +127,7 @@ main() {
 
     printf "\nChecking types with mypy\n"
     mypy -p nacar
+    MYPY_STATUS=$?
 
     run_tests
 
