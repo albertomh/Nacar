@@ -14,11 +14,9 @@ For instance, the default Blueprint to Bash translator lives under `translate/to
 Within this package there is a `to_bash.py` module which is the translator's entrypoint. 
 All the methods defined by `itranslator.py` must be implemented by this module.  
 
-Additionally, there should exist a `templates` subdirectory (eg. `translate/to_bash/templates/`) 
-which holds Jinja templates that will be populated by the translator to produce the
-Nacar app in the target language. These are plaintext files that follow the naming convention
-`<feature>.<target_lang_extension>.template` eg. `screen_flow.sh.template` for 
-the template dealing with screen flow for a Bash Nacar app.  
+From v1.1.0 onwards, Nacar translators use a template-based approach. This release 
+introduces Jinja2 templates that accept sections of generated code in order to 
+assemble the resulting Nacar app. See the **Templates** section below for more.
 
 
 ## The `itranslator` interface
@@ -28,6 +26,14 @@ the bash program as a string.
 `get_target_language()` must be defined and return a single option from the TargetLanguage enum.  
 
 A compliant Translator comprises the following sections:
+
+**constructor**  
+The `__init__` method takes two parameters: a `blueprint` object and a string, 
+`translator_dir`, which is the absolute path to the translator module. The latter
+allows the translator to find the relevant `templates` directory.  
+The interface's (super) constructor must be called by the translator implementation 
+in order to set the `blueprint` & `screens` properties, and to set the template 
+environment ahead of code generation and assembly of the Nacar app.
 
 **<target_language> translator utilities**  
 Return the target language of the Translator in question, used for introspection 
@@ -74,6 +80,10 @@ Each translator uses Jinja templates to construct the Nacar app that will be
 persisted to a file by the `file_io` module. These make use of standard templating 
 features such as loops and variable interpolation to standardise the process of 
 producing Nacar apps across target languages from different blueprints. 
+
+Templates for each translator are kept in a dedicated directory, eg. 
+`translate/to_bash/templates/` for the `to_bash` module. Minimally there should 
+be at least a `base.<ext>.template` file inside `templates/`, eg. `base.sh.template`.
 
 A `template_data` object is available across a translator's scope, with each 
 method in the `itranslator` interface generating and structuring data according 
