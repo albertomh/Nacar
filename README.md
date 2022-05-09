@@ -29,8 +29,13 @@ health-check utilities that provide easy access to common tasks.
 
 1. Clone the repo.
 2. Write a Nacar blueprint - you can use `blueprint.example.yml` as a template.
-3. Run `python nacar/main.py <path-to-your-blueprint>.yml`
-4. A bash Nacar app will be created in the same directory as your blueprint. 
+3. Create & activate a virtual environment: `python3 -m venv venv && source venv/bin/activate`
+4. Install dependencies: `pip3 install -r requirements/common.txt`
+5. Add the current directory to the `PYTHONPATH` with `export PYTHONPATH="$PWD"`
+6. Run `python3 nacar/main.py <path-to-your-blueprint>.yml`
+
+A bash Nacar app will have been created in the same directory as your blueprint.
+You can run this like any other bash script. 
 
 
 ## Developing
@@ -39,9 +44,8 @@ Nacar is written in Python 3. It includes type annotations that are checked with
 `mypy` and is linted with `pycodestyle` to ensure PEP8 compliance.
 
 1. Clone this repository and navigate into the project root.
-2. Create a virtual environment: `python3 -m venv venv`.
-3. Activate the virtual environment: `source venv/bin/activate`
-4. Install dependencies: `pip3 install -r requirements/common.txt -r requirements/dev.txt`
+2. Create & activate a virtual environment: `python3 -m venv venv && source venv/bin/activate`
+3. Install dependencies: `pip3 install -r requirements/common.txt -r requirements/dev.txt`
 
 You can now run Nacar with `python3 nacar/nacar.py <path-to-blueprint>.yml`.  
 If you wish to make changes to Nacar itself, read the **Project Structure** 
